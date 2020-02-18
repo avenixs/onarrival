@@ -1,38 +1,26 @@
 const Sequelize = require('sequelize');
 const sequelize = require("../utils/db");
 
-const EnterpriseUser = sequelize.define('EnterpriseUser', {
+const Answer = sequelize.define('Answer', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    email: {
+    answerEnglish: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    password: {
+    answerForeign: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    name: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }, 
-    surname: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    department: {
-        type: Sequelize.STRING,
-        allowNull: true
-    },
-    disabled: {
+    isCorrect: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: 0
     }
 });
 
-module.exports = EnterpriseUser;
+module.exports = Answer;

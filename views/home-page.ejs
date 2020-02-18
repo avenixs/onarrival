@@ -4,15 +4,74 @@
 <body>
     <%- include("includes/navigation.ejs") %>
     
-    <div class="container-lg horizontal-stripe light-stripe">
-        <h2>Stripe 1</h2>
+    <div class="container-lg light-stripe">
+        <div class="stripe-description">
+            <h2 class="title-decor title-small">Did you know...</h2>
+            <p>According to the Office for National Statistics, over <b>600,000 migrants</b> came to the UK during the year ending June 2019.</p>
+            <button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#stat-note" aria-expanded="false" aria-controls="collapseExample">Read on</button>
+            <div class="collapse" id="stat-note">
+                <p>This is a great <b>opportunity</b> for them and for you to build a better future. <br />Learn, how to improve their English and ensure a <b>success</b> in your company.</p>
+            </div>
+        </div>
+        <div class="stripe-titles">
+            <h2 class="title-decor">Language on Arrival</h2>
+            <h3 class="subtitle">Help make a difference!</h3>
+            <button type="button" class="btn btn-dark btn-lg" id="register-company">Register your company</button>
+        </div>
     </div>
-    <div class="container-fluid horizontal-stripe dark-stripe">
-        <h2>Stripe 2</h2>
+    <div class="container-fluid dark-stripe"></div>
+    <div class="light-stripe">
+        <h2 class="title-decor" id="steps-title">Three easy steps!</h2>
+        <div class="stripe-steps">
+            <figure class="function-btn">
+                <a href="/register">
+                    <img src="../media/icons/notepad.png" class="figure-img img-fluid" alt="Register Icon">
+                </a>
+                <figcaption>Register a Company</figcaption>
+            </figure>
+            <figure class="function-btn">
+                <a href="/register">
+                    <img src="../media/icons/application.png" class="figure-img img-fluid" alt="Application Icon">
+                </a>
+                <figcaption>Create Your Course</figcaption>
+            </figure>
+            <figure class="function-btn">
+                <a href="/register">
+                    <img src="../media/icons/user.png" class="figure-img img-fluid" alt="User Icon">
+                </a>
+                <figcaption>Enrol Your Employees</figcaption>
+            </figure>
+        </div>
     </div>
-    <div class="container-lg horizontal-stripe light-stripe">
-        <h2>Stripe 3</h2>
+    <div class="light-stripe" id="project-team">
+        <h2 class="title-decor title-reverse">About</h2>
+        <div class="stripe-description">
+            <div class="card about-card">
+                <a href="https://www.westminster.ac.uk/" target="_blank">
+                    <img class="card-img-top" src="../media/westminster.jpg" alt="Westminster image">
+                </a>
+                <div class="card-body">
+                    <p class="card-text">Language on Arrival is being developed as a part of the Final Year Project on the third year of the BSc Computer Science at the <b>University of Westminster</b>.</p>
+                </div>
+            </div>
+        </div>
+        <div class="stripe-description">
+            <div class="card about-card">
+                <a href="https://www.linkedin.com/in/dwojtunik/" target="_blank">
+                    <img class="card-img-top" src="../media/autor.jpg" alt="Autor image">
+                </a>
+                <div class="card-body">
+                    <p class="card-text"><b>Damian Wojtunik</b> is a BSc Computer Science student at the University of Westminster. His interests include travelling and learning foreign languages.</p>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="container-fluid dark-stripe" id="edin-stripe"></div>
+    <div id="last-stripe">
+        <h2 class="title-decor">Are you ready?</h2>
+    </div>
+
+    <footer id="page-footer">(c) Damian Wojtunik 2020, Icons by&nbsp;<a href="https://freeicons.io/profile/730" target="_blank">Anu Rocks</a></footer>
 
     <%- include("includes/end.ejs") %>
 

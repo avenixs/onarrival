@@ -24,6 +24,14 @@ const StudentUser = sequelize.define('StudentUser', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    nationality: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    dateOfBirth: {
+        type: Sequelize.DATEONLY,
+        allowNull: true
+    },
     disabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

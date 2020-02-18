@@ -7,7 +7,9 @@ exports.getLoginCompanyPage = (req, res, next) => {
 };
 
 exports.getRegistrationPage = (req, res, next) => {
-    res.render("registration-page");
+    res.render("registration-page", {
+        pageTitle: "Registration"
+    });
 };
 
 exports.getHomePage = (req, res, next) => {

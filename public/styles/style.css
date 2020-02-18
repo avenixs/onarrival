@@ -1,40 +1,297 @@
+:root {
+    --main-color: #7e9bcc;
+    --main-color-darker: #6e91cc;
+    --dark-font: #303030;
+}
+
 body {
-    font-family: "Times New Roman", serif;
-    padding-bottom: 4rem;
+    font-family: "Amiri", "Times New Roman", serif;
+}
+
+#page-footer {
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    height: 3rem;
+    padding: 1rem;
+    box-shadow: 0px 2px 4px 1px rgba(0,0,0,0.75);
+    bottom: 0;
+    width: 100%;
+}
+
+.stick-bottom {
+    position: fixed;
+}
+
+a {
+    text-decoration: none !important;
+    color: var(--dark-font) !important;
 }
 
 li {
     margin: 0 0.75em;
-    font-family: "Playfair Display SC", serif;
-    font-style: normal;
+    font-size: 1.15rem;
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+}
+
+form {
+    width: 100%;
+}
+
+#navigation li a {
+    color: var(--dark-font);
+    opacity: 0.75;
+}
+
+#navigation li a:hover {
+    opacity: 1;
+    transition: all .1s ease-in-out;
 }
 
 h1 {
-    font-family: "Playfair Display SC Black", "Playfair Display SC", "Times New Roman", serif;
+    font-family: "Playfair Display SC", "Times New Roman", serif;
     color: white;
-    font-weight: 900;
+    font-weight: 500;
     text-transform: uppercase;
 }
 
 .page-header {
-    min-height: 8vw;
-    background: #577343;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
 }
 
+.page-header h1 {
+    margin: 0.5em 0;
+    font-size: 1.25rem;
+    color: var(--dark-font);
+}
+
+.page-header img {
+    width: 3rem;
+    margin: 0 1rem;
+}
+
+#main-navbar {
+    background: var(--main-color);
+    color: #fff;
+    justify-content: space-evenly;
+    box-shadow: 0px 2px 4px -3px rgba(0,0,0,0.75);
+}
+
+.nav-container {
+    width: 40%;
+    margin: 0;
+}
+
+#navigation {
+    justify-content: space-evenly;
+}
+
 .dark-stripe {
-    min-height: 15vw;
+    min-height: 18rem;
     background: #343a40;
-    color: white;
+    background-image: url('../media/people-learning.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: bottom;
+    background-size: cover;
 }
 
 .light-stripe {
-    min-height: 15vw;
+    min-height: 20rem;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.stripe-description {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0.75rem 0;
+    align-items: center;
+}
+
+.stripe-titles {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    margin: 0.75rem 0;
+}
+
+.subtitle {
+    font-family: "Playfair Display", "Times New Roman", serif;
+    font-size: 1.25rem;
+}
+
+.title-decor {
+    font-family: "Great Vibes", "Times New Roman", serif;
+    font-size: 2.5rem;
+    margin: 0.75rem;
+    min-width: 15rem;
+}
+
+.title-small {
+    font-size: 1.65rem;
+    width: 100%;
+}
+
+#register-company {
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+    font-size: 1rem;
+    margin: 1.5rem 0;
+}
+
+#project-team {
+    background: #f2f2f2;
+    width: 100%;
+    text-align: right;
+    padding: 2rem 3rem;
+}
+
+.stripe-steps {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.function-btn {
+    margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.function-btn img {
+    width: 9rem;
+    transition: all .2s ease-in-out;
+}
+
+.function-btn img:hover {
+    transform: scale(1.1);
+}
+
+.function-btn figcaption {
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+    font-size: 1rem;
+    margin: 1.5rem;
+    text-align: center;
+}
+
+#edin-stripe {
+    background-image: url("../media/edin.jpg");
+}
+
+.about-card {
+    width: 90%;
+    transition: all .3s ease-in-out;
+    opacity: 0.9;
+}
+
+.about-card:hover {
+    transform: scale(1.02);
+    opacity: 1;
+}
+
+.about-card img {
+    transition: all .3s ease-in-out;
+    -webkit-filter: grayscale(15%); 
+    filter: grayscale(15%);
+}
+
+.about-card img:hover {
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+}
+
+.card-text {
+    text-align: justify;
+}
+
+.title-reverse {
+    text-align: center;
+}
+
+#steps-title {
+    flex: 1;
+    text-align: center;
+}
+
+#stat-note {
+    margin-top: 1rem;
+    width: 100%;
+}
+
+#last-stripe {
+    display: flex;
+    padding: 2rem;
+    height: 8rem;
+    justify-content: center;
+}
+
+#registration-page {
+    overflow: auto;
+    position: fixed;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    background-image: url("../media/learning.jpg");
+    opacity: 0.8;
+    padding: 5%;
+}
+
+#registration-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.85);
+    border-radius: 15px;
+    margin: 8rem 0;
+}
+
+#passMatch {
+    color: #8b0000;
+}
+
+#passEightChar {
+    color: #8b0000;
+}
+
+#register-button {
+    cursor: not-allowed;
+    margin: 0 auto;
 }
 
 @media (min-width: 768px) {
+    .page-header h1 {
+        font-size: 1.5rem;
+    }
+
+    .light-stripe {
+        flex-direction: row;
+    }
+
+    .stripe-steps {
+        flex-direction: row;
+        align-items: flex-end;
+        margin: 0.5rem 2rem;
+        flex: 3;
+        justify-content: space-evenly;
+    }
     
+    .about-card {
+        width: 75%;
+    }
+
+    #registration-page {
+        padding: 0 15% 15% 15%;
+    }
 }
