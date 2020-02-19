@@ -377,13 +377,26 @@ h1 {
     right: 0;
 }
 
-.left-bar {
+#menu-bar-left {
     position: fixed;
     width: 20%;
     height: 90%;
     background: #f8f9fa;
     box-shadow: 1px 1px 4px -3px rgba(0,0,0,0.75);
     z-index: 10;
+}
+
+.bar-link {
+    font-family: "Playfair Display", "Times New Roman", serif;
+    margin: 1.75rem 0;
+    font-size: 1.1rem;
+    padding-left: 0.75rem;
+    transition: all .15s ease-in-out;
+}
+
+.bar-link:hover {
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 @media (min-width: 768px) {

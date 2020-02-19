@@ -24,7 +24,7 @@ router.get("/login/student", public.getLoginStudentPage);
 router.get("/register", public.getRegistrationPage);
 
 // /register => POST
-router.post("/register", authorise.registerUser);
+//router.post("/register", authorise.registerUser);
 
 // / => ALL
 router.use(public.getHomePage);

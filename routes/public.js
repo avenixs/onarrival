@@ -2,38 +2,45 @@ const express = require("express");
 
 const public = require("../controllers/public");
 const authorise = require("../controllers/authentication");
+const enterprise = require("../controllers/enterprise");
 
 const studentRoutes = require("../routes/student");
 const enterpriseRoutes = require("../routes/enterprise");
 
+const notLoggedIn = require("../middleware/not-logged-in");
+const isLoggedIn = require("../middleware/logged-in");
+
 const router = express.Router();
 
 // /enterprise
-router.use("/enterprise", enterpriseRoutes);
+router.use("/enterprise", notLoggedIn, enterpriseRoutes);
 
 // /student
-router.use("student", studentRoutes);
+router.use("/student", notLoggedIn, studentRoutes);
 
 // /login => GET
-router.get("/login", public.getLoginPage);
+router.get("/login", isLoggedIn, public.getLoginPage);
 
 // /login/company => GET
-router.get("/login/company", public.getLoginCompanyPage);
+router.get("/login/company", isLoggedIn, public.getLoginCompanyPage);
 
 // /login/company => POST
-router.post("/login/company", authorise.authenticateEnterpriseLogin);
+router.post("/login/company", isLoggedIn, authorise.authenticateEnterpriseLogin);
 
 // /login/student => GET
-router.get("/login/student", public.getLoginStudentPage);
+router.get("/login/student", isLoggedIn, public.getLoginStudentPage);
 
 // /login/company => POST
 // router.post("/login/student", authorise.authenticateStudentLogin);
 
 // /register => GET
-router.get("/register", public.getRegistrationPage);
+router.get("/register", isLoggedIn, public.getRegistrationPage);
 
 // /register => POST
-router.post("/register", authorise.registerUser);
+router.post("/register", isLoggedIn, enterprise.registerCompanyUser);
+
+// /logout => ALL
+router.use("/logout", authorise.userLogout);
 
 // / => ALL
 router.use(public.getHomePage);

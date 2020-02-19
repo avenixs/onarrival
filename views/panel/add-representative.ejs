@@ -1,39 +1,34 @@
-<%- include("includes/head.ejs") %>
+<%- include("../includes/head.ejs") %>
 </head>
 
 <body>
-    <%- include("includes/navigation.ejs") %>
+    <%- include("../includes/navigation-panel.ejs") %>
     
-    <div id="registration-page">
+    <%- include("../includes/left-bar-admin.ejs") %>
+
+    <div class="course-content">
         <div class="transparent-form">
-            <h2 class="title-decor">Register a Company</h2>
+            <h2 class="title-decor">Add a Representative</h2>
             <form action="/register" method="POST">
                 <div class="form-row">
-                    <div class="form-group col-md-4">
-                        <label for="companyName">Company's name</label>
-                        <input type="text" class="form-control" id="companyName" name="companyName">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="companyEmail">Office email</label>
-                        <input type="text" class="form-control" id="companyEmail" name="companyEmail">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="companyTel">Office telephone</label>
-                        <input type="text" class="form-control" id="companyTel" name="companyTel" placeholder="07411223344">
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="adminName">Representative's Name</label>
                         <input type="text" class="form-control" id="adminName" name="adminName">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="adminSurname">Representative's Surname</label>
                         <input type="text" class="form-control" id="adminSurname" name="adminSurname">
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-3">
                         <label for="adminDep">Department</label>
                         <input type="text" class="form-control" id="adminDep" name="adminDep">
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label for="adminRights">Admin Privilages</label>
+                        <select class="form-control" id="adminRights" name="adminRights">
+                            <option value="0" selected>No</option>
+                            <option value="1">Yes</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-row">
@@ -53,15 +48,15 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <button type="submit" class="btn btn-dark" id="register-button" disabled>Register</button>
+                    <button type="submit" class="btn btn-dark" id="register-button" disabled>Add</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik 2020, Icons by&nbsp;<a href="https://freeicons.io/profile/730" target="_blank">Anu Rocks</a></footer>
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
 
-    <%- include("includes/end.ejs") %>
+    <%- include("../includes/end.ejs") %>
 
     <script type="text/javascript" src="/scripts/registration-script.js"></script>
 

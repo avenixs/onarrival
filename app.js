@@ -11,10 +11,6 @@ const sequelizeStore = require('connect-session-sequelize')(session.Store);
 // Import of routes; UPDATE: One route for all users
 const publicRoutes = require("./routes/public");
 
-// Importing the authentication middleware that will be executed before the actual one
-const isLoggedIn = require("./middleware/logged-in");
-const notLoggedIn = require("./middleware/not-logged-in");
-
 // Imports of models used to establish relationships between them
 const EnterpriseUser = require("./models/enterprise-user");
 const StudentUser = require("./models/student-user");
@@ -48,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(
     session({
-        secret: "languageonarrivalwestminster", 
+        secret: "languageonarrival westminster", 
         resave: false, 
         proxy: true,
         saveUninitialized: false,
@@ -59,7 +55,7 @@ app.use(
     })
 );
 
-app.use("/", isLoggedIn, publicRoutes);
+app.use("/", publicRoutes);
 
 // Relationships between the models
 EnterpriseUser.belongsTo(Company);

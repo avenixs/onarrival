@@ -3,21 +3,23 @@ const EnterpriseUser = require("../models/enterprise-user");
 const StudentUser = require("../models/student-user");
 
 exports.authenticateEnterpriseLogin = (req, res, next) => {
-    const email = req.body.loginEmail;
-    const password = req.body.loginPassword;
-    EnterpriseUser.findOne({ where: { userEmail: email } })
+    const emailToLogin = req.body.loginEmail;
+    const passwordToLogin = req.body.loginPass;
+    EnterpriseUser.findOne({ where: { email: emailToLogin } })
         .then(user => {
             if(user == null) {
                 return res.redirect("/register");
             }
-            if(userRetrieved.disabled == 1) {
+            if(user.disabled == 1) {
                 return res.redirect("/login?disabled=true");
             }
             bcrypt
-                .compare(password, user.password)
+                .compare(passwordToLogin, user.password)
                 .then(passwordMatching => {
                     if(passwordMatching) {
                         req.session.isLoggedIn = true;
+                        req.session.isEnterprise = true;
+                        req.session.isStudent = false;
                         return req.session.save(error => {
                             res.redirect("/enterprise/panel");
                         });
@@ -34,11 +36,8 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
         })
 };
 
-exports.registerUser = (req, res, next) => {
-
-};
-
 exports.userLogout = (req, res, next) => {
+    console.log("YESSSS");
     req.session.destroy(err => {
         res.redirect("/");
     });

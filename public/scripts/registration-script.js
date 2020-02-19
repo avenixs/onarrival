@@ -30,7 +30,7 @@ const confirmPassLength = function() {
 };
 
 const confirmPassMatch = function() {
-    if($("#repeatPassword").val() == $("#adminPassword").val()){
+    if(($("#repeatPassword").val() == $("#adminPassword").val()) && $("#adminPassword").val().length >= 8){
         $("#passMatch").html("Passwords matching.");
         $("#passMatch").css("color", "#006d02");
         passwordMatch = true;
