@@ -77,8 +77,6 @@ h1 {
 }
 
 #main-navbar {
-    background: var(--main-color);
-    color: #fff;
     justify-content: space-evenly;
     box-shadow: 0px 2px 4px -3px rgba(0,0,0,0.75);
 }
@@ -241,20 +239,20 @@ h1 {
     background-position: center;
     background-size: cover;
     width: 100%;
-    height: 100%;
+    height: 90%;
     background-image: url("../media/learning.jpg");
     opacity: 0.8;
     padding: 5%;
 }
 
-#registration-form {
+.transparent-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem;
     background-color: rgba(255, 255, 255, 0.85);
     border-radius: 15px;
-    margin: 8rem 0;
+    margin: 3rem 0;
 }
 
 #passMatch {
@@ -268,6 +266,124 @@ h1 {
 #register-button {
     cursor: not-allowed;
     margin: 0 auto;
+}
+
+#login-options {
+    position: fixed;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+}
+
+#student-login-option {
+    width: 100%;
+    height: 50%;
+    background-image: url("../media/london-student.jpg");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.25;
+    transition: all .5s ease-in-out;
+    -webkit-filter: grayscale(30%); 
+    filter: grayscale(30%);
+}
+
+#company-login-option {
+    width: 100%;
+    height: 50%;
+    background-image: url("../media/london-corp.jpg");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.25;
+    transition: all .5s ease-in-out;
+    -webkit-filter: grayscale(30%); 
+    filter: grayscale(30%);
+}
+
+#student-login-option:hover {
+    opacity: 0.75;
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+}
+
+#company-login-option:hover {
+    opacity: 0.75;
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+}
+
+.login-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+}
+
+.login-link:hover {
+    opacity: 1;
+}
+
+.login-type {
+    color: #fafafa;
+    font-size: 2.75rem;
+    padding: 0.5rem 2rem;
+    text-shadow: 8px 8px 10px rgba(0,0,0);
+    position: fixed;
+    bottom: 5%;
+}
+
+#company-login-form {
+    position: fixed;
+    width: 100%;
+    height: 90%;
+    background-image: url("../media/company-login.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#student-login-form {
+    position: fixed;
+    width: 100%;
+    height: 90%;
+    background-image: url("../media/student-login.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 80%;
+}
+
+#login-form-container {
+    width: 90%;
+    margin: 5%;
+}
+
+#login-form-container label {
+    font-family: "Playfair Display SC", serif;
+    font-weight: 100;
+}
+
+#login-button {
+    margin: 0 auto;
+    font-family: "Playfair Display SC", serif;
+}
+
+.course-content {
+    position: fixed;
+    width: 80%;
+    height: 90%;
+    right: 0;
+}
+
+.left-bar {
+    position: fixed;
+    width: 20%;
+    height: 90%;
+    background: #f8f9fa;
+    box-shadow: 1px 1px 4px -3px rgba(0,0,0,0.75);
+    z-index: 10;
 }
 
 @media (min-width: 768px) {
@@ -293,5 +409,32 @@ h1 {
 
     #registration-page {
         padding: 0 15% 15% 15%;
+    }
+
+    #login-options {
+        flex-direction: row;
+    }
+
+    #student-login-option {
+        width: 50%;
+        height: 100%;
+    }
+
+    #company-login-option {
+        width: 50%;
+        height: 100%;
+        margin-top: 0;
+    }
+
+    .login-type {
+        font-size: 4rem;
+    }
+
+    #login-form-container {
+        width: 40%;
+    }
+
+    #student-login-form {
+        background-position: center;
     }
 }

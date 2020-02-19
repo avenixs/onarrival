@@ -5,33 +5,37 @@
     <%- include("includes/navigation.ejs") %>
     
     <div id="registration-page">
-        <div id="registration-form">
+        <div class="transparent-form">
             <h2 class="title-decor">Register a Company</h2>
             <form>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="companyEmail">Email address</label>
-                        <input type="email" class="form-control" id="companyEmail" name="companyEmail" aria-describedby="emailHelp">
+                        <label for="companyName">Company's name</label>
+                        <input type="text" class="form-control" id="companyName" name="companyName">
                     </div>
                     <div class="form-group col-md-4">
-                        <label for="companyPassword">Password</label>
-                        <input type="password" class="form-control" id="companyPassword" name="companyPassword">
+                        <label for="companyEmail">Office email</label>
+                        <input type="text" class="form-control" id="companyEmail" name="companyEmail">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="companyTel">Office telephone</label>
+                        <input type="text" class="form-control" id="companyTel" name="companyTel" placeholder="07411223344">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="adminEmail">Representative's Email</label>
+                        <input type="email" class="form-control" id="adminEmail" name="adminEmail" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="adminPassword">Password</label>
+                        <input type="password" class="form-control" id="adminPassword" name="adminPassword">
                         <small id="passEightChar" class="form-text">At least 8 characters!</small>
                     </div>
                     <div class="form-group col-md-4">
                         <label for="repeatPassword">Repeat Password</label>
                         <input type="password" class="form-control" id="repeatPassword" name="repeatPassword">
                         <small id="passMatch" class="form-text">Passwords do not match!</small>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group col-md-8">
-                        <label for="companyName">Company's name</label>
-                        <input type="text" class="form-control" id="companyName" name="companyName">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="companyTel">Telephone</label>
-                        <input type="text" class="form-control" id="companyTel" name="companyTel" placeholder="07411223344">
                     </div>
                 </div>
                 <div class="form-row">
@@ -45,54 +49,7 @@
 
     <%- include("includes/end.ejs") %>
 
-    <script>
-        let passwordOverChar = false;
-        let passwordMatch = false;
+    <script type="text/javascript" src="/scripts/registration-script.js"></script>
 
-        $("#companyPassword").keyup(function() {
-            if(passwordOverChar && passwordMatch) {
-                $("#register-button").prop("disabled", false);
-            } else {
-                $("#register-button").prop("disabled", true);
-                $("#register-button").css("cursor", "not-allowed");
-            }
-
-            if($("#companyPassword").val().length >= 8){
-                $("#passEightChar").html("Over 8 characters.");
-                $("#passEightChar").css("color", "#006d02");
-                passwordOverChar = true;
-                if(passwordOverChar && passwordMatch) {
-                    $("#register-button").prop("disabled", false);
-                    $("#register-button").css("cursor", "pointer");
-                } else {
-                    $("#register-button").prop("disabled", true);
-                    $("#register-button").css("cursor", "not-allowed");
-                }
-            } else {
-                $("#passEightChar").html("At least 8 characters!");
-                $("#passEightChar").css("color", "#8b0000");
-                passwordOverChar = false;
-            }
-        });
-
-        $("#repeatPassword").keyup(function() {
-            if($("#repeatPassword").val() == $("#companyPassword").val()){
-                $("#passMatch").html("Passwords matching.");
-                $("#passMatch").css("color", "#006d02");
-                passwordMatch = true;
-                if(passwordOverChar && passwordMatch) {
-                    $("#register-button").prop("disabled", false);
-                    $("#register-button").css("cursor", "pointer");
-                } else {
-                    $("#register-button").prop("disabled", true);
-                    $("#register-button").css("cursor", "not-allowed");
-                }
-            } else {
-                $("#passMatch").html("Passwords do not match!");
-                $("#passMatch").css("color", "#8b0000");
-                passwordMatch = false;
-            }
-        });
-    </script>
 </body>
 </html>

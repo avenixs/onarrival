@@ -28,6 +28,11 @@ const EnterpriseUser = sequelize.define('EnterpriseUser', {
         type: Sequelize.STRING,
         allowNull: true
     },
+    isAdmin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
+    },
     disabled: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

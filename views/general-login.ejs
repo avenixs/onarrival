@@ -1,0 +1,27 @@
+<%- include("includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("includes/navigation.ejs") %>
+    
+    <div id="login-options">
+        <div id="company-login-option">
+            <a href="/login/company" class="login-link">
+                <div>
+                    <h2 class="title-decor login-type">Company</h2>
+                </div>
+            </a>
+        </div>
+        <div id="student-login-option">
+            <a href="/login/student" class="login-link">
+                <div>
+                    <h2 class="title-decor login-type">Student</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <%- include("includes/end.ejs") %>
+
+</body>
+</html>

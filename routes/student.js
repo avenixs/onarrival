@@ -3,16 +3,7 @@ const express = require("express");
 const public = require("../controllers/public");
 const authorise = require("../controllers/authentication");
 
-const studentRoutes = require("../routes/student");
-const enterpriseRoutes = require("../routes/enterprise");
-
 const router = express.Router();
-
-// /enterprise
-router.use("/enterprise", enterpriseRoutes);
-
-// /student
-router.use("student", studentRoutes);
 
 // /login => GET
 router.get("/login", public.getLoginPage);

@@ -86,7 +86,7 @@ StudentUser.belongsTo(Company);
 const PORT = process.env.PORT || 3025;
 app.listen(PORT);
 
-/*sequelize.sync({force:true})
+/* sequelize.sync({force:true})
     .then(result => {
         app.listen(PORT);
     })
