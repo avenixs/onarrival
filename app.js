@@ -84,12 +84,12 @@ StudentUser.belongsTo(Company);
 
 // This is a dynamic port allocation for Heroku deployment
 const PORT = process.env.PORT || 3025;
-app.listen(PORT);
+//app.listen(PORT);
 
-/* sequelize.sync({force:true})
+ sequelize.sync({force:true})
     .then(result => {
         app.listen(PORT);
     })
     .catch(error => {
         console.log(error);
-    }); */
+    }); 
