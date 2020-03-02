@@ -6,7 +6,7 @@
     
     <div class="container-lg light-stripe">
         <div class="stripe-description">
-            <h2 class="title-decor title-small">Did you know...</h2>
+            <h2 class="title-decor title-small" style="flex: unset">Did you know...</h2>
             <p>According to the Office for National Statistics, over <b>600,000 migrants</b> came to the UK during the year ending June 2019.</p>
             <button class="btn btn-sm btn-info" type="button" data-toggle="collapse" data-target="#stat-note" aria-expanded="false" aria-controls="collapseExample">Read on</button>
             <div class="collapse" id="stat-note">
@@ -21,7 +21,7 @@
     </div>
     <div class="container-fluid dark-stripe"></div>
     <div class="light-stripe">
-        <h2 class="title-decor" id="steps-title">Three easy steps!</h2>
+        <h2 class="title-decor" id="steps-title">Are you a company?</h2>
         <div class="stripe-steps">
             <figure class="function-btn">
                 <a href="/register">
@@ -29,12 +29,14 @@
                 </a>
                 <figcaption>Register a Company</figcaption>
             </figure>
+            <div class="arrow"><img src="../media/arrow.png" alt="Arrow"></div>
             <figure class="function-btn">
                 <a href="/register">
                     <img src="../media/icons/application.png" class="figure-img img-fluid" alt="Application Icon">
                 </a>
                 <figcaption>Create Your Course</figcaption>
             </figure>
+            <div class="arrow"><img src="../media/arrow.png" alt="Arrow"></div>
             <figure class="function-btn">
                 <a href="/register">
                     <img src="../media/icons/user.png" class="figure-img img-fluid" alt="User Icon">
@@ -43,8 +45,25 @@
             </figure>
         </div>
     </div>
-    <div class="light-stripe" id="project-team">
-        <h2 class="title-decor title-reverse">About</h2>
+    <div class="light-stripe" id="employee-stripe">
+        <h2 class="title-decor title-reverse">Are you an employee?</h2>
+        <div class="stripe-description" style="flex: 1.3">
+            <h3>Let your employer</h3>
+            <h3><b>know about us!</b></h3>
+            <p>Would you like your company to help you <b>develop your lingual skills</b> at no extra cost? Would you like to evolve and reach your goals? Do you feel like there is room for improvement when it comes to your <b>English at work</b>? We can help with that! Inform your employer of Language on Arrival or <a href="/contact/request" target="_blank"><span id="req-contact">request a contact from us</span></a> and we can speak to them on your behalf. You could soon be enroled to a specialised course designed to enahance your language skills at your current position.</p>
+        </div>
+        <div class="stripe-description" style="flex: 0.7">
+            <figure class="function-btn">
+                <a href="/contact/request" target="_blank">
+                    <img src="../media/icons/phone.png" class="figure-img img-fluid" alt="Telephone Icon">
+                </a>
+                <figcaption>Request contact with your employer</figcaption>
+            </figure>
+        </div>
+    </div>
+    <div class="container-fluid dark-stripe" id="edin-stripe"></div>
+    <div class="light-stripe" id="project-team" style="background: white;">
+        <h2 class="title-decor title-reverse" style="flex: unset">About</h2>
         <div class="stripe-description">
             <div class="card about-card">
                 <a href="https://www.westminster.ac.uk/" target="_blank">
@@ -65,10 +84,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="container-fluid dark-stripe" id="edin-stripe"></div>
-    <div id="last-stripe">
-        <h2 class="title-decor">Are you ready?</h2>
     </div>
 
     <footer id="page-footer">(c) Damian Wojtunik 2020, Icons by&nbsp;<a href="https://freeicons.io/profile/730" target="_blank">Anu Rocks</a></footer>

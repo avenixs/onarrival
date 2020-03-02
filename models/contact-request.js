@@ -1,34 +1,37 @@
 const Sequelize = require('sequelize');
 const sequelize = require("../utils/db");
 
-const Course = sequelize.define('Course', {
+const ContactRequest = sequelize.define('ContactRequest', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    title: {
+    companyName: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    companyEmail: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    companyTel: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    mgrName: {
+        type: Sequelize.STRING,
+        allowNull: true
+    },
+    mgrDepartment: {
+        type: Sequelize.STRING,
+        allowNull: true
     },
     description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
-    },
-    mainLanguage: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    difficulty: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    hasLeader: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: 0
     }
 });
 
-module.exports = Course;
+module.exports = ContactRequest;

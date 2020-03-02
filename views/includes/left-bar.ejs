@@ -1,0 +1,16 @@
+<div id="menu-bar-left">
+    <% if(isAdmin) { %>
+        <a class="btn btn-dark function-btn" data-toggle="collapse" href="#adminFunctions" role="button" aria-expanded="false" aria-controls="adminFunctionsCollapse">Admin functions</a>
+        <div class="collapse multi-collapse" id="adminFunctions">
+            <h2 class="bar-link"><a href="/enterprise/representatives/add"><img src="/media/icons/nav/plus.png" alt="Plus"> Add a Course Leader</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/courses/add"><img src="/media/icons/nav/add-course.png" alt="Add"> Add a Course</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/courses/assign"><img src="/media/icons/nav/assign.png" alt="Assign"> Assign Courses</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/students/add"><img src="/media/icons/nav/student.png" alt="Student"> Add an Student</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/students/enrol"><img src="/media/icons/nav/enrol.png" alt="Student"> Enrol a Student</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/representatives/view"><img src="/media/icons/nav/cleaders.png" alt="Leaders"> Manage Course Leaders</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/students/view"><img src="/media/icons/nav/students.png" alt="Students"> Manage Students</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/progress/view"><img src="/media/icons/nav/progress.png" alt="Progress"> View Students' Progress</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/courses/view"><img src="/media/icons/nav/list.png" alt="List"> Manage Courses</a></h2>
+        </div>
+    <% } %>
+</div>

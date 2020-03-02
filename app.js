@@ -59,6 +59,8 @@ app.use("/", publicRoutes);
 
 // Relationships between the models
 EnterpriseUser.belongsTo(Company);
+EnterpriseUser.belongsTo(Course);
+Course.belongsTo(Company);
 ListeningExercise.belongsTo(EnterpriseUser);
 ReadingExercise.belongsTo(EnterpriseUser);
 VocabExercise.belongsTo(EnterpriseUser);

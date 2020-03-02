@@ -1,11 +1,12 @@
 const bcrypt = require("bcryptjs");
 const EnterpriseUser = require("../models/enterprise-user");
 const StudentUser = require("../models/student-user");
+const Company = require("../models/company");
 
 exports.authenticateEnterpriseLogin = (req, res, next) => {
     const emailToLogin = req.body.loginEmail;
     const passwordToLogin = req.body.loginPass;
-    EnterpriseUser.findOne({ where: { email: emailToLogin } })
+    EnterpriseUser.findOne({ where: { email: emailToLogin }, include: [Company] })
         .then(user => {
             if(user == null) {
                 return res.redirect("/register");
@@ -19,7 +20,9 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
                     if(passwordMatching) {
                         req.session.isLoggedIn = true;
                         req.session.isEnterprise = true;
+                        req.session.isAdmin = user.isAdmin==1 ? true : false;
                         req.session.isStudent = false;
+                        req.session.companyId = user.Company.id;
                         return req.session.save(error => {
                             res.redirect("/enterprise/panel");
                         });
@@ -37,7 +40,6 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
 };
 
 exports.userLogout = (req, res, next) => {
-    console.log("YESSSS");
     req.session.destroy(err => {
         res.redirect("/");
     });

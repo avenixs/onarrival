@@ -42,6 +42,12 @@ router.post("/register", isLoggedIn, enterprise.registerCompanyUser);
 // /logout => ALL
 router.use("/logout", authorise.userLogout);
 
+// /contact/request => GET
+router.get("/contact/request", public.getContactRequestPage);
+
+// /contact/request => POST
+router.post("/contact/request", public.sendContactRequest);
+
 // / => ALL
 router.use(public.getHomePage);
 

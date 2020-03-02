@@ -13,10 +13,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                </div>
+                </div> 
                 <div class="modal-body">
                     <img src="/media/icons/<%= (success=='true') ? 'tick.png' : 'error.png' %>" alt="Tick Icon" >
-                    <p><%= (success=='true') ? "You have successfully added a new member of your team, a course leader." : "There has been an error while adding a user! Please try again or contact the support" %></p>
+                    <p><%= (success=='true') ? "You have successfully added a new student." : "There has been an error while adding a new student! Please try again or contact the support" %></p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -32,40 +32,39 @@
 
         <div class="course-content">
             <div class="transparent-form" id="panel-form">
-                <h2 class="title-decor">Add a Representative</h2>
-                <form action="/enterprise/representatives/add" method="POST">
-                    <div class="form-row">
+                <h2 class="title-decor">Add a Student</h2>
+                <form action="/enterprise/students/add" method="POST">
+                    <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="name">Representative's Name</label>
+                            <label for="name">Student's Name</label>
                             <input type="text" class="form-control" id="name" name="name">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="surname">Representative's Surname</label>
+                            <label for="surname">Student's Surname</label>
                             <input type="text" class="form-control" id="surname" name="surname">
                         </div>
-                        <div class="form-group col-md-4">
-                            <label for="dep">Department</label>
-                            <input type="text" class="form-control" id="dep" name="dep">
-                        </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="email">Representative's Email</label>
+                            <label for="email">Student's Email</label>
                             <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
                         </div>
                         <div class="form-group col-md-4">
-                            <label for="pass">Password</label>
+                            <label for="pass">New Password</label>
                             <input type="password" class="form-control" id="pass" name="pass">
                         </div>
+                    </div>
+                    <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="adminRights">Admin Privilages</label>
-                            <select class="form-control" id="adminRights" name="adminRights">
-                                <option value="0" selected>No</option>
-                                <option value="1">Yes</option>
-                            </select>
+                            <label for="nationality">Nationality</label>
+                            <input type="text" class="form-control" id="nationality" name="nationality">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth">
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row panel-row">
                         <button type="submit" class="btn btn-dark" style="margin: 0 auto;">Add</button>
                     </div>
                 </form>

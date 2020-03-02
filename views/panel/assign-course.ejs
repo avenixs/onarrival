@@ -1,0 +1,84 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body onload="showModal()">
+    <%- include("../includes/navigation-panel.ejs") %>
+
+    <% if(!(success==null)) { %>
+        <div class="modal fade" id="userAdded" tabindex="-1" role="dialog" aria-labelledby="userAddedLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userAddedLabel"><%= (success=='true') ? "Success" : "Error occurred!" %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/media/icons/<%= (success=='true') ? 'tick.png' : 'error.png' %>" alt="Tick Icon" >
+                    <p><%= (success=='true') ? "You have successfully assigned a course." : "There has been an error while assigning a course! Please try again or contact the support" %></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <% } %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <div class="transparent-form" id="panel-form">
+                <h2 class="title-decor">Assign a Course to a Course Leader</h2>
+                <form action="/enterprise/courses/assign" method="POST">
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="diff">Your unassigned courses</label>
+                            <select class="form-control" id="coursesToAssign" name="coursesToAssign">
+                                <% for(let i=0; i<courses.length; i++) { %>
+                                <option value="<%= courses[i].id %>"><%= courses[i].title %></option>
+                                <% }; %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="leadersToAssign">Leaders with no assignment</label>
+                            <select class="form-control" id="leadersToAssign" name="leadersToAssign">
+                                <% for(let i=0; i<leaders.length; i++) { %>
+                                    <option value="<%= leaders[i].id %>"><%= leaders[i].name + " " + leaders[i].surname %></option>
+                                <% }; %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-dark" style="margin: 0 auto;" id="assign-btn">Assign</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script>
+        function showModal() {
+            $("#userAdded").modal("show");
+        };
+
+        $(document).ready(() => {
+            console.log($("#coursesToAssign").children().length);
+            if($("#coursesToAssign").children().length == 0 || $("#leadersToAssign").children().length == 0) {
+                $("#assign-btn").prop("disabled", true);
+                $("#assign-btn").css("cursor", "not-allowed");
+            }
+        });
+    </script>
+
+</body>
+</html>
