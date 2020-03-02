@@ -3,7 +3,7 @@ const express = require("express");
 const enterprise = require("../controllers/enterprise");
 
 const adminRoutes = require("./admin");
-const repRoutes = require("./representatives");
+const repRoutes = require("./leaders");
 const coursesRoutes = require("./courses");
 const studentsRoutes = require("./company-students");
 
@@ -14,7 +14,7 @@ const router = express.Router();
 router.use("/admin", adminRoutes);
 
 // /representatives => ALL
-router.use("/representatives", isAdmin, repRoutes);
+router.use("/leaders", isAdmin, repRoutes);
 
 // /courses => ALL
 router.use("/courses", coursesRoutes);

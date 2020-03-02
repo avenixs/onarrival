@@ -22,6 +22,13 @@ body {
     width: 100%;
 }
 
+.course-content h3 {
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bolder;
+}
+
 .stick-bottom {
     position: fixed;
 }
@@ -446,11 +453,11 @@ h1 {
     margin: 1.75rem 0;
     font-size: 1.1rem;
     padding-left: 0.75rem;
-    transition: all .15s ease-in-out;
+    transition: all .2s ease-in-out;
 }
 
 .bar-link:hover {
-    font-size: 1.2rem;
+    font-size: 1.15rem;
     font-weight: bold;
 }
 
@@ -484,6 +491,15 @@ h1 {
 .panel-row {
     justify-content: center; 
     margin-top: 0.75rem;
+}
+
+#chapter-table {
+    width: 90%;
+    margin: 2rem auto;
+}
+
+.course-content form {
+    width: 80%;
 }
 
 @media (min-width: 768px) {

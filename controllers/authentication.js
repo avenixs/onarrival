@@ -18,11 +18,13 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
                 .compare(passwordToLogin, user.password)
                 .then(passwordMatching => {
                     if(passwordMatching) {
+                        req.session.userId = user.id;
                         req.session.isLoggedIn = true;
                         req.session.isEnterprise = true;
                         req.session.isAdmin = user.isAdmin==1 ? true : false;
                         req.session.isStudent = false;
                         req.session.companyId = user.Company.id;
+                        req.session.isLeader = user.CourseId==null ? false : true;
                         return req.session.save(error => {
                             res.redirect("/enterprise/panel");
                         });

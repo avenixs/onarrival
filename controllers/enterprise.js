@@ -7,7 +7,8 @@ const bcrypt = require("bcryptjs");
 exports.getPanelPage = (req, res, next) => {
     res.render("panel/company-main", {
         pageTitle: "Main Panel",
-        isAdmin: req.session.isAdmin
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader
     });
 };
 
@@ -48,9 +49,10 @@ exports.registerCompanyUser = (req, res, next) => {
 }
 
 exports.getAddRepresentativePage = (req, res, next) => {
-    res.render("panel/add-representative", {
-        pageTitle: "Add a New Representative",
+    res.render("panel/add-leader", {
+        pageTitle: "Add a New Course Leader",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success
     });
 };
@@ -59,6 +61,7 @@ exports.getAddCoursePage = (req, res, next) => {
     res.render("panel/add-course", {
         pageTitle: "Add a New Course",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success
     });
 };
@@ -78,11 +81,11 @@ exports.addNewRepresentative = async (req, res, next) => {
         .then(entUser => {
             entUser.setCompany(company);
 
-            return res.redirect("/enterprise/representatives/add?success=true");
+            return res.redirect("/enterprise/leaders/add?success=true");
         })
         .catch(error => {
             console.log(error);
-            return res.redirect("/enterprise/representatives/add?success=false");
+            return res.redirect("/enterprise/leaders/add?success=false");
         })
 };
 
@@ -93,6 +96,7 @@ exports.getAssignCoursePage = async (req, res, next) => {
     res.render("panel/assign-course", {
         pageTitle: "Add a New Course",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success,
         leaders: employees,
         courses: courses
@@ -106,6 +110,7 @@ exports.getEnrolStudentPage = async (req, res, next) => {
     res.render("panel/enrol-student", {
         pageTitle: "Enrol a Student to a Course",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success,
         students: students,
         courses: courses
@@ -147,10 +152,14 @@ exports.assignCourse = async (req, res, next) => {
     const leader = await EnterpriseUser.findOne({ where: { id: req.body.leadersToAssign } });
 
     leader.setCourse(course);
-    leader.save();
+    await leader.save();
 
     course.hasLeader = 1;
-    course.save();
+    await course.save();
+
+    if(leader.id == req.session.userId) {
+        req.session.isLeader = 1;
+    };
 
     return res.redirect("/enterprise/courses/assign?success=true");
 };
@@ -159,6 +168,7 @@ exports.getAddStudentPage = async (req, res, next) => {
     res.render("panel/add-student", {
         pageTitle: "Add a New Student",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success
     });
 };
@@ -187,9 +197,10 @@ exports.addNewStudent = async (req, res, next) => {
 
 
 exports.getViewRepresentativesPage = (req, res, next) => {
-    res.render("panel/view-representatives", {
-        pageTitle: "View Your Representatives",
+    res.render("panel/view-leaders", {
+        pageTitle: "View Your Course Leaders",
         isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
         success: req.query.success
     });
 };
