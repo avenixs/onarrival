@@ -2,7 +2,7 @@ const EnterpriseUser = require("../models/enterprise-user");
 const Company = require("../models/company");
 const Course = require("../models/course");
 const Chapter = require("../models/chapter");
-const StudentUser = require("../models/student-user");
+const VocabExercise = require("../models/vocab-exercise");
 const bcrypt = require("bcryptjs");
 
 exports.getAddChapterPage = async (req, res, next) => {
@@ -18,7 +18,7 @@ exports.getAddChapterPage = async (req, res, next) => {
         success: req.query.success,
         course: course,
         chapters: allChapters
-    });
+    }); 
 };
 
 exports.addChapter = async (req, res, next) => {
@@ -38,4 +38,79 @@ exports.addChapter = async (req, res, next) => {
 
         })
         .catch(error => { console.log(error); })
+};
+
+exports.getAddVocabExercisePage = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+
+    res.render("panel/add-vocab-ex", {
+        pageTitle: "Add a New Vocabulary Exercise",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters
+    }); 
+};
+
+exports.getVocabExPerChapter = (req, res, next) => {
+    VocabExercise.findAll( { where: { ChapterId: req.query.id }} )
+        .then(vocEx => {
+            let vocExData = [];
+            for(let i=0; i<vocEx.length; i++) {
+                let exercise = {
+                    id: vocEx[i].id,
+                    name: vocEx[i].name,
+                    type: vocEx[i].type,
+                    level: vocEx[i].level,
+                    description: vocEx[i].description
+                };
+                vocExData.push(exercise);
+            };
+            res.status(201).json({
+                exercises: vocExData
+            });
+        })
+        .catch(error => { console.log(error); })
+}
+
+exports.addNewVocabExercise = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const chapter = await Chapter.findOne({ where: { id: req.body.chapterSelected } });
+
+    VocabExercise.create({
+        name: req.body.name,
+        type: req.body.type,
+        level: req.body.level,
+        description: req.body.description 
+    })
+        .then(async addEx => {
+            await addEx.setChapter(chapter);
+            await addEx.setEnterpriseUser(user);
+
+            return res.redirect("/enterprise/exercises/vocab/add?success=true");
+
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.getManageVocabExPage = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } });
+    const allVocabEx = await VocabExercise.findAll({ where: { EnterpriseUserId: user.id } })
+
+    res.render("panel/manage-vocab-ex", {
+        pageTitle: "Manage Vocabulary Exercises",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        exercises: allVocabEx
+    }); 
 };

@@ -20,6 +20,10 @@ const VocabExercise = sequelize.define('VocabExercise', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    type: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     isCompleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

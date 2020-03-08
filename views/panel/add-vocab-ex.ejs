@@ -1,0 +1,131 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body onload="showModal()">
+    <%- include("../includes/navigation-panel.ejs") %>
+
+    <% if(!(success==null)) { %>
+        <div class="modal fade" id="userAdded" tabindex="-1" role="dialog" aria-labelledby="userAddedLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userAddedLabel"><%= (success=='true') ? "Success" : "Error occurred!" %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/media/icons/<%= (success=='true') ? 'tick.png' : 'error.png' %>" alt="Tick Icon" >
+                    <p><%= (success=='true') ? "You have successfully added a new vocabulary exercise." : "There has been an error while adding an exercise! Please try again or contact the support" %></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <% } %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <div class="transparent-form" id="panel-form">
+                <h2 class="title-decor">Add a New Vocabulary Exercise</h2>
+                <form action="/enterprise/exercises/vocab/add" method="POST">
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="chapterSelecter">Select the chapter...</label>
+                            <select class="form-control" id="chapterSelected" name="chapterSelected">
+                                <% for(let i=0; i<chapters.length; i++) { %>
+                                <option value="<%= chapters[i].id %>"><%= chapters[i].title %></option>
+                                <% }; %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="name">Exercise Title</label>
+                            <input type="text" class="form-control" name="name" id="name" required>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="level">Level</label>
+                            <select class="form-control" name="level" id="level">
+                                <option value="Beginner" selected>Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="type">Type</label>
+                            <select class="form-control" name="type" id="type">
+                                <option value="Learning" selected>Learning</option>
+                                <option value="Quiz">Quiz</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="description">Description</label>
+                            <textarea class="form-control" name="description" id="description" row="2" placeholder="Describe in a few words what vocabulary will be added..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-dark" style="margin: 0 auto;">Add</button>
+                    </div>
+                </form>
+            </div>
+
+            <h3>Vocab Exercises in this Chapter</h3>
+
+            <table class="table table-striped" id="chapter-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script>
+        function showModal() {
+            $("#userAdded").modal("show");
+        };
+
+        const retrieveExercises = () => {
+            let chapterSelected = { id: $("#chapterSelected").val() };
+            $.ajax({
+                url: "/enterprise/exercises/get-vocab-chapter",
+                method: "GET",
+                data: chapterSelected,
+                success: (data) => {
+                    let exercises = data.exercises;
+                    $("#table-body").empty();
+                    for(let i=0; i<exercises.length; i++) {
+                        let count = i+1;
+                        $("#table-body").append("<tr><td>" + count + "</td><td>" + exercises[i].name + "</td><td>" + exercises[i].level + "</td><td>" + exercises[i].type + "</td><td>" + exercises[i].description + "</td></tr>")
+                    }
+                }
+            });
+        };
+
+        $("#chapterSelected").change(retrieveExercises);
+        
+        retrieveExercises();
+    </script>
+
+</body>
+</html>

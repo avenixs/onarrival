@@ -33,14 +33,15 @@
         <div class="course-content">
             <div class="transparent-form" id="panel-form">
                 <h2 class="title-decor">Add a New Chapter</h2>
-                <form action="/enterprise/courses/chapters/add" method="POST" style="width: 65%;">
+                <form action="/enterprise/courses/chapters/add" method="POST">
                     <div class="form-row">
                         <% let maxNo = 0; %>
                         <% if(!(chapters.length==0)){ %>
                             <% for(let i=0; i<chapters.length; i++) { %>
-                                <% if(chapters[i].number > maxNo) { maxNo = chapters[i].number > maxNo }; %>
+                                <% if(chapters[i].number > maxNo) { maxNo = chapters[i].number }; %>
                             <% }; %>
-                        <% } else { maxNo = 1; }; %>
+                        <% }; %>
+                        <% maxNo++; %>
                         <div class="form-group col-md-2">
                             <label for="number">Number</label>
                             <input type="number" step="1" min="1" class="form-control" id="number" name="number" value="<%= maxNo %>" readonly>

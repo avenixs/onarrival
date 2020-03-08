@@ -499,7 +499,24 @@ h1 {
 }
 
 .course-content form {
-    width: 80%;
+    width: 90%;
+}
+
+.course-content {
+    padding-bottom: 2rem;
+}
+
+#vex-title {
+    text-align: center;
+    margin: 3rem 0;
+}
+
+.voc-ex-table {
+    margin-bottom: 3rem !important;
+}
+
+.vex-chapter-title {
+    margin: 1.5rem 0 2rem 0;
 }
 
 @media (min-width: 768px) {
@@ -517,8 +534,13 @@ h1 {
     .course-content {
         position: fixed;
         width: 80%;
-        height: 90%;
+        height: 84%;
         right: 0;
+        padding-bottom: 1rem;
+    }
+
+    .course-content form {
+        width: 80%;
     }
 
     #panel-form {

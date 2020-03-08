@@ -36,7 +36,7 @@
                 <form action="/enterprise/courses/assign" method="POST">
                     <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="diff">Your unassigned courses</label>
+                            <label for="coursesToAssign">Your unassigned courses</label>
                             <select class="form-control" id="coursesToAssign" name="coursesToAssign">
                                 <% for(let i=0; i<courses.length; i++) { %>
                                 <option value="<%= courses[i].id %>"><%= courses[i].title %></option>

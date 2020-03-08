@@ -1,0 +1,61 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="title-decor" id="vex-title">Manage Vocabulary Exercises</h2>
+
+            <% for(let i=0; i<chapters.length; i++) { %>
+                <% let countExercises = 0; %>
+                <% for(let e=0; e<exercises.length; e++) { %>
+                    <% if(exercises[e].ChapterId == chapters[i].id) { %>
+                        <% countExercises++; %>
+                    <% }; %>
+                <% }; %>
+            <% if(countExercises > 0) { %>
+            <h3 class="vex-chapter-title"><%= chapters[i].title %></h3>
+            <table class="table table-striped voc-ex-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Level</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">View Words</th>
+                        <th scope="col">Add Words</th>
+                        <th scope="col">Disable</th>
+                    </tr>
+                </thead>
+                <tbody class="table-with-ex">
+                    <% for(let e=0; e<exercises.length; e++) { %>
+                        <% if(exercises[e].ChapterId == chapters[i].id) { %>
+                    <td><%= eval(e+1) %></td>
+                    <td><%= exercises[e].name %></td>
+                    <td><%= exercises[e].level %></td>
+                    <td><%= exercises[e].type %></td>
+                    <td><%= exercises[e].description %></td>
+                    <td><button type="button" class="btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
+                    <td><button type="button" class="btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
+                    <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
+                        <% }; %>
+                    <% }; %>
+                </tbody>
+            </table>
+            <% }; %>
+            <% }; %>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+</body>
+</html>
