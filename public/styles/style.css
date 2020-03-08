@@ -519,7 +519,164 @@ h1 {
     margin: 1.5rem 0 2rem 0;
 }
 
+#popup-window {
+    z-index: 1051;
+    position: fixed;
+    top: 10%;
+    left: 5%;
+    width: 90%;
+    height: 80%;
+    background-color: rgba(255,255,255);
+    border-radius: 5px;
+    box-shadow: 2px 2px 20px rgb(0,0,0,0.75);
+    -webkit-animation: zoomup 0.9s;
+    -moz-animation:    zoomup 0.9s;
+    -o-animation:      zoomup 0.9s;
+    animation:         zoomup 0.9s;
+}
+
+#window-cover {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.75);
+    top: 0;
+    z-index: 1050;
+}
+
+#top-stripe {
+    height: 6%;
+    background: #343a40;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    font-size: 0.6rem;
+    text-align: right;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    color: white;
+}
+
+#top-stripe p {
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+#window-words {
+    height: 94%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+#window-words h2 {
+    font-family: "Playfair Display SC", serif;
+    font-weight: bolder;
+    margin-bottom: 1.5rem;
+    font-size: 1.15rem;
+}
+
+#word-counter {
+    text-align: right;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+#submit-word-button {
+    margin: 0 35%;
+    width: 30%;
+}
+
+.company-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+}
+
+.company-card img {
+    width: 6rem;
+    height: 6rem;
+    margin-right: 1.5rem;
+}
+
+#main-company-panel h2 {
+    font-family: "Playfair Display SC", serif;
+    font-size: 1.25rem;
+    font-weight: 900;
+    text-align: center;
+    margin: 1.5rem 0;
+    text-transform: lowercase;
+}
+
+#start-investing {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#start-investing img {
+    width: 3rem;
+    margin-right: 0.5rem;
+}
+
+.function-button {
+    min-width: 15rem;
+    float: left;
+    margin: 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} 
+
+.function-button figcaption {
+    font-family: "Playfair Display", serif;
+    color: #343a40;
+    font-weight: bold;
+    margin: 0.75em 0;
+    font-size: 1.1em;
+}
+
+.function-button img {
+    max-width: 9rem;
+    height: auto;
+}
+
+.fun-btn-anchor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 10rem;
+}
+
+.fun-btn-anchor img {
+    transition: all .2s ease-in-out;
+}
+
+.fun-btn-anchor img:hover {
+    transform: scale(1.1);
+}
+
+.buttons-in-panel {
+    display: flex;
+    flex-direction: column;
+}
+
+.leader-card {
+    margin-top: 1.5rem;
+}
+
 @media (min-width: 768px) {
+
+    .leader-card {
+        margin-top: 0rem;
+    }
+
     #menu-bar-left {
         position: fixed;
         width: 20%;
@@ -609,4 +766,29 @@ h1 {
     .modal-body p {
         padding: 1rem;
     }
+
+    #popup-window {
+        left: 28%;
+        width: 44%;
+    }
+
+    #submit-word-button {
+        margin: 0 43%;
+        width: 14%;
+    }
+    
+    .buttons-in-panel {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+
+    .company-card {
+        flex-direction: row;
+    }
+}
+
+@keyframes zoomup {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
 }

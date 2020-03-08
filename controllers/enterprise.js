@@ -4,11 +4,26 @@ const Course = require("../models/course");
 const StudentUser = require("../models/student-user");
 const bcrypt = require("bcryptjs");
 
-exports.getPanelPage = (req, res, next) => {
+exports.getPanelPage = async (req, res, next) => {
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const courses = await Course.findAll({ where: { CompanyId: company.id } });
+
+    let oneCourse = [];
+
+    for(let i=0; i<courses.length; i++) {
+        if(courses[i].id == user.CourseId) {
+            oneCourse.push(courses[i]);
+        }
+    }
+    
     res.render("panel/company-main", {
         pageTitle: "Main Panel",
         isAdmin: req.session.isAdmin,
-        isLeader: req.session.isLeader
+        isLeader: req.session.isLeader,
+        company: company,
+        user: user,
+        course: oneCourse
     });
 };
 

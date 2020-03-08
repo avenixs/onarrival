@@ -41,8 +41,8 @@
                     <td><%= exercises[e].level %></td>
                     <td><%= exercises[e].type %></td>
                     <td><%= exercises[e].description %></td>
-                    <td><button type="button" class="btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
-                    <td><button type="button" class="btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
+                    <td><button type="button" class="view-btn btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
+                    <td><button type="button" class="add-btn btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
                     <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
                         <% }; %>
                     <% }; %>
@@ -53,9 +53,13 @@
         </div>
     </div>
 
+    <div id="window-cover"></div>
+
     <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
 
     <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/manage-vocab.js"></script>
 
 </body>
 </html>

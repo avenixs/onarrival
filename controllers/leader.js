@@ -3,6 +3,7 @@ const Company = require("../models/company");
 const Course = require("../models/course");
 const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
+const Word = require("../models/word");
 const bcrypt = require("bcryptjs");
 
 exports.getAddChapterPage = async (req, res, next) => {
@@ -113,4 +114,33 @@ exports.getManageVocabExPage = async (req, res, next) => {
         chapters: allChapters,
         exercises: allVocabEx
     }); 
+};
+
+exports.getWordsFromExercise = async (req, res, next) => {
+    const words = await Word.findAll({ where: { VocabExerciseId: req.query.id } });
+
+    res.status(201).json({
+        words: words
+    });
+};
+
+exports.addNewWord = async (req, res, next) => {
+    const exercise = await VocabExercise.findOne({ where: { id: req.query.vocabExId } });
+
+    res.status(201).json({
+        success: true
+    });
+
+    Word.create({
+        wordEnglish: req.query.wordEng,
+        wordForeign: req.query.wordFor,
+        exSentenceEng: req.query.exSentEng,
+        exSentenceForeign: req.query.exSentForeign
+    })
+        .then(word => {
+            word.setVocabExercise(exercise);
+        })
+        .catch(error => { 
+            console.log(error);
+        })
 };

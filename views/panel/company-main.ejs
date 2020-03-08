@@ -6,7 +6,95 @@
     
     <%- include("../includes/left-bar.ejs") %>
 
-    <div class="course-content"></div>
+    <div class="course-content" id="main-company-panel">
+        <div class="company-card">
+            <div style="display: flex;">
+                <img src="../media/icons/company.png" alt="Company">
+                <div class="details-card">
+                    <p>Hello, <b><%= user.name + " " + user.surname %></b>!</p>
+                    <% if(isAdmin && isLeader) { %>
+                    <p>You are a Course Leader and Administrator <br />at <b><%= company.name %></b></p>
+                    <% } else if(isAdmin && !isLeader) { %>
+                    <p>You are a Account Administrator <br />at <b><%= company.name %></b></p>
+                    <% } else if(!isAdmin && isLeader) { %>
+                    <p>You are a Course Leader at <b><%= company.name %></b></p>
+                    <% } else { %>
+                    <p>You are a User at <b><%= company.name %></b></p>
+                    <% }; %>
+                </div>
+            </div>
+            
+            <% if(isLeader) { %>
+                <div class="details-card leader-card">
+                    <img src="../media/icons/course.png" alt="Course" style="float: left;">
+                    <p>You are the Course Leader of <b><%= course[0].title %></b></p>
+                </div>
+            <% }; %>
+
+        </div>
+
+        <div id="start-investing">
+            <img src="../media/icons/idea.png" alt="Idea">
+            <h2>Start investing in your staff now</h2>
+        </div>
+
+        <% if((isAdmin && isLeader) || isAdmin) { %>
+        <div class="buttons-in-panel">
+            <figure class="function-button">
+                <a class="fun-btn-anchor" href="/enterprise/courses/add">
+                    <img src="../media/icons/create-course.png" class="figure-img img-fluid rounded" alt="Add a New Course Icon">
+                </a>
+                <figcaption class="figure-caption">Create a new Course</figcaption>
+            </figure>
+            <figure class="function-button">
+                <a class="fun-btn-anchor" href="/enterprise/leaders/add">
+                    <img src="../media/icons/desk.png" class="figure-img img-fluid rounded" alt="Add a New Course Leader Icon">
+                </a>
+                <figcaption class="figure-caption">Add a new Course Leader</figcaption>
+            </figure>
+            <figure class="function-button">
+                <a class="fun-btn-anchor" href="/enterprise/leaders/assign">
+                    <img src="../media/icons/assign.png" class="figure-img img-fluid rounded" alt="Assign Leaders Icon">
+                </a>
+                <figcaption class="figure-caption">Assign Leaders to Courses</figcaption>
+            </figure>
+            <figure class="function-button">
+                <a class="fun-btn-anchor" href="/enterprise/students/add">
+                    <img src="../media/icons/student.png" class="figure-img img-fluid rounded" alt="Add a New Student Icon">
+                </a>
+                <figcaption class="figure-caption">Add a new Student</figcaption>
+            </figure>
+        </div>
+        <% } else if(isLeader) { %>
+            <div class="buttons-in-panel">
+                <figure class="function-button">
+                    <a class="fun-btn-anchor" href="/enterprise/courses/add">
+                        <img src="../media/icons/create-course.png" class="figure-img img-fluid rounded" alt="Add a New Course Icon">
+                    </a>
+                    <figcaption class="figure-caption">Create a new Course</figcaption>
+                </figure>
+                <figure class="function-button">
+                    <a class="fun-btn-anchor" href="/enterprise/leaders/add">
+                        <img src="../media/icons/desk.png" class="figure-img img-fluid rounded" alt="Add a New Course Leader Icon">
+                    </a>
+                    <figcaption class="figure-caption">Add a new Course Leader</figcaption>
+                </figure>
+                <figure class="function-button">
+                    <a class="fun-btn-anchor" href="/enterprise/leaders/assign">
+                        <img src="../media/icons/assign.png" class="figure-img img-fluid rounded" alt="Assign Leaders Icon">
+                    </a>
+                    <figcaption class="figure-caption">Assign Leaders to Courses</figcaption>
+                </figure>
+                <figure class="function-button">
+                    <a class="fun-btn-anchor" href="/enterprise/students/add">
+                        <img src="../media/icons/student.png" class="figure-img img-fluid rounded" alt="Add a New Student Icon">
+                    </a>
+                    <figcaption class="figure-caption">Add a new Student</figcaption>
+                </figure>
+            </div>
+        <% }; %>
+        
+    </div>
 
     <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
 
