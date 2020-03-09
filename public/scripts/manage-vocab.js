@@ -89,6 +89,67 @@ $("#window-cover").click(() => {
     closePopup();
 })
 
+$(".edit-btn").click(event => {
+    $("body").append("<div id='popup-window' style='width: 80%; left: 10%;'><div id='top-stripe'><p id='close-popup'>&#10005;</p></div>" + 
+    "<div id='window-words'><input id='ex-chosen-value' type='hidden' value='00'><div id='word-spinner' class='spinner-border text-dark' role='status'><span class='sr-only'>Loading...</span></div></div></div>");
+    $("#ex-chosen-value").val($(".view-btn").val());
+    $("#window-cover").css("display", "unset");
+    $("#popup-window").css("display", "unset");
+
+    let exerciseId = { id: $("#ex-chosen-value").val() };
+
+    $.ajax({
+        url: "/enterprise/exercises/vocab/get-words",
+        method: "GET",
+        data: exerciseId,
+        success: function(data){
+            let wordList = data.words;
+
+            let table = '<h2>WORD LIST</h2><table class="table table-striped"><thead><tr><th scope="col">#</th><th style="width: 15%;" scope="col">Word</th><th style="width: 15%;" scope="col">Translation</th><th scope="col">Example Sentence</th><th scope="col">Sentence Translation</th><th scope="col">Save</th></tr></thead><tbody>';
+
+            for(let i=0; i<wordList.length; i++) {
+                table = table + "<tr><td>" + eval(i+1) + "</td><td><input type='text' class='engEdit form-control' value='" + wordList[i].wordEnglish + "'></td><td><input type='text' class='foreignEdit form-control' value='" + wordList[i].wordForeign + "'></td><td><input type='text' class='engSentEdit form-control' value='" + wordList[i].exSentenceEng + "'></td><td><input type='text' class='forSentEdit form-control' value='" + wordList[i].exSentenceForeign + "'></td><td><input type='hidden' class='id-word-edit' value='" + wordList[i].id + "'><button type='button' id='" + "update-word-" + i + "' class='btn btn-success save-word-edit'>Save</button></td></tr>";
+            }
+
+            table.concat("</tbody></table>");
+
+            $("#word-spinner").remove();
+            $("#window-words").css("justify-content", "unset");
+            $("#window-words").append(table);
+
+            $(".save-word-edit").click(event => {
+                
+                let ourButton = event.currentTarget.id;
+                let formColumns = $("#" + ourButton).parent().closest("tr").children();
+
+                $("#" + ourButton).parent().append("<div id='update-word-spinner' class='spinner-border text-dark' role='status'><span class='sr-only'>Loading...</span></div>");
+
+                const wordUpdate = {
+                    wordId: formColumns[5].childNodes[0].value,
+                    wordEng: formColumns[1].childNodes[0].value,
+                    wordForeign: formColumns[2].childNodes[0].value,
+                    sentEng: formColumns[3].childNodes[0].value,
+                    sentFor: formColumns[4].childNodes[0].value
+                };
+
+                $.ajax({
+                    url: "/enterprise/exercises/vocab/update-word",
+                    method: "GET",
+                    data: wordUpdate,
+                    success: function(data){
+                        $(".spinner-border").remove();
+                    }
+                });
+            })
+        }
+    });
+
+    $("#top-stripe").click(() => {
+        document.getElementById("popup-window").animate([{ transform: "scale(1)" }, { transform: "scale(0)" }], 300);
+        setTimeout(() => { $("#popup-window").remove(); $("#window-cover").css("display", "none"); }, 300);
+    })
+});
+
 const closePopup = () => {
     document.getElementById("popup-window").animate([{ transform: "scale(1)" }, { transform: "scale(0)" }], 300);
     setTimeout(() => { $("#popup-window").remove(); $("#window-cover").css("display", "none"); }, 300);

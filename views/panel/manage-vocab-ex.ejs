@@ -30,6 +30,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">View Words</th>
                         <th scope="col">Add Words</th>
+                        <th scope="col">Edit Words</th>
                         <th scope="col">Disable</th>
                     </tr>
                 </thead>
@@ -43,6 +44,7 @@
                     <td><%= exercises[e].description %></td>
                     <td><button type="button" class="view-btn btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
                     <td><button type="button" class="add-btn btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
+                    <td><button type="button" class="edit-btn btn btn-light" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">Edit</button></td>
                     <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
                         <% }; %>
                     <% }; %>

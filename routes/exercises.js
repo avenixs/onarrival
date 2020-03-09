@@ -22,4 +22,7 @@ router.get("/vocab/get-words", leader.getWordsFromExercise);
 // /vocab/add-word => GET
 router.get("/vocab/add-word", leader.addNewWord);
 
+// /vocab/update-word => GET
+router.get("/vocab/update-word", leader.updateWord);
+
 module.exports = router;

@@ -317,11 +317,11 @@ h1 {
 }
 
 #passMatch {
-    color: #8b0000;
+    color: #3a3a3a;
 }
 
 #passEightChar {
-    color: #8b0000;
+    color: #3a3a3a;
 }
 
 #register-button {
@@ -445,7 +445,7 @@ h1 {
     box-shadow: 1px 1px 4px -3px rgba(0,0,0,0.75);
     z-index: 10;
     max-height: 20%;
-    overflow: auto;
+    overflow: scroll;
 }
 
 .bar-link {
@@ -671,6 +671,36 @@ h1 {
     margin-top: 1.5rem;
 }
 
+#update-word-spinner {
+    margin: -0.5rem 0 -0.35rem 1rem;
+}
+
+.bar-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+.bar-card img {
+    width: 5rem;
+    margin-bottom: 1rem;
+}
+
+.bar-card p {
+    margin: 0.15rem 0;
+    font-size: 0.9rem;
+}
+
+.bar-card .title {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+#menu-bar-left::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+
 @media (min-width: 768px) {
 
     .leader-card {
@@ -684,7 +714,7 @@ h1 {
         background: #f8f9fa;
         box-shadow: 1px 1px 4px -3px rgba(0,0,0,0.75);
         z-index: 10;
-        overflow: auto;
+        overflow: scroll;
         max-height: unset;
     }
 

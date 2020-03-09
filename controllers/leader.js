@@ -11,6 +11,7 @@ exports.getAddChapterPage = async (req, res, next) => {
     const course = await Course.findOne({ where: { id: user.CourseId } });
 
     const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/add-chapter", {
         pageTitle: "Add a New Chapter",
@@ -18,7 +19,8 @@ exports.getAddChapterPage = async (req, res, next) => {
         isLeader: req.session.isLeader,
         success: req.query.success,
         course: course,
-        chapters: allChapters
+        chapters: allChapters,
+        accountData: accountData
     }); 
 };
 
@@ -46,6 +48,7 @@ exports.getAddVocabExercisePage = async (req, res, next) => {
     const course = await Course.findOne({ where: { id: user.CourseId } });
 
     const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/add-vocab-ex", {
         pageTitle: "Add a New Vocabulary Exercise",
@@ -53,7 +56,8 @@ exports.getAddVocabExercisePage = async (req, res, next) => {
         isLeader: req.session.isLeader,
         success: req.query.success,
         course: course,
-        chapters: allChapters
+        chapters: allChapters,
+        accountData: accountData
     }); 
 };
 
@@ -104,6 +108,7 @@ exports.getManageVocabExPage = async (req, res, next) => {
 
     const allChapters = await Chapter.findAll({ where: { CourseId: course.id } });
     const allVocabEx = await VocabExercise.findAll({ where: { EnterpriseUserId: user.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/manage-vocab-ex", {
         pageTitle: "Manage Vocabulary Exercises",
@@ -112,7 +117,8 @@ exports.getManageVocabExPage = async (req, res, next) => {
         success: req.query.success,
         course: course,
         chapters: allChapters,
-        exercises: allVocabEx
+        exercises: allVocabEx,
+        accountData: accountData
     }); 
 };
 
@@ -143,4 +149,18 @@ exports.addNewWord = async (req, res, next) => {
         .catch(error => { 
             console.log(error);
         })
+};
+
+exports.updateWord = async (req, res, next) => {
+    const word = await Word.findOne({ where: { id: req.query.wordId } });
+
+    res.status(201).json({
+        success: true
+    });
+
+    word.wordEnglish = req.query.wordEng;
+    word.wordForeign = req.query.wordForeign;
+    word.exSentenceEng = req.query.sentEng;
+    word.exSentenceForeign = req.query.sentFor;
+    word.save();
 };
