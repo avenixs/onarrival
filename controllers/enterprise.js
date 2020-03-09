@@ -20,9 +20,16 @@ exports.getPanelPage = async (req, res, next) => {
         }
     }
 
+    req.session.courseTitle = "";
+
     req.session.fullName = user.name + " " + user.surname;
     req.session.companyName = company.name;
-    req.session.courseTitle = oneCourse[0].title;
+    try {
+        req.session.courseTitle = oneCourse[0].title;
+    } catch(error) {
+        console.log(error);
+    }
+    
 
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
     
