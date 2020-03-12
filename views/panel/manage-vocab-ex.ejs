@@ -37,15 +37,17 @@
                 <tbody class="table-with-ex">
                     <% for(let e=0; e<exercises.length; e++) { %>
                         <% if(exercises[e].ChapterId == chapters[i].id) { %>
-                    <td><%= eval(e+1) %></td>
-                    <td><%= exercises[e].name %></td>
-                    <td><%= exercises[e].level %></td>
-                    <td><%= exercises[e].type %></td>
-                    <td><%= exercises[e].description %></td>
-                    <td><button type="button" class="view-btn btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
-                    <td><button type="button" class="add-btn btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
-                    <td><button type="button" class="edit-btn btn btn-light" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">Edit</button></td>
-                    <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
+                    <tr>
+                        <td><%= eval(e+1) %></td>
+                        <td><%= exercises[e].name %></td>
+                        <td><%= exercises[e].level %></td>
+                        <td><%= exercises[e].type %></td>
+                        <td><%= exercises[e].description %></td>
+                        <td><button type="button" class="view-btn btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
+                        <td><button type="button" class="add-btn btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
+                        <td><button type="button" class="edit-btn btn btn-light" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">Edit</button></td>
+                        <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
+                    </tr>
                         <% }; %>
                     <% }; %>
                 </tbody>
