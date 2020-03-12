@@ -1,32 +1,18 @@
 const express = require("express");
 
-const public = require("../controllers/public");
-const authorise = require("../controllers/authentication");
+const student = require("../controllers/student");
+
+const chaptersRoutes = require("../routes/chapters");
 
 const router = express.Router();
 
-// /login => GET
-router.get("/login", public.getLoginPage);
+// /chapters => GET
+router.use("/chapters", chaptersRoutes);
 
-// /login/company => GET
-router.get("/login/company", public.getLoginCompanyPage);
+// /panel => GET
+router.get("/panel", student.getPanelPage);
 
-// /login/company => POST
-router.post("/login/company", authorise.authenticateEnterpriseLogin);
-
-// /login/student => GET
-router.get("/login/student", public.getLoginStudentPage);
-
-// /login/company => POST
-// router.post("/login/student", authorise.authenticateStudentLogin);
-
-// /register => GET
-router.get("/register", public.getRegistrationPage);
-
-// /register => POST
-//router.post("/register", authorise.registerUser);
-
-// / => ALL
-router.use(public.getHomePage);
+// /panel => GET
+router.get("/", student.getPanelPage);
 
 module.exports = router;

@@ -1,0 +1,15 @@
+<div id="menu-bar-left">
+    <div class="bar-card">
+        <img src="/media/icons/student-course.png" alt="Language Course">
+        <p class='title'><b><%= course.title %></b></p>
+        <p>at <b><%= company.name %></b></p>
+        <p><b><%= course.difficulty %></b> level</p>
+    </div>
+    <% for(let i=0; i<chapters.length; i++) { %>
+        <a class="btn btn-dark function-btn-panel" data-toggle="collapse" href="#chaptersStudent<%= i %>" role="button" aria-expanded="false" aria-controls="chaptersStudent<%= i %>Collapse"><%= chapters[i].title %></a>
+        <div class="collapse multi-collapse" id="chaptersStudent<%= i %>">
+            <h2 class="bar-link"><a href="/student/chapters/<%= chapters[i].id %>/materials"><img src="/media/icons/nav/study-materials.png" alt="Plus"> Study Materials</a></h2>
+            <h2 class="bar-link"><a href="/student/chapters/<%= chapters[i].id %>/vocab"><img src="/media/icons/nav/translate.png" alt="Plus"> Vocabulary Exercises</a></h2>
+        </div>
+    <% }; %>
+</div>

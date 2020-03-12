@@ -1,0 +1,28 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <%- include("../includes/student-bar.ejs") %>
+
+    <div class="course-content" id="exercise-presentation">
+        <% for(let i=0; i<vocabEx.length; i++) { %>
+                <div class="exercise-bw">
+                    <a href="learn/<%= vocabEx[i].id %>">
+                        <figure class="function-button">
+                            <img src="/media/icons/abcd.png" class="figure-img img-fluid rounded" alt="Learn">
+                            <figcaption class="figure-caption"><%= vocabEx[i].name %></figcaption>
+                            <small><%= vocabEx[i].description %></small>
+                        </figure>
+                    </a>
+                </div>
+        <% }; %>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+</body>
+</html>

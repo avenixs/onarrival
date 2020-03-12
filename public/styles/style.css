@@ -701,7 +701,94 @@ h1 {
     display: none;  /* Safari and Chrome */
 }
 
+#vocab-choice {
+    display: flex;
+    flex-direction: column;
+}
+
+.choice-vocab-type {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s ease-in-out;
+}
+
+.choice-vocab-type:hover {
+    background: #ededed;
+}
+
+#exercise-presentation {
+    display: inline;
+}
+
+.exercise-bw {
+    -webkit-filter: grayscale(50%); 
+    filter: grayscale(50%);
+    transition: 0.3s ease-in-out;
+}
+
+.exercise-bw:hover {
+    -webkit-filter: grayscale(0%); 
+    filter: grayscale(0%);
+}
+
+#learning-words-window {
+    display: flex;
+    flex-direction: column;
+}
+
+#exercise-help {
+    flex: 1;
+}
+
+#exercise-top-word {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#exercise-bottom-word {
+    flex: 5;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.word {
+    font-family: "Playfair Display SC";
+    font-weight: bolder;
+    font-size: 3rem;
+}
+
+.sentence {
+    font-size: 1.25rem;
+}
+
+#exercise-help {
+    padding: 1rem;
+}
+
+.correctornot {
+    display: flex;
+    flex-direction: row;
+    width: 35%;
+    justify-content: space-evenly;
+}
+
+.correctornot img {
+    width: 12%;
+    margin: 4rem;
+    padding-bottom: 1.5rem;
+    cursor: pointer;
+}
+
 @media (min-width: 768px) {
+    #vocab-choice {
+        flex-direction: row;
+    }
 
     .leader-card {
         margin-top: 0rem;

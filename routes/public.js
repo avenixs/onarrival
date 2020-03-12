@@ -31,7 +31,7 @@ router.post("/login/company", isLoggedIn, authorise.authenticateEnterpriseLogin)
 router.get("/login/student", isLoggedIn, public.getLoginStudentPage);
 
 // /login/company => POST
-// router.post("/login/student", authorise.authenticateStudentLogin);
+router.post("/login/student", authorise.authenticateStudentLogin);
 
 // /register => GET
 router.get("/register", isLoggedIn, public.getRegistrationPage);

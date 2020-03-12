@@ -1,0 +1,33 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <%- include("../includes/student-bar.ejs") %>
+
+    <div class="course-content" id="vocab-choice">
+        <a href="vocab/learn" class="choice-vocab-type">
+            <div>
+                <figure class="function-button">
+                    <img src="/media/icons/open-book.png" class="figure-img img-fluid rounded" alt="Learn">
+                    <figcaption class="figure-caption">Learning</figcaption>
+                </figure>
+            </div>
+        </a>
+        <a href="vocab/quiz" class="choice-vocab-type">
+            <div>
+                <figure class="function-button">
+                    <img src="/media/icons/timer.png" class="figure-img img-fluid rounded" alt="Quiz">
+                    <figcaption class="figure-caption">Quizzes</figcaption>
+                </figure>
+            </div> 
+        </a>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+</body>
+</html>

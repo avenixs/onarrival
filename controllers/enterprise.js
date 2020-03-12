@@ -183,7 +183,7 @@ exports.enrolStudent = async (req, res, next) => {
         from: "contact@onarrival.uk",
         subject: "OnArrivalUK - Your account is ready",
         text: "Dear " + student.name + ", This is to inform you that you have just been enroled to the " + course.title + " language course designed by your employer. Log in to you OnArrivalUK account to gain access to it and begin improving your English skills. Have a lovely day, OnArrivalUK",
-        html: "Dear " + entUser.name + ", <br /><br />This is to inform you that you have just been enroled to the " + course.title + " language course designed by your employer. Log in to you OnArrivalUK account to gain access to it and begin improving your English skills.<br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
+        html: "Dear " + student.name + ", <br /><br />This is to inform you that you have just been enroled to the " + course.title + " language course designed by your employer. Log in to you OnArrivalUK account to gain access to it and begin improving your English skills.<br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
     }
 
     return sgMail.send(msg);
@@ -270,7 +270,7 @@ exports.addNewStudent = async (req, res, next) => {
                 from: "contact@onarrival.uk",
                 subject: "OnArrivalUK - Your account is ready",
                 text: "Dear " + student.name + ", This is to inform you that your employer has set up an OnArrivalUK account for you. You may soon join an exciting language course which will prepare you for your new position at the company. Use the following credentials to log in and stay tuned for news from your employer. Email: " + student.email + " Password: " + req.body.pass + " Have a lovely day, OnArrivalUK",
-                html: "Dear " + entUser.name + ", <br /><br />This is to inform you that your employer has set up an OnArrivalUK account for you. You may soon join an exciting language course which will prepare you for your new position at the company. Use the following credentials to log in and stay tuned for news from your employer. <br /><br /><b>Email</b>: " + student.email + " <br /><b>Password</b>: " + req.body.pass + " <br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
+                html: "Dear " + student.name + ", <br /><br />This is to inform you that your employer has set up an OnArrivalUK account for you. You may soon join an exciting language course which will prepare you for your new position at the company. Use the following credentials to log in and stay tuned for news from your employer. <br /><br /><b>Email</b>: " + student.email + " <br /><b>Password</b>: " + req.body.pass + " <br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
             }
 
             return sgMail.send(msg);

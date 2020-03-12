@@ -1,0 +1,33 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <%- include("../includes/student-bar.ejs") %>
+
+    <div id="exercise-help"><img src="/media/icons/nav/info.png" alt="Media"></div>
+
+    <div class="course-content" id="learning-words-window">
+        <div id="exercise-top-word">
+            <p class="word"><%= words[0].wordEnglish %></p>
+            <p class="sentence"><%= words[0].exSentenceEng %></p>
+        </div>
+        <div id="exercise-bottom-word">
+            <p class="word"><%= words[0].wordForeign %></p>
+            <p class="sentence"><%= words[0].exSentenceForeign %></p>
+            <div class="correctornot">
+                <img src="/media/icons/dislike.png" alt="Incorrect">
+                <img src="/media/icons/like.png" alt="Correct">
+            </div>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/learning-vocab.js"></script>
+
+</body>
+</html>
