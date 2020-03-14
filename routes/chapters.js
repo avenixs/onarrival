@@ -17,14 +17,8 @@ router.param('chapterId', function(req, res, next, chapterId) {
 });
 
 router.param('learnVocabExId', function(req, res, next, learnVocabExId) {
-    Word.findAll( { where: { VocabExerciseId: learnVocabExId } } )
-        .then(words => {
-            req.words = words;
-            next();
-        })
-        .catch(error => {
-            console.log(error);
-        })
+    req.exId = learnVocabExId;
+    next();
 });
 
 // /:chapterId/vocab => GET
@@ -38,5 +32,11 @@ router.get("/:chapterId/vocab/quiz", student.getChapterQuizVocabEx);
 
 // /:chapterId/vocab/learn/:learnVocabExId => GET
 router.get("/:chapterId/vocab/learn/:learnVocabExId", student.learningVocabEx);
+
+// /find-exercise-words => GET
+router.use("/find-exercise-words", student.findExerciseWords);
+
+// /find-exercise-words => GET
+router.use("/set-word-remembered", student.setWordRemembered);
 
 module.exports = router;

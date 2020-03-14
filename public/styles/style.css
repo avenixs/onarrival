@@ -685,6 +685,7 @@ h1 {
 .bar-card img {
     width: 5rem;
     margin-bottom: 1rem;
+    display: none;
 }
 
 .bar-card p {
@@ -734,8 +735,19 @@ h1 {
 }
 
 #learning-words-window {
+    min-height: 30rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    overflow: unset;
+}
+
+#content-to-blur {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 #exercise-help {
@@ -785,7 +797,117 @@ h1 {
     cursor: pointer;
 }
 
+.remove-word {
+    cursor: pointer;
+}
+
+#big-abcd {
+    width: 10rem;
+    margin-bottom: 1rem;
+}
+
+#ex-info {
+    width: 15%;
+    margin: 1rem;
+    float: left;
+}
+
+.how-to-play {
+    padding: 1.5rem;
+}
+
+#ex-title {
+    font-family: "Playfair Display SC", serif;
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+#start-ex {
+    margin-bottom: 3rem;
+}
+
+#start-ex button {
+    font-family: "Playfair Display SC", serif;
+    font-size: 1.2rem;
+    width: 10rem;
+}
+
+#white-cover {
+    position: absolute;
+    width: 100%;
+    height: 90%;
+    background: rgba(255, 255, 255, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.word-presentation {
+    padding: 5%;
+    text-align: center;
+}
+
+.sentence-presentation {
+    font-size: 1.25rem;
+}
+
+.main-word {
+    font-family: "Playfair Display SC", "Times New Roman", serif;
+    text-transform: uppercase;
+    font-weight: bolder;
+    font-size: 2rem;
+}
+
+.correct-btns {
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+}
+
+.correct-btns img {
+    width: 4rem;
+    cursor: pointer;
+}
+
+#confetti {
+    width: 30%;
+    margin: 2rem;
+}
+
+#learning-words-page {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
 @media (min-width: 768px) {
+    #learning-words-page {
+        flex-direction: row;
+    }
+
+    .bar-card img {
+        display: unset;
+    }
+
+    .main-word {
+        font-size: 3rem;
+    }
+
+    .correct-btns {
+        width: 20%;
+    }
+
+    #learning-words-window {
+        overflow: hidden;
+    }
+
+    #ex-info {
+        width: 5%;
+        margin: 1rem 2rem 2rem 2rem;
+        float: left;
+    }
+
     #vocab-choice {
         flex-direction: row;
     }

@@ -25,4 +25,7 @@ router.get("/vocab/add-word", leader.addNewWord);
 // /vocab/update-word => GET
 router.get("/vocab/update-word", leader.updateWord);
 
+// /vocab/update-word => GET
+router.get("/vocab/remove-word", leader.removeWords);
+
 module.exports = router;

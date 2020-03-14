@@ -81,6 +81,7 @@ exports.getChapterQuizVocabEx = async (req, res, next) => {
 exports.learningVocabEx = async (req, res, next) => {
     const company = await Company.findOne({ where: { id: req.session.company.id } });
     const user = await StudentUser.findOne({ where: { id: req.session.userId } });
+    const exercise = await VocabExercise.findOne({ where: { id: req.exId } });
 
     res.render("panel/learning-ex-words", {
         pageTitle: "Quiz Exercises",
@@ -88,6 +89,24 @@ exports.learningVocabEx = async (req, res, next) => {
         user: user,
         course: req.session.course,
         chapters: req.session.chapters,
-        words: req.words
+        exercise: exercise
+    });
+};
+
+exports.findExerciseWords = async (req, res, next) => {
+    const words = await Word.findAll({ where: { VocabExerciseId: req.query.id, isRemembered: 0 } });
+
+    res.status(201).json({
+        words: words
+    });
+};
+
+exports.setWordRemembered = async (req, res, next) => {
+    const word = await Word.findOne({ where: { id: req.query.id } });
+    word.isRemembered = 1;
+    word.save();
+
+    res.status(201).json({
+        remembered: true
     });
 };

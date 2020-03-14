@@ -130,6 +130,15 @@ exports.getWordsFromExercise = async (req, res, next) => {
     });
 };
 
+exports.removeWords = async (req, res, next) => {
+    const word = await Word.findOne({ where: { id: req.query.id } });
+    word.destroy();
+
+    res.status(201).json({
+        done: true
+    });
+};
+
 exports.addNewWord = async (req, res, next) => {
     const exercise = await VocabExercise.findOne({ where: { id: req.query.vocabExId } });
 

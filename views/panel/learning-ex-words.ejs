@@ -4,21 +4,22 @@
 <body>
     <%- include("../includes/navigation-panel.ejs") %>
     
-    <%- include("../includes/student-bar.ejs") %>
+    <div id="learning-words-page">
+        <%- include("../includes/student-bar.ejs") %>
 
-    <div id="exercise-help"><img src="/media/icons/nav/info.png" alt="Media"></div>
-
-    <div class="course-content" id="learning-words-window">
-        <div id="exercise-top-word">
-            <p class="word"><%= words[0].wordEnglish %></p>
-            <p class="sentence"><%= words[0].exSentenceEng %></p>
-        </div>
-        <div id="exercise-bottom-word">
-            <p class="word"><%= words[0].wordForeign %></p>
-            <p class="sentence"><%= words[0].exSentenceForeign %></p>
-            <div class="correctornot">
-                <img src="/media/icons/dislike.png" alt="Incorrect">
-                <img src="/media/icons/like.png" alt="Correct">
+        <div class="course-content" id="learning-words-window">
+            <div id="content-to-blur">
+                <input type="hidden" id="id-of-ex" value="<%= exercise.id %>">
+                <img src="/media/icons/big-exercise.png" alt="Exercise" id="big-abcd">
+                <p id="ex-title"><%= exercise.name %></p>
+                <p><%= exercise.description %></p>
+                <div class="how-to-play">
+                    <img src="/media/icons/info.png" alt="Info" id="ex-info">
+                    <p><b>How to play?</b> <br />You will be shown a word in English with an example sentence. Press anywhere within the white screen to reveal the translation into <%= course.mainLanguage %>. If you remembered the translation correctly, press the green like button to make the word as Remembered. If you need to repeat is again, press the red button and we will show you the word again. Once all the words are remembered, the exercise will be completed.</p>
+                </div>
+                <div id="start-ex">
+                    <button class="btn btn-success" id="start-btn">Start</button>
+                </div>
             </div>
         </div>
     </div>
