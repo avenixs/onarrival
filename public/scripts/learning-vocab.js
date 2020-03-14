@@ -39,7 +39,7 @@ $("#start-btn").click(() => {
                 });
 
                 $("#learning-words-window").click(() => {
-                    if((!($("#learning-words-window").children().length==2)) && (wordsEng.length > 0)) {
+                    if((!($("#learning-words-window").children().length > 1)) && (wordsEng.length > 0)) {
                         $("#learning-words-window").append("<div class='word-presentation' id='word-in-for'><input type='hidden' id='shown-word-id' value='" + wordIDs[count] + "'><p class='main-word'>" + wordsFor[count] + "</p><p class='sentence-presentation'>" + sentencesFor[count] + "</p></div><div class='correct-btns'><img src='/media/icons/dislike.png' alt='Incorrect' id='incorrect-word'><img src='/media/icons/like.png' alt='Correct' id='correct-word'></div>");
 
                         $("#incorrect-word").click(() => {
