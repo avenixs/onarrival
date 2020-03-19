@@ -66,11 +66,9 @@
 
     <%- include("../includes/end.ejs") %>
 
+    <script src="/scripts/common.js"></script>
+    
     <script>
-        function showModal() {
-            $("#userAdded").modal("show");
-        };
-
         $(document).ready(() => {
             console.log($("#coursesToAssign").children().length);
             if($("#studentsToAssign").children().length == 0) {

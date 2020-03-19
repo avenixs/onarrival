@@ -1,8 +1,8 @@
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("heroku_bd9a9d27abffc69", "bc4f3deba845b7", "92a63f6c", {
+const sequelize = new Sequelize(process.env.CLEARDB_DB_NAME, process.env.CLEARDB_USERNAME, process.env.CLEARDB_PASSWORD, {
     dialect: "mysql",
-    host: "eu-cdbr-west-02.cleardb.net"
+    host: process.env.CLEARDB_HOST
 });
 
 module.exports = sequelize;

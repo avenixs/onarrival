@@ -5,6 +5,51 @@ const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
 const Word = require("../models/word");
 const bcrypt = require("bcryptjs");
+const StudyMaterial = require("../models/study-material");
+
+const aws = require('aws-sdk');
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
+aws.config = {
+    region: process.env.AWS_REGION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+};
+
+const fs = require("fs");
+
+exports.addNewMaterial = async (req, res, next) => {
+    const chapterSel = await Chapter.findOne({ where: { id: req.body.chapterSelected } });
+
+    const s3 = new aws.S3();
+    const material = req.file;
+    const fileContent = fs.readFileSync(material.filename);
+    let date = Date.now();
+    const keyName = "materials_" + chapterSel.id + "_" + date + "_" + material.filename;
+
+    const params = {
+        Bucket: S3_BUCKET,
+        Key: keyName,
+        Body: fileContent
+    };
+
+    s3.upload(params, function(err, data) {
+        if(err) { throw err; };
+
+        StudyMaterial.create({
+            title: req.body.title,
+            description: req.body.description,
+            fileName: data.Key 
+        })
+            .then(async material => {
+                await material.setChapter(chapterSel);
+                return res.redirect("/enterprise/materials/add?success=true");
+            })
+            .catch(error => {
+                console.log(error);
+                return res.redirect("/enterprise/materials/add?success=false");
+            })
+    });
+};
 
 exports.getAddChapterPage = async (req, res, next) => {
     const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
@@ -173,3 +218,31 @@ exports.updateWord = async (req, res, next) => {
     word.exSentenceForeign = req.query.sentFor;
     word.save();
 };
+
+exports.getAddMaterialsPage = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    res.render("panel/add-materials", {
+        pageTitle: "Add a New Study Materials",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        accountData: accountData
+    }); 
+};
+
+exports.getChapterMaterials = (req, res) => {
+    StudyMaterial.findAll({ where: { ChapterId: req.query.id } })
+        .then(materials => {
+            res.status(201).json({
+                materials: materials
+            });
+        })
+        .catch(error => { console.log(error); })
+}

@@ -1,0 +1,47 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/student-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="decor-center">Study Materials in this Chapter</h2>
+
+            <table class="table table-striped" id="chapter-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col"> </th>
+                    </tr>
+                </thead>
+                <tbody id="table-body">
+                    <% for(let i=0; i<materials.length; i++) { %>
+                    <tr>
+                        <td><%= eval(i+1) %></td>
+                        <td><%= materials[i].title %></td>
+                        <td><%= materials[i].description %></td>
+                        <td>
+                            <form method="POST" action="/student/chapters/download-material">
+                                <input type="hidden" id="nameOfFile" name="nameOfFile" value="<%= materials[i].fileName %>">
+                                <button class="btn btn-success">Download</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }; %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+</body>
+</html>

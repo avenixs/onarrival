@@ -5,7 +5,7 @@ const StudentUser = require("../models/student-user");
 const bcrypt = require("bcryptjs");
 
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey("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");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getPanelPage = async (req, res, next) => {
     const company = await Company.findOne({ where: { id: req.session.companyId } });
@@ -292,3 +292,57 @@ exports.getViewRepresentativesPage = (req, res, next) => {
         accountData: accountData
     });
 };
+
+exports.getEditAccountPage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+
+    res.render("panel/edit-account", {
+        pageTitle: "Edit Account Details",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        accountData: accountData,
+        company: company,
+        user: user
+    });
+};
+
+exports.updateCompanyDetails = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+    company.name = req.query.name;
+    company.email = req.query.email;
+    company.telNum = req.query.telNum;
+    await company.save();
+
+    res.status(201).json({
+        success: true
+    });
+}
+
+exports.updateUserDetails = async (req, res) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    user.name = req.query.name;
+    user.surname = req.query.surname;
+    user.department = req.query.department;
+    user.email = req.query.email;
+    if(req.query.password != "") {
+        user.password = await bcrypt.hash(req.query.password, 12);
+    }
+    await user.save();
+
+    req.session.fullName = req.query.name + " " + req.query.surname;
+
+    res.status(201).json({
+        success: true
+    });
+}
+
+exports.getCurrentCompanyName = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+    console.log(company.name);
+    res.status(201).json({
+        name: company.name
+    });
+}

@@ -6,6 +6,18 @@ const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
 const Word = require("../models/word");
 const bcrypt = require("bcryptjs");
+const StudyMaterial = require("../models/study-material");
+
+const aws = require('aws-sdk');
+const S3_BUCKET = process.env.S3_BUCKET_NAME;
+aws.config = {
+    region: process.env.AWS_REGION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+};
+const s3 = new aws.S3();
+
+const fs = require("fs");
 
 exports.getPanelPage = async (req, res, next) => {
     const company = await Company.findOne({ where: { id: req.session.company.id } });
@@ -110,3 +122,33 @@ exports.setWordRemembered = async (req, res, next) => {
         remembered: true
     });
 };
+
+exports.getMaterialsPage = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.company.id } });
+    const user = await StudentUser.findOne({ where: { id: req.session.userId } });
+    
+    res.render("panel/view-materials", {
+        pageTitle: "View Study Materials",
+        company: company,
+        user: user,
+        course: req.session.course,
+        chapters: req.session.chapters,
+        materials: req.studyMaterials
+    });
+}
+
+exports.downloadMaterial = async (req, res) => {
+    var fileStream = fs.createWriteStream("files/" + req.body.nameOfFile);
+    var s3Stream = s3.getObject({Bucket: S3_BUCKET, Key: req.body.nameOfFile}).createReadStream();
+
+    s3Stream.on('error', function(err) {
+        // NoSuchKey: The specified key does not exist
+        console.error(err);
+    });
+    
+    s3Stream.pipe(fileStream).on('error', function(err) {
+        console.error('File Stream:', err);
+    }).on('close', function() {
+        res.download("files/" + req.body.nameOfFile);
+    });
+}

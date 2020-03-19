@@ -1,7 +1,7 @@
 const ContactRequest = require("../models/contact-request");
 
 const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey("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");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.getLoginPage = (req, res, next) => {
     res.render("general-login", {
@@ -74,4 +74,4 @@ exports.sendContactRequest = (req, res, next) => {
             return sgMail.send(msg);
         })
         .catch(error => { console.log(error); })
-}
+};

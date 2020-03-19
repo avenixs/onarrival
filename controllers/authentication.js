@@ -18,7 +18,7 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
             }
             bcrypt
                 .compare(passwordToLogin, user.password)
-                .then(passwordMatching => {
+                .then(async passwordMatching => {
                     if(passwordMatching) {
                         req.session.userId = user.id;
                         req.session.isLoggedIn = true;
@@ -27,6 +27,10 @@ exports.authenticateEnterpriseLogin = (req, res, next) => {
                         req.session.isStudent = false;
                         req.session.companyId = user.Company.id;
                         req.session.isLeader = user.CourseId==null ? false : true;
+                        if(!(user.CourseId==null)) {
+                            const leaderCourse = await Course.findOne({ where: { id: user.CourseId } });
+                            req.session.leadingCourse = leaderCourse;
+                        }
                         return req.session.save(error => {
                             res.redirect("/enterprise/panel");
                         });

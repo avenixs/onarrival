@@ -176,3 +176,16 @@ const closePopup = () => {
     document.getElementById("popup-window").animate([{ transform: "scale(1)" }, { transform: "scale(0)" }], 300);
     setTimeout(() => { $("#popup-window").remove(); $("#window-cover").css("display", "none"); }, 300);
 };
+
+const getCompanyName = () => {
+    $.ajax({
+        url: "/enterprise/current-company-name",
+        method: "GET",
+        data: null,
+        success: function(data){
+            $("#bar-company-name").html(data.name);
+        }
+    });
+};
+
+getCompanyName();

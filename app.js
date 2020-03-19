@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+require('dotenv').config()
 
 // Import of packages used in the entry file
 const sequelize = require("./utils/db");
@@ -25,6 +26,7 @@ const Word = require("./models/word");
 const ListeningExercise = require("./models/listening-exercise");
 const ReadingExercise = require("./models/reading-exercise");
 const VocabExercise = require("./models/vocab-exercise");
+const StudyMaterial = require("./models/study-material");
 
 // The main Express.js application
 const app = express();
@@ -77,15 +79,8 @@ Word.belongsTo(VocabExercise);
 Word.hasOne(Recording);
 StudentUser.belongsTo(Course);
 StudentUser.belongsTo(Company);
+StudyMaterial.belongsTo(Chapter);
 
 // This is a dynamic port allocation for Heroku deployment
 const PORT = process.env.PORT || 3025;
 app.listen(PORT);
-
-/* sequelize.sync({force:true})
-    .then(result => {
-        app.listen(PORT);
-    })
-    .catch(error => {
-        console.log(error);
-    }); */

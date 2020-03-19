@@ -31,7 +31,7 @@ $("#start-btn").click(() => {
                 if(!(wordsEng.length == 0)) {
                     $("#learning-words-window").append("<div class='word-presentation' id='word-in-eng'><p class='main-word'>" + wordsEng[count] + "</p><p class='sentence-presentation'>" + sentencesEng[count] + "</p></div>");
                 } else {
-                    $("#learning-words-window").append("<p>There are no more words to learn in this exercise.</p>");
+                    $("#learning-words-window").append("<div class='word-presentation'><img id='thick-tick' src='/media/icons/thick-tick.png' alt='Tick'><p class='sentence-presentation'>There are no more words to learn in this exercise.</p><a href='../learn'><img src='/media/icons/return.png' alt='Return'></a></div>");
                 }
 
                 $("#white-cover").fadeOut("slow", () => {
@@ -86,7 +86,7 @@ $("#start-btn").click(() => {
                                     wordIDs.splice(count, 1);
                                     if((count == wordsEng.length) && (wordsEng != 0)) { count = 0 };
                                     if(wordsEng == 0) {
-                                        $("#learning-words-window").append("<div class='word-presentation'><img src='/media/icons/confetti.png' id='confetti'><p class='main-word'>Congratulations!</p><p class='sentence-presentation'>You have completed this exercise.</p></div>");
+                                        $("#learning-words-window").append("<div class='word-presentation'><img src='/media/icons/confetti.png' id='confetti'><p class='main-word'>Congratulations!</p><p class='sentence-presentation'>You have completed this exercise.</p><a href='../' class='btn btn-success'>Back</a></div>");
                                     } else {
                                         $("#learning-words-window").append("<div class='word-presentation' id='word-in-eng'><p class='main-word'>" + wordsEng[count] + "</p><p class='sentence-presentation'>" + sentencesEng[count] + "</p></div>");
                                     }

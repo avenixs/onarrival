@@ -1,0 +1,72 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content" style="display: flex; align-items: center; flex-direction: column;">
+            <form>
+                <h2 class="decor-center">Edit Company Details</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="companyName">Company's name</label>
+                        <input type="text" class="form-control" id="companyName" name="companyName" value="<%= company.name %>" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="companyEmail">Office email</label>
+                        <input type="text" class="form-control" id="companyEmail" name="companyEmail" value="<%= company.email %>" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="companyTel">Office telephone</label>
+                        <input type="text" class="form-control" id="companyTel" name="companyTel" value="<%= company.telNum %>" required>
+                    </div>
+                </div>
+                <div class="form-row" style="justify-content: center;">
+                    <button type="submit" class="btn btn-dark" id="updateCompanyBtn">Update</button>
+                </div>
+            </form>
+            <form style="margin-top: 3rem;">
+                <h2 class="decor-center">Edit Your Details</h2>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="adminName">Name</label>
+                        <input type="text" class="form-control" id="adminName" name="adminName" value="<%= user.name %>" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="adminSurname">Surname</label>
+                        <input type="text" class="form-control" id="adminSurname" name="adminSurname" value="<%= user.surname %>" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="adminDep">Department</label>
+                        <input type="text" class="form-control" id="adminDep" name="adminDep" value="<%= user.department %>" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="adminEmail">Email</label>
+                        <input type="email" class="form-control" id="adminEmail" name="adminEmail" aria-describedby="emailHelp" value="<%= user.email %>" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="adminPassword">New Password</label>
+                        <input type="password" class="form-control" id="adminPassword" name="adminPassword" value="" placeholder="Leave blank if unchanged">
+                    </div>
+                </div>
+                <div class="form-row" style="justify-content: center;">
+                    <button type="submit" class="btn btn-dark" id="updateUserBtn">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/edit-account.js"></script>
+
+</body>
+</html>

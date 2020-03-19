@@ -1,6 +1,6 @@
 <div id="menu-bar-left">
     <% if(isAdmin) { %>
-        <a class="btn btn-dark function-btn-panel" data-toggle="collapse" href="#adminFunctions" role="button" aria-expanded="false" aria-controls="adminFunctionsCollapse">Administrator</a>
+        <a class="btn btn-dark function-btn-panel" data-toggle="collapse" href="#adminFunctions" role="button" aria-expanded="false" aria-controls="adminFunctionsCollapse">Administrator <span style="margin-left: 0.5rem">&#9660;</span></a>
         <div class="collapse multi-collapse" id="adminFunctions">
             <h2 class="bar-link"><a href="/enterprise/leaders/add"><img src="/media/icons/nav/plus.png" alt="Plus"> Add a Course Leader</a></h2>
             <h2 class="bar-link"><a href="/enterprise/courses/add"><img src="/media/icons/nav/add-course.png" alt="Add"> Add a Course</a></h2>
@@ -9,22 +9,23 @@
             <h2 class="bar-link"><a href="/enterprise/students/enrol"><img src="/media/icons/nav/enrol.png" alt="Student"> Enrol a Student</a></h2>
             <h2 class="bar-link"><a href="/enterprise/leaders/view"><img src="/media/icons/nav/cleaders.png" alt="Leaders"> Manage Course Leaders</a></h2>
             <h2 class="bar-link"><a href="/enterprise/students/view"><img src="/media/icons/nav/students.png" alt="Students"> Manage Students</a></h2>
-            <h2 class="bar-link"><a href="/enterprise/progress/view"><img src="/media/icons/nav/progress.png" alt="Progress"> View Students' Progress</a></h2>
             <h2 class="bar-link"><a href="/enterprise/courses/view"><img src="/media/icons/nav/list.png" alt="List"> Manage Courses</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/account/edit"><img src="/media/icons/nav/edit.png" alt="Edit"> Edit Account Details</a></h2>
         </div>
     <% } %>
     <% if(isLeader) { %>
-        <a class="btn btn-dark function-btn-panel" data-toggle="collapse" href="#leaderFunctions" role="button" aria-expanded="false" aria-controls="leaderFunctionsCollapse">Course leader</a>
-        <div class="collapse multi-collapse" id="leaderFunctions">
-            <h2 class="bar-link"><a href="/enterprise/courses/chapters/add"><img src="/media/icons/nav/plus.png" alt="Plus"> Add a New Chapter</a></h2>
-            <h2 class="bar-link"><a href="/enterprise/exercises/vocab/add"><img src="/media/icons/nav/add-course.png" alt="Add"> Create a Vocabulary Exercise</a></h2>
-            <h2 class="bar-link"><a href="/enterprise/exercises/vocab/manage"><img src="/media/icons/nav/assign.png" alt="Assign"> Manage Vocab Exercises</a></h2>
-        </div>
         <div class="bar-card">
             <img src="/media/icons/learn.png" alt="Books">
-            <p class='title'><%= accountData[0] %></p>
-            <p><%= accountData[1] %></p>
-            <p>Course: <%= accountData[2] %></p>
+            <p class='title' id='name-surname'><%= accountData[0] %></p>
+            <p id='bar-company-name'> </p>
+            <p><b>Manage your courses:</b></p>
+        </div>
+        <a class="btn btn-dark function-btn-panel" data-toggle="collapse" href="#leaderFunctions" role="button" aria-expanded="false" aria-controls="leaderFunctionsCollapse"><%= accountData[2] %> <span style="margin-left: 0.5rem">&#9660;</span></a>
+        <div class="collapse multi-collapse" id="leaderFunctions">
+            <h2 class="bar-link"><a href="/enterprise/courses/chapters/add"><img src="/media/icons/nav/plus.png" alt="Plus"> Add a New Chapter</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/materials/add"><img src="/media/icons/nav/study-materials.png" alt="Add"> Add a Study Material</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/exercises/vocab/add"><img src="/media/icons/nav/add-course.png" alt="Add"> Create a Vocabulary Exercise</a></h2>
+            <h2 class="bar-link"><a href="/enterprise/exercises/vocab/manage"><img src="/media/icons/nav/assign.png" alt="Assign"> Manage Vocab Exercises</a></h2>
         </div>
     <% } %>
 </div>

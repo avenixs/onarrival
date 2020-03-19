@@ -10,6 +10,9 @@ router.get("/vocab/add", leader.getAddVocabExercisePage);
 // /get-vocab-chapter => GET
 router.get("/get-vocab-chapter", leader.getVocabExPerChapter);
 
+// /get-chapter-materials => GET
+router.get("/get-chapter-materials", leader.getChapterMaterials);
+
 // /vocab/add => POST
 router.post("/vocab/add", leader.addNewVocabExercise);
 
