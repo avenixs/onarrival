@@ -143,7 +143,7 @@ exports.getAssignCoursePage = async (req, res, next) => {
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/assign-course", {
-        pageTitle: "Add a New Course",
+        pageTitle: "Assign a Course",
         isAdmin: req.session.isAdmin,
         isLeader: req.session.isLeader,
         success: req.query.success,
@@ -181,7 +181,7 @@ exports.enrolStudent = async (req, res, next) => {
     const msg = {
         to: student.email,
         from: "contact@onarrival.uk",
-        subject: "OnArrivalUK - Your account is ready",
+        subject: "OnArrivalUK - You are enroled to a new course",
         text: "Dear " + student.name + ", This is to inform you that you have just been enroled to the " + course.title + " language course designed by your employer. Log in to you OnArrivalUK account to gain access to it and begin improving your English skills. Have a lovely day, OnArrivalUK",
         html: "Dear " + student.name + ", <br /><br />This is to inform you that you have just been enroled to the " + course.title + " language course designed by your employer. Log in to you OnArrivalUK account to gain access to it and begin improving your English skills.<br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
     }

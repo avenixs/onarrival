@@ -41,7 +41,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // To expose the files in the "public" folder and grant the READ access to stylesheets, media and scripts
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initializing a session
+// Enabling sessions for the application
 app.use(cookieParser());
 app.use(
     session({
@@ -51,8 +51,7 @@ app.use(
         saveUninitialized: false,
         store: new sequelizeStore({
             db: sequelize
-        }),
-        //cookie: {}
+        })
     })
 );
 
