@@ -77,6 +77,7 @@
                         <th scope="col">Title</th>
                         <th scope="col">Theme</th>
                         <th scope="col">Description</th>
+                        <th scope="col"> </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +88,7 @@
                         <td><%= chapters[i].title %></td>
                         <td><%= chapters[i].theme %></td>
                         <td><%= chapters[i].description %></td>
+                        <td><input type="hidden" value="<%= chapters[i].id %>"><button class="btn btn-danger">Delete</button></td>
                     </tr>
                         <% }; %>
                     <% } else { %>
@@ -94,6 +96,7 @@
                         <td>N/A</td>
                         <td>N/A</td>
                         <td>N/A</td>
+                        <td><button class="btn btn-danger" disabled>Delete</button></td>
                     <% }; %>
                 </tbody>
             </table>

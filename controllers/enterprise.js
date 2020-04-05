@@ -309,6 +309,7 @@ exports.getEditAccountPage = async (req, res, next) => {
     });
 };
 
+// Capture new company's data and update the database
 exports.updateCompanyDetails = async (req, res) => {
     const company = await Company.findOne({ where: { id: req.session.companyId } });
     company.name = req.query.name;

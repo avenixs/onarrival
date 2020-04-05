@@ -4,6 +4,18 @@ const leader = require("../controllers/leader");
 
 const router = express.Router();
 
+let multer  = require('multer');
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './');
+    },
+    filename: (req, file, cb) => {
+        let name = Date.now() + "_" + req.session.userId + "_Recording.mp3";
+        cb(null, name);
+    }
+});
+let upload = multer({ storage: storage });
+
 // /vocab/add => GET
 router.get("/vocab/add", leader.getAddVocabExercisePage);
 
@@ -30,5 +42,17 @@ router.get("/vocab/update-word", leader.updateWord);
 
 // /vocab/update-word => GET
 router.get("/vocab/remove-word", leader.removeWords);
+
+// /comprehension/add => GET
+router.get("/comprehension/add", leader.getAddReadingExercisePage);
+
+// /comprehension/manage => GET
+router.get("/comprehension/manage", leader.manageReadingExercises);
+
+// /comprehension/add-article => GET
+router.get("/comprehension/add-article", leader.addNewArticle);
+
+// /comprehension/upload-recording => POST
+router.post("/comprehension/upload-recording", upload.any(), leader.uploadRecording);
 
 module.exports = router;

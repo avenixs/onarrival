@@ -3,6 +3,7 @@ const Company = require("../models/company");
 const Course = require("../models/course");
 const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
+const ComprehensionExercise = require("../models/comprehension-exercise");
 const Word = require("../models/word");
 const bcrypt = require("bcryptjs");
 const StudyMaterial = require("../models/study-material");
@@ -245,4 +246,67 @@ exports.getChapterMaterials = (req, res) => {
             });
         })
         .catch(error => { console.log(error); })
+}
+
+exports.getAddReadingExercisePage = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    res.render("panel/add-comprehension-ex", {
+        pageTitle: "Add a New Comprehension Exercise",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        accountData: accountData
+    }); 
+};
+
+exports.manageReadingExercises = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } });
+    const allComprehEx = await ComprehensionExercise.findAll({ where: { EnterpriseUserId: user.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    res.render("panel/manage-vocab-ex", {
+        pageTitle: "Manage Vocabulary Exercises",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        exercises: allComprehEx,
+        accountData: accountData
+    }); 
+};
+
+exports.uploadRecording = async (req, res) => {
+    const s3 = new aws.S3();
+    const material = req.files[0];
+    const fileContent = fs.readFileSync(material.filename);
+
+    const params = {
+        Bucket: S3_BUCKET,
+        Key: req.files[0].filename,
+        Body: fileContent
+    };
+
+    s3.upload(params, function(err, data) {
+        if(err) { throw err; };
+
+        res.status(201).json({
+            fileName: req.files[0].filename
+        });
+    });
+}
+
+exports.addNewArticle = async (req, res) => {
+    console.log(req.query);
+    res.status(201).send("OK");
 }

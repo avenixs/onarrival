@@ -1,0 +1,109 @@
+<%- include("../includes/head.ejs") %>
+    <script src="https://cdn.tiny.cloud/1/4s96ojvpavg0k6fg313o37mra3xt4w48ynd4409ogmwnahhy/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+          selector: 'textarea'
+        });
+    </script>
+    <script src="https://unpkg.com/mic-recorder-to-mp3@2.2.0/dist/index.min.js"></script>
+</head>
+
+<body onload="showModal()">
+    <%- include("../includes/navigation-panel.ejs") %>
+
+    <% if(!(success==null)) { %>
+        <div class="modal fade" id="userAdded" tabindex="-1" role="dialog" aria-labelledby="userAddedLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userAddedLabel"><%= (success=='true') ? "Success" : "Error occurred!" %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/media/icons/<%= (success=='true') ? 'tick.png' : 'error.png' %>" alt="Tick Icon" >
+                    <p><%= (success=='true') ? "You have successfully added a new vocabulary exercise." : "There has been an error while adding an exercise! Please try again or contact the support" %></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <% } %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <div class="transparent-form" id="comprehension-container">
+                <h2 class="title-decor">Add a New Comprehension Exercise</h2>
+                <form action="/enterprise/exercises/comprehension/add" method="POST" id="comprehension-form">
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="chapterSelecter">Select the chapter...</label>
+                            <select class="form-control" id="chapterSelected" name="chapterSelected">
+                                <% for(let i=0; i<chapters.length; i++) { %>
+                                <option value="<%= chapters[i].id %>"><%= chapters[i].title %></option>
+                                <% }; %>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="title">Exercise Title</label>
+                            <input type="text" class="form-control" name="title" id="title">
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="description">Short description</label>
+                            <input type="text" class="form-control" name="description" id="description">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-8">
+                            <label for="textEng">Text in English</label>
+                            <textarea class="form-control" name="textEng" id="textEng"></textarea>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="recordingBox">Record an audio...</label>
+                            <div id="recordingBox">
+                                <p id="recordingLength"></p>
+                                <input type="button" class="btn btn-success" id="recordingButton" value="Start">
+                                <ul class="list-unstyled" id="listOfRecordings"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row" style="margin-top: 1rem">
+                        <div class="form-group col-md-12">
+                            <label for="textFor">Translation</label>
+                            <textarea class="form-control" name="textFor" id="textFor" rows="6"></textarea>
+                        </div>
+                    </div>
+                    <div class="questionsBox">
+                        <h3 id="queCount">0 questions</h3>
+                        <h3>Exercise Questions</h3>
+                        <small>To add a question to this exercise, press the green plus below. You can add a maximum of 10 questions to each exercise.</small>
+                        <div id="questionsForEx"></div>
+                        <img src="/media/icons/more.png" id="addQbtn" alt="Add">
+                    </div>
+                    <div class="form-row">
+                        <button id="submitButton" class="btn btn-dark" style="margin: 1rem auto -1rem auto;">Finish and Add</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/add-comprehension-exercise.js"></script>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require("../utils/db");
 
-const ReadingExercise = sequelize.define('ReadingExercise', {
+const ComprehensionExercise = sequelize.define('ComprehensionExercise', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
@@ -16,14 +16,22 @@ const ReadingExercise = sequelize.define('ReadingExercise', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    level: {
-        type: Sequelize.STRING,
-        allowNull: false
+    textEng: {
+        type: Sequelize.TEXT,
+        allowNull: true
+    },
+    textFor: {
+        type: Sequelize.TEXT,
+        allowNull: true
     },
     isCompleted: {
         type: Sequelize.BOOLEAN,
         allowNull: false
+    },
+    file: {
+        type: Sequelize.STRING,
+        allowNull: true
     }
 });
 
-module.exports = ReadingExercise;
+module.exports = ComprehensionExercise;

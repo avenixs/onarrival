@@ -138,17 +138,16 @@ exports.getMaterialsPage = async (req, res) => {
 }
 
 exports.downloadMaterial = async (req, res) => {
-    var fileStream = fs.createWriteStream("files/" + req.body.nameOfFile);
-    var s3Stream = s3.getObject({Bucket: S3_BUCKET, Key: req.body.nameOfFile}).createReadStream();
+    var fstream = fs.createWriteStream("files/" + req.body.nameOfFile);
+    var s3fstream = s3.getObject({Bucket: S3_BUCKET, Key: req.body.nameOfFile}).createReadStream();
 
-    s3Stream.on('error', function(err) {
-        // NoSuchKey: The specified key does not exist
-        console.error(err);
+    s3fstream.on('error', error => {
+        console.log(error);
     });
     
-    s3Stream.pipe(fileStream).on('error', function(err) {
-        console.error('File Stream:', err);
-    }).on('close', function() {
+    s3fstream.pipe(fstream).on('error', error => {
+        console.log(error);
+    }).on('close', () => {
         res.download("files/" + req.body.nameOfFile);
     });
-}
+};

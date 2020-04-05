@@ -113,7 +113,7 @@ $(".edit-btn").click(event => {
             let table = '<h2>WORD LIST</h2><table class="table table-striped"><thead><tr><th style="width: 15%;" scope="col">Word</th><th style="width: 15%;" scope="col">Translation</th><th scope="col">Example Sentence</th><th scope="col">Sentence Translation</th><th scope="col"> </th><th scope="col"> </th></tr></thead><tbody>';
 
             for(let i=0; i<wordList.length; i++) {
-                table = table + "<tr><td><input type='text' class='engEdit form-control' value='" + wordList[i].wordEnglish + "'></td><td><input type='text' class='foreignEdit form-control' value='" + wordList[i].wordForeign + "'></td><td><input type='text' class='engSentEdit form-control' value='" + wordList[i].exSentenceEng + "'></td><td><input type='text' class='forSentEdit form-control' value='" + wordList[i].exSentenceForeign + "'></td><td><input type='hidden' class='id-word-edit' value='" + wordList[i].id + "'><button type='button' id='" + "update-word-" + i + "' class='btn btn-success save-word-edit'>Save</button></td><td><img src='/media/icons/trash.png' id='remove-word-" + i + "' alt='Bin' class='remove-word' value='" + wordList[i].id + "'></td></tr>";
+                table = table + "<tr><td><input type='text' class='engEdit form-control' value='" + wordList[i].wordEnglish.replace(/\'/g, "&apos;") + "'></td><td><input type='text' class='foreignEdit form-control' value='" + wordList[i].wordForeign.replace(/\'/g, "&apos;") + "'></td><td><input type='text' class='engSentEdit form-control' value='" + wordList[i].exSentenceEng.replace(/\'/g, "&apos;") + "'></td><td><input type='text' class='forSentEdit form-control' value='" + wordList[i].exSentenceForeign.replace(/\'/g, "&apos;") + "'></td><td><input type='hidden' class='id-word-edit' value='" + wordList[i].id + "'><button type='button' id='" + "update-word-" + i + "' class='btn btn-success save-word-edit'>Save</button></td><td><img src='/media/icons/trash.png' id='remove-word-" + i + "' alt='Bin' class='remove-word' value='" + wordList[i].id + "'></td></tr>";
             }
 
             table.concat("</tbody></table>");
@@ -122,6 +122,7 @@ $(".edit-btn").click(event => {
             $("#window-words").css("justify-content", "unset");
             $("#window-words").append(table);
 
+            // This function removes a word from the database and from the table
             $(".remove-word").click(event => {
                 $("#" + event.target.getAttribute("id")).parent().append("<div id='update-word-spinner' class='spinner-border text-dark' role='status'><span class='sr-only'>Loading...</span></div>");
 
@@ -139,6 +140,7 @@ $(".edit-btn").click(event => {
                 });
             })
 
+            // This function updates a word in the database and in the table
             $(".save-word-edit").click(event => {
                 
                 let ourButton = event.currentTarget.id;
@@ -146,13 +148,16 @@ $(".edit-btn").click(event => {
 
                 $("#" + ourButton).parent().append("<div id='update-word-spinner' class='spinner-border text-dark' role='status'><span class='sr-only'>Loading...</span></div>");
 
+                console.log(formColumns);
                 const wordUpdate = {
-                    wordId: formColumns[5].childNodes[0].value,
-                    wordEng: formColumns[1].childNodes[0].value,
-                    wordForeign: formColumns[2].childNodes[0].value,
-                    sentEng: formColumns[3].childNodes[0].value,
-                    sentFor: formColumns[4].childNodes[0].value
+                    wordId: formColumns[4].childNodes[0].value,
+                    wordEng: formColumns[0].childNodes[0].value,
+                    wordForeign: formColumns[1].childNodes[0].value,
+                    sentEng: formColumns[2].childNodes[0].value,
+                    sentFor: formColumns[3].childNodes[0].value
                 };
+
+                console.log(wordUpdate);
 
                 $.ajax({
                     url: "/enterprise/exercises/vocab/update-word",

@@ -499,7 +499,7 @@ h1 {
 }
 
 .course-content form {
-    width: 90%;
+    width: 94%;
 }
 
 .course-content {
@@ -899,7 +899,140 @@ h1 {
     top: 20%;
 }
 
+#main-student-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-student-panel img {
+    width: 10rem;
+}
+
+#clover {
+    margin: 1rem;
+    width: 6rem !important;
+}
+
+#recordingBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#recordingButton {
+    margin-bottom: 0.75rem;
+}
+
+audio {
+    width: 22rem !important;
+}
+
+.deleteRecording {
+    cursor: pointer;
+}
+
+.questionsBox {
+    width: 100%;
+    margin: 2rem 0rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    transition: 0.2s ease-in-out;
+}
+
+#addQbtn {
+    margin: 1rem 0;
+    cursor: pointer;
+}
+
+#questionsForEx input {
+    margin: 0.5rem;
+}
+
+.questionAdded {
+    margin: 2rem 0 4rem 0;
+}
+
+.answerLine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.answerLine img {
+    margin-left: 1.5rem;
+    cursor: pointer;
+}
+
+.correntAnswerSwitch {
+    flex: 1;
+    margin-left: 2rem;
+    margin-top: 0.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.answerInput {
+    flex: 4;
+}
+
+#queCount {
+    align-self: flex-end !important;
+    font-size: 1rem;
+}
+
+.queDelLine {
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#comprehension-container {
+    padding: 1rem;
+}
+
 @media (min-width: 768px) {
+    #questionsForEx {
+        width: 90%;
+    }
+
+    .questionsBox:hover {
+        background: #fafafa;
+    }
+
+    .questionsBox {
+        margin: 2rem 1rem;
+        width: unset;
+    }
+
+    #questionsForEx {
+        width: 90%;
+    }
+
+    .queRow {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .questionAdded {
+        padding: 2rem;
+        margin: 0.25rem;
+    }
+
+    .questionsBox {
+        padding: 2rem;
+    }
+
+    #comprehension-form {
+        width: 95%;
+    }
+
     #learning-words-page {
         flex-direction: row;
     }
