@@ -1,22 +1,21 @@
 const Sequelize = require('sequelize');
 const sequelize = require("../utils/db");
 
-const Answer = sequelize.define('Answer', {
+const Score = sequelize.define('score', {
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true
     },
-    answerEnglish: {
-        type: Sequelize.STRING,
+    pointsReceived: {
+        type: Sequelize.INTEGER,
         allowNull: false
     },
-    isCorrect: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: 0
+    pointsMax: {
+        type: Sequelize.INTEGER,
+        allowNull: false
     }
 });
 
-module.exports = Answer;
+module.exports = Score;

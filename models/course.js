@@ -24,6 +24,11 @@ const Course = sequelize.define('Course', {
         type: Sequelize.STRING,
         allowNull: false
     },
+    disabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
+    },
     hasLeader: {
         type: Sequelize.BOOLEAN,
         allowNull: false,

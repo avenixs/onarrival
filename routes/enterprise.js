@@ -36,7 +36,7 @@ router.use("/courses", coursesRoutes);
 // /exercises => ALL
 router.use("/exercises", exercisesRoutes);
 
-// /courses => ALL
+// /students => ALL
 router.use("/students", isAdmin, studentsRoutes);
 
 // /panel => GET
@@ -44,6 +44,24 @@ router.get("/panel", enterprise.getPanelPage);
 
 // /current-company-name => GET
 router.get("/current-company-name", enterprise.getCurrentCompanyName);
+
+// /disable-leader => GET
+router.get("/disable-leader", enterprise.disableLeader);
+
+// /enable-leader => GET
+router.get("/enable-leader", enterprise.enableLeader);
+
+// /disable-leader => GET
+router.get("/disable-student", enterprise.disableStudent);
+
+// /enable-leader => GET
+router.get("/enable-student", enterprise.enableStudent);
+
+// /disable-course => GET
+router.get("/disable-course", enterprise.disableCourse);
+
+// /enable-course => GET
+router.get("/enable-course", enterprise.enableCourse);
 
 // /account/edit => GET
 router.get("/account/edit", enterprise.getEditAccountPage);

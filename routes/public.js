@@ -48,6 +48,9 @@ router.get("/contact/request", public.getContactRequestPage);
 // /contact/request => POST
 router.post("/contact/request", public.sendContactRequest);
 
+// /disabled-course => GET
+router.get("/disabled-course", public.disabledCourse);
+
 // / => ALL
 router.use(public.getHomePage);
 

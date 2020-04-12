@@ -1,0 +1,53 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="title-decor" id="vex-title">View Your Course Leaders</h2>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Surname</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Disable</th>
+                    </tr>
+                </thead>
+                <tbody class="table-with-ex">
+            <% for(let i=0; i<leaders.length; i++) { %>
+                    <tr class="<%- leaders[i].disabled ? 'disabled-row' : '' %>">
+                        <td><%= eval(i+1) %></td>
+                        <td><%= leaders[i].name %></td>
+                        <td><%= leaders[i].surname %></td>
+                        <td><%= leaders[i].department %></td>
+                        <td><%= leaders[i].email %></td>
+                        <% if(leaders[i].disabled) { %>
+                        <td><button class="btn btn-success enable-user" value="<%= leaders[i].id %>">Enable</button></td>
+                        <% } else { %>
+                        <td><button class="btn btn-warning disable-user" value="<%= leaders[i].id %>">Disable</button></td>
+                        <% } %>
+                    </tr>
+            <% }; %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/view-users.js"></script>
+
+</body>
+</html>

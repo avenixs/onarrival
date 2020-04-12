@@ -65,16 +65,21 @@ exports.authenticateStudentLogin = (req, res, next) => {
                 .compare(passwordToLogin, user.password)
                 .then(async passwordMatching => {
                     if(passwordMatching) {
-                        let chapters = await Chapter.findAll({ where: { CourseId: user.CourseId } });
-                        req.session.userId = user.id;
-                        req.session.isLoggedIn = true;
-                        req.session.isStudent = true;
-                        req.session.company = user.Company;
-                        req.session.course = user.Course;
-                        req.session.chapters = chapters;
-                        return req.session.save(error => {
-                            res.redirect("/student/panel");
-                        });
+                        let course = await Course.findOne({ where: { id: user.CourseId } });
+                        if(!(course.disabled)) {
+                            let chapters = await Chapter.findAll({ where: { CourseId: user.CourseId } });
+                            req.session.userId = user.id;
+                            req.session.isLoggedIn = true;
+                            req.session.isStudent = true;
+                            req.session.company = user.Company;
+                            req.session.course = user.Course;
+                            req.session.chapters = chapters;
+                            return req.session.save(error => {
+                                res.redirect("/student/panel");
+                            });
+                        } else {
+                            res.redirect("/disabled-course");
+                        }
                     } else {
                         return res.redirect("/login");
                     }

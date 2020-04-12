@@ -1,12 +1,11 @@
-const EnterpriseUser = require("../models/enterprise-user");
 const StudentUser = require("../models/student-user");
 const Company = require("../models/company");
-const Course = require("../models/course");
-const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
+const ComprehensionEx = require("../models/comprehension-exercise");
 const Word = require("../models/word");
-const bcrypt = require("bcryptjs");
-const StudyMaterial = require("../models/study-material");
+const Question = require("../models/question");
+const Answer = require("../models/answer");
+const Score = require("../models/score");
 
 const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
@@ -151,3 +150,140 @@ exports.downloadMaterial = async (req, res) => {
         res.download("files/" + req.body.nameOfFile);
     });
 };
+
+exports.getComprehensionPage = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.company.id } });
+    const user = await StudentUser.findOne({ where: { id: req.session.userId } });
+    
+    res.render("panel/view-comprehension", {
+        pageTitle: "View Comprehension Exercises",
+        path: "/student/chapters/" + req.chapterID + "/comprehension",
+        company: company,
+        user: user,
+        course: req.session.course,
+        chapters: req.session.chapters,
+        exercises: req.exercises
+    });
+};
+
+exports.viewComprehension = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.company.id } });
+    const user = await StudentUser.findOne({ where: { id: req.session.userId } });
+
+    const exercise = await ComprehensionEx.findOne({ where: { id: req.params.compExId } });
+    
+    if(exercise.isCompleted) {
+        res.redirect("/student/panel");
+    } else {
+        res.render("panel/complete-comprehension", {
+            pageTitle: "Complete the Comprehension Exercise",
+            company: company,
+            user: user,
+            course: req.session.course,
+            chapters: req.session.chapters,
+            exercise: exercise
+        });
+    }
+};
+
+exports.getAudio = async (req, res) => {
+    ComprehensionEx.findOne({ where: { id: req.query.id } })
+        .then(exercise => {
+
+            var fstream = fs.createWriteStream("public/recordings/" + exercise.file);
+            var s3fstream = s3.getObject({Bucket: S3_BUCKET, Key: exercise.file}).createReadStream();
+
+            s3fstream.on('error', error => {
+                console.log(error);
+            });
+            
+            s3fstream.pipe(fstream).on('error', error => {
+                console.log(error);
+            }).on('close', () => {
+                res.status(200).json({
+                    file: exercise.file
+                });
+            });
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.getTranslation = async (req, res) => {
+    ComprehensionEx.findOne({ where: { id: req.query.id } })
+        .then(exercise => {
+            res.status(200).json({
+                translation: exercise.textFor
+            });
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.getTestQuestions = (req, res) => {
+    ComprehensionEx.findOne({ where: { id: req.query.id } })
+        .then(exercise => {
+            Question.findAll({ where: { ComprehensionExerciseId: exercise.id } })
+                .then(async questions => {
+                    let questionsWithAnswers = [];
+                    for(let i=0; i<questions.length; i++) {
+                        let answers = await Answer.findAll({ where: { QuestionId: questions[i].id } });
+                        let queWithAns = [questions[i], answers];
+                        questionsWithAnswers.push(queWithAns);
+                    }
+
+                    res.status(200).json({
+                        questions: JSON.stringify(questionsWithAnswers)
+                    });
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.saveTestResult = async (req, res) => {
+    ComprehensionEx.findOne({ where: { id: req.query.id } })
+        .then(async exercise => {
+            exercise.isCompleted = 1;
+            await exercise.save();
+
+            const result = await Score.create({
+                pointsReceived: req.query.totalScore,
+                pointsMax: req.query.maxScore,
+                ComprehensionExerciseId: exercise.id,
+                StudentUserId: req.session.userId
+            });
+
+            res.status(201).json({
+                result: result
+            });
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.getResultsInChapter = async (req, res) => {
+    const company = await Company.findOne({ where: { id: req.session.company.id } });
+    const user = await StudentUser.findOne({ where: { id: req.session.userId } });
+
+    ComprehensionEx.findAll({ where: { ChapterId: req.params.resultChapterId } })
+        .then(async exercises => {
+            let resultsToSend = [];
+
+            for(let i=0; i<exercises.length; i++) {
+                let score = await Score.findOne({ where: { ComprehensionExerciseId: exercises[i].id } });
+                if(!(score == null)) {
+                    resultsToSend.push([exercises[i].name, score]);
+                }
+            }
+
+            res.render("panel/view-results", {
+                pageTitle: "View Your Results",
+                company: company,
+                user: user,
+                course: req.session.course,
+                chapters: req.session.chapters,
+                results: resultsToSend
+            });
+        })
+        .catch(error => { console.log(error); })
+}

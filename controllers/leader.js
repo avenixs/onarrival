@@ -5,6 +5,8 @@ const Chapter = require("../models/chapter");
 const VocabExercise = require("../models/vocab-exercise");
 const ComprehensionExercise = require("../models/comprehension-exercise");
 const Word = require("../models/word");
+const Question = require("../models/question");
+const Answer = require("../models/answer");
 const bcrypt = require("bcryptjs");
 const StudyMaterial = require("../models/study-material");
 
@@ -306,7 +308,46 @@ exports.uploadRecording = async (req, res) => {
     });
 }
 
-exports.addNewArticle = async (req, res) => {
-    console.log(req.query);
-    res.status(201).send("OK");
+exports.addNewComprehension = async (req, res) => {
+    ComprehensionExercise.create({
+        name: req.query.form.title,
+        description: req.query.form.description,
+        isCompleted: 0,
+        textEng: req.query.form.textEng,
+        textFor: req.query.form.textFor,
+        file: req.query.form.file
+    })
+        .then(async exercise => {
+            let chapter = await Chapter.findOne({ where: { id: req.query.form.chapterId } });
+            const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+
+            exercise.setChapter(chapter);
+            exercise.setEnterpriseUser(user);
+
+            let questions = req.query.questions;
+
+            for(let i=0; i<questions.length; i++) {
+                let newQuestion = await Question.create({
+                    questionEnglish: questions[i].questionEng,
+                    questionForeign: questions[i].questionFor,
+                    isCompleted: 0
+                });
+                newQuestion.setComprehensionExercise(exercise);
+
+                let answers = JSON.parse(questions[i].answers);
+                for(let a=0; a<answers.length; a++) {
+                    let newAnswer = await Answer.create({
+                        answerEnglish: answers[a].text,
+                        isCorrect: answers[a].correct==true ? 1 : 0
+                    });
+                    newAnswer.setQuestion(newQuestion);
+                }
+            }
+
+            res.status(201).send("Created");
+        })
+        .catch(error => {
+            console.log(error);
+            res.status(400).send("Bad Request");
+        })
 }

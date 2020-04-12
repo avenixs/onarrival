@@ -18,6 +18,9 @@ router.get("/assign", isAdmin, enterprise.getAssignCoursePage);
 // /assign => POST
 router.post("/assign", isAdmin, enterprise.assignCourse);
 
+// /view => GET
+router.get("/view", isAdmin, enterprise.getViewCoursesPage);
+
 // /chapters/add => GET
 router.get("/chapters/add", leader.getAddChapterPage);
 

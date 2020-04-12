@@ -4,6 +4,7 @@ const router = express.Router();
 
 const VocabExercise = require("../models/vocab-exercise");
 const StudyMaterial = require("../models/study-material");
+const ComprehensionEx = require("../models/comprehension-exercise");
 const Word = require("../models/word");
 
 router.param('vocExChapterId', function(req, res, next, vocExChapterId) {
@@ -23,11 +24,19 @@ router.param('learnVocabExId', function(req, res, next, learnVocabExId) {
 });
 
 router.param('studyChapterId', function(req, res, next, studyChapterId) {
-    console.log(studyChapterId);
     StudyMaterial.findAll({ where: { ChapterId: studyChapterId } })
         .then(materials => {
-            console.log(materials);
             req.studyMaterials = materials;
+            next();
+        })
+        .catch(error => { console.log(error); })
+});
+
+router.param('comprehensionChapterId', function(req, res, next, comprehensionChapterId) {
+    ComprehensionEx.findAll({ where: { ChapterId: comprehensionChapterId } })
+        .then(exercises => {
+            req.chapterID = comprehensionChapterId;
+            req.exercises = exercises;
             next();
         })
         .catch(error => { console.log(error); })
@@ -56,5 +65,26 @@ router.use("/download-material", student.downloadMaterial);
 
 // /:studyChapterId/materials => GET
 router.get("/:studyChapterId/materials", student.getMaterialsPage);
+
+// /:comprehensionChapterId/comprehension => GET
+router.get("/:comChapId/comprehension/:compExId", student.viewComprehension);
+
+// /:comprehensionChapterId/comprehension => GET
+router.get("/:comprehensionChapterId/comprehension", student.getComprehensionPage);
+
+// /:resultChapterId/results => GET
+router.get("/:resultChapterId/results", student.getResultsInChapter);
+
+// /get-audio => GET
+router.get("/get-audio", student.getAudio);
+
+// /get-text-translation => GET
+router.get("/get-text-translation", student.getTranslation);
+
+// /get-test-questions => GET
+router.get("/get-test-questions", student.getTestQuestions);
+
+// /save-test-result => GET
+router.get("/save-test-result", student.saveTestResult);
 
 module.exports = router;

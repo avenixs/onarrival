@@ -282,15 +282,24 @@ exports.addNewStudent = async (req, res, next) => {
 };
 
 
-exports.getViewRepresentativesPage = (req, res, next) => {
+exports.getViewRepresentativesPage = async (req, res, next) => {
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
-    res.render("panel/view-leaders", {
-        pageTitle: "View Your Course Leaders",
-        isAdmin: req.session.isAdmin,
-        isLeader: req.session.isLeader,
-        success: req.query.success,
-        accountData: accountData
-    });
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+
+    EnterpriseUser.findAll({ where: { CompanyId: req.session.companyId } })
+        .then(leaders => {
+            res.render("panel/view-leaders", {
+                pageTitle: "View Your Course Leaders",
+                isAdmin: req.session.isAdmin,
+                isLeader: req.session.isLeader,
+                accountData: accountData,
+                company: company,
+                user: user,
+                leaders: leaders
+            });
+        })
+        .catch(error => { console.log(error); })
 };
 
 exports.getEditAccountPage = async (req, res, next) => {
@@ -342,8 +351,101 @@ exports.updateUserDetails = async (req, res) => {
 
 exports.getCurrentCompanyName = async (req, res) => {
     const company = await Company.findOne({ where: { id: req.session.companyId } });
-    console.log(company.name);
     res.status(201).json({
         name: company.name
     });
-}
+};
+
+exports.disableLeader = async (req, res) => {
+    const leader = await EnterpriseUser.findOne({ where: { id: req.query.id } });
+    leader.disabled = 1;
+    await leader.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableLeader = async (req, res) => {
+    const leader = await EnterpriseUser.findOne({ where: { id: req.query.id } });
+    leader.disabled = 0;
+    await leader.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.disableStudent = async (req, res) => {
+    const student = await StudentUser.findOne({ where: { id: req.query.id } });
+    student.disabled = 1;
+    await student.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableStudent = async (req, res) => {
+    const student = await StudentUser.findOne({ where: { id: req.query.id } });
+    student.disabled = 0;
+    await student.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.getViewStudentsPage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+
+    StudentUser.findAll({ where: { CompanyId: req.session.companyId }, include: [Course] })
+        .then(students => {
+            res.render("panel/view-students", {
+                pageTitle: "View Your Students",
+                isAdmin: req.session.isAdmin,
+                isLeader: req.session.isLeader,
+                accountData: accountData,
+                company: company,
+                user: user,
+                students: students
+            });
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.disableCourse = async (req, res) => {
+    const course = await Course.findOne({ where: { id: req.query.id } });
+    course.disabled = 1;
+    await course.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableCourse = async (req, res) => {
+    const course = await Course.findOne({ where: { id: req.query.id } });
+    course.disabled = 0;
+    await course.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.getViewCoursesPage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const company = await Company.findOne({ where: { id: req.session.companyId } });
+
+    Course.findAll({ where: { CompanyId: req.session.companyId } })
+        .then(courses => {
+            res.render("panel/view-courses", {
+                pageTitle: "View Your Courses",
+                isAdmin: req.session.isAdmin,
+                isLeader: req.session.isLeader,
+                accountData: accountData,
+                company: company,
+                user: user,
+                courses: courses
+            });
+        })
+        .catch(error => { console.log(error); })
+};

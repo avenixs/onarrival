@@ -111,6 +111,7 @@ $("#addQbtn").click(event => {
 })
 
 $("#submitButton").click(async event => {
+    // if any of input fields is empty if(())
     $("#window-cover").append('<div class="spinner-border text-light" role="status"><span class="sr-only">Loading...</span></div>');
     $("#window-cover").css({ "display": "flex", "align-items": "center", "justify-content": "center"} );
     event.preventDefault();
@@ -129,21 +130,74 @@ $("#submitButton").click(async event => {
                 file: fileName
             };
 
+            let qs = $("#questionsForEx").children();
+            let questions = [];
+            for(let i=0; i<questionCount; i++){
+                let answers = [];
+                for(let a=0; a<qs[i].children.length; a++) {
+                    if(qs[i].children[a].className == "answerLine") {
+                        if(!(qs[i].children[a].children[0].value == "")) {
+                            let answer = {
+                                text: qs[i].children[a].children[0].value,
+                                corrent: qs[i].children[a].children[1].checked ? true : false
+                            };
+                            answers.push(answer);
+                        } else { }
+                    }
+                }
+                let question = {
+                    questionEng: qs[i].children[1].children[0].value,
+                    questionFor: qs[i].children[1].children[1].value,
+                    answers: JSON.stringify(answers)
+                };
+
+                questions.push(question);
+            };
+
+            let dataToSend = {
+                form: formDetails,
+                questions: questions
+            };
+
             $.ajax({
-                url: "/enterprise/exercises/comprehension/add-article",
+                url: "/enterprise/exercises/comprehension/add-comprehension",
                 method: "GET",
-                data: formDetails,
+                data: dataToSend,
                 success: (data) => {
-                    $("#window-cover").css("display", "none");
+                    $(".spinner-border").remove();
+                    $("#window-cover").append('<img src="/media/icons/ajax-tick.png" alt="Success">');
+                    setTimeout(() => {
+                        window.scrollTo(0, 0);
+                        location.reload();
+                    }, 400);
                 }
             });
         }
     };
     var fd = new FormData();
-    fd.append("audio_data", currentBlob, "recording");
-    xhr.open("POST", "/enterprise/exercises/comprehension/upload-recording", true);
-    xhr.send(fd);
-})
+    try {
+        fd.append("audio_data", currentBlob, "recording");
+        xhr.open("POST", "/enterprise/exercises/comprehension/upload-recording", true);
+        xhr.send(fd);
+    } catch(error) { 
+        alert("There is no recording added!");
+    }
+});
+
+const resetForm = () => {
+    /*
+    $("#questionsForEx").empty();
+    $("#listOfRecordings").empty();
+    $(".deleteRecording").remove();
+    $("#recordingButton").prop("disabled", false);
+    $(".mce-content-body").empty();
+    $(".form-control").val("");
+    questionCount = 0;
+    $("#queCount").text("No questions added");
+    $("html, body").animate({ scrollTop: "0" }); */
+    window.scrollTo(0, 0);
+    location.reload();
+};
 
 getCompanyName();
 

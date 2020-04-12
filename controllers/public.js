@@ -75,3 +75,10 @@ exports.sendContactRequest = (req, res, next) => {
         })
         .catch(error => { console.log(error); })
 };
+
+exports.disabledCourse = (req, res, next) => {
+    res.render("disabled-course", {
+        pageTitle: "Your Course Is Disabled",
+        isLoggedIn: req.session.isLoggedIn
+    });
+};

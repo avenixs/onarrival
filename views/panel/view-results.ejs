@@ -1,0 +1,42 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <%- include("../includes/student-bar.ejs") %>
+
+    <div class="course-content" id="result-presentation">
+        <h3 id="page-title">Your results in this chapter</h3>
+        <p>Pass for results of at least 50%</p>
+        <table class="table table-striped results-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Your Score</th>
+                    <th scope="col">Max Score</th>
+                    <th scope="col">Percent</th>
+                </tr>
+            </thead>
+            <tbody class="table-with-ex">
+        <% for(let i=0; i<results.length; i++) { %>
+            <% let scorePercent = eval(eval(results[i][1].pointsReceived)/eval(results[i][1].pointsMax)*100); %>
+                <tr <%- scorePercent>=50 ? 'class="pass-row"' : 'class="fail-row"' %> >
+                    <td><%= eval(i+1) %></td>
+                    <td><%= results[i][0] %></td>
+                    <td><%= results[i][1].pointsReceived %></td>
+                    <td><%= results[i][1].pointsMax %></td>
+                    <td><%= eval(eval(results[i][1].pointsReceived)/eval(results[i][1].pointsMax)*100) + "%" %></td>
+                </tr>
+        <% }; %>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+</body>
+</html>

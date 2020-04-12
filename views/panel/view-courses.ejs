@@ -1,0 +1,51 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="title-decor" id="vex-title">View Your Courses</h2>
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Language</th>
+                        <th scope="col">Difficulty</th>
+                        <th scope="col">Disable</th>
+                    </tr>
+                </thead>
+                <tbody class="table-with-ex">
+            <% for(let i=0; i<courses.length; i++) { %>
+                    <tr class="<%- courses[i].disabled ? 'disabled-row' : '' %>">
+                        <td><%= eval(i+1) %></td>
+                        <td><%= courses[i].title %></td>
+                        <td><%= courses[i].language %></td>
+                        <td><%= courses[i].difficulty %></td>
+                        <% if(courses[i].disabled) { %>
+                        <td><button class="btn btn-success enable-user" value="<%= courses[i].id %>">Enable</button></td>
+                        <% } else { %>
+                        <td><button class="btn btn-warning disable-user" value="<%= courses[i].id %>">Disable</button></td>
+                        <% } %>
+                    </tr>
+            <% }; %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/view-courses.js"></script>
+
+</body>
+</html>

@@ -8,6 +8,11 @@ body {
     font-family: "Amiri", "Times New Roman", serif;
 }
 
+#page-title {
+    margin: 1.5rem 0;
+    font-size: 1.5rem;
+}
+
 #page-footer {
     font-family: "Playfair Display SC", "Times New Roman", serif;
     background: #fafafa;
@@ -928,6 +933,7 @@ h1 {
 
 audio {
     width: 22rem !important;
+    min-height: 4rem;
 }
 
 .deleteRecording {
@@ -997,7 +1003,142 @@ audio {
     padding: 1rem;
 }
 
+.success-tick {
+    opacity: 0;
+}
+
+#comprehension-window {
+    display: flex;
+    flex-direction: column;
+}
+
+.reading-text {
+    padding: 1.5rem;
+    width: 100%;
+}
+
+.reading-text h2 {
+    font-family: "Playfair Display SC", serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.listening-text {
+    display: flex;
+    padding: 1.5rem;
+    width: 100%;
+    align-items: center;
+    flex-direction: column;
+}
+
+.listening-text button {
+    margin-bottom: 1rem;
+}
+
+.listening-text audio {
+    margin-bottom: 1rem;
+}
+
+.compreh-box {
+    margin: 1rem;
+    padding: 0.75rem;
+    background: #fafafa;
+    border-radius: 15px;
+    box-shadow: 1px 1px 2px -1px rgba(0,0,0,0.75);
+    font-size: 0.85rem;
+    overflow-y: auto;
+    overflow-wrap: break-word;
+    min-height: 60%;
+    width: 100%;
+}
+
+.spin-btn {
+    margin: -1rem 0 0 0.5rem;
+}
+
+#text-questions {
+    display: none;
+}
+
+.answer-line label {
+    margin-left: 1rem;
+}
+
+#text-questions button {
+    margin-top: 2rem;
+}
+
+.result-popup {
+    width: 90% !important;
+    height: 60% !important;
+    top: 20% !important;
+    left: 5% !important;
+}
+
+#correct-questions {
+    margin: 1rem 0;
+}
+
+#save-results {
+    margin: 1rem 0;
+}
+
+#result-presentation p {
+    margin: 1rem auto;
+    text-align: center;
+}
+
+.pass-row {
+    background: #9dd4a2 !important;
+}
+
+.fail-row {
+    background: #f5aeae !important;
+}
+
+.disabled-row {
+    background: #6a6a6a !important;
+}
+
+.popup-message {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
 @media (min-width: 768px) {
+    .results-table {
+        width: 60% !important;
+        margin: 1rem auto !important;
+    }
+
+    .result-popup {
+        width: 40% !important;
+        height: 40% !important;
+        top: 30% !important;
+        left: 30% !important;
+    }
+    
+    .reading-text {
+        width: 60%;
+        transition: 0.3s ease-in-out;
+    }
+
+    .listening-text {
+        width: 40%;
+    }
+
+    .reading-text:hover {
+        background: #fafafa;
+    }
+
+    #comprehension-window {
+        flex-direction: row;
+    }
+
     #questionsForEx {
         width: 90%;
     }

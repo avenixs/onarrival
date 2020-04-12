@@ -49,8 +49,8 @@ router.get("/comprehension/add", leader.getAddReadingExercisePage);
 // /comprehension/manage => GET
 router.get("/comprehension/manage", leader.manageReadingExercises);
 
-// /comprehension/add-article => GET
-router.get("/comprehension/add-article", leader.addNewArticle);
+// /comprehension/add-comprehension => GET
+router.get("/comprehension/add-comprehension", leader.addNewComprehension);
 
 // /comprehension/upload-recording => POST
 router.post("/comprehension/upload-recording", upload.any(), leader.uploadRecording);

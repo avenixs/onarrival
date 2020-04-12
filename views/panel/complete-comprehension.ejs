@@ -1,0 +1,37 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div id="learning-words-page">
+        <%- include("../includes/student-bar.ejs") %>
+
+        <div class="course-content" id="comprehension-window">
+            <% if(!(exercise.isCompleted)) { %>
+            <div class="reading-text">
+                <input type="hidden" id="exerciseId" value="<%= exercise.id %>">
+                <h2><%- exercise.name %></h2>
+                <%- exercise.textEng %>
+            </div>
+            <div class="listening-text" id="listening-text">
+                <button class="btn btn-success" id="play-audio">Play audio</button>
+                <button class="btn btn-warning" id="check-translation">View translation</button>
+                <button class="btn btn-dark" id="answer-questions">Answer questions</button>
+            </div>
+            <% } else { %>
+                <h2>This exercise has already been completed!</h2>
+            <% }; %>
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/complete-comprehension.js"></script>
+
+</body>
+</html>
