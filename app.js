@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 
 // Import of packages used in the entry file
-const fs = require(fs);
+const fs = require("fs");
 const sequelize = require("./utils/db");
 const session = require('express-session');
 const path = require('path');
