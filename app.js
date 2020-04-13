@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config()
 
 // Import of packages used in the entry file
+const fs = require(fs);
 const sequelize = require("./utils/db");
 const session = require('express-session');
 const path = require('path');
@@ -75,6 +76,12 @@ StudentUser.belongsTo(Company);
 StudyMaterial.belongsTo(Chapter);
 Score.belongsTo(StudentUser);
 Score.belongsTo(ComprehensionExercise);
+
+try {
+    fs.mkdirSync(path.join(__dirname, 'public', "recordings"))
+} catch(error) {
+    console.log(error);
+}
 
 // This is a dynamic port allocation for Heroku deployment
 const PORT = process.env.PORT || 3025;
