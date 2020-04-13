@@ -7,6 +7,8 @@ const Question = require("../models/question");
 const Answer = require("../models/answer");
 const Score = require("../models/score");
 
+const path = require('path');
+
 const aws = require('aws-sdk');
 const S3_BUCKET = process.env.S3_BUCKET_NAME;
 aws.config = {
@@ -190,7 +192,7 @@ exports.getAudio = async (req, res) => {
     ComprehensionEx.findOne({ where: { id: req.query.id } })
         .then(exercise => {
 
-            var fstream = fs.createWriteStream(__dirname + "/public/recordings/" + exercise.file);
+            var fstream = fs.createWriteStream(path.join(__dirname, '..', '..', "public", "recordings", exercise.file));
             var s3fstream = s3.getObject({Bucket: S3_BUCKET, Key: exercise.file}).createReadStream();
 
             s3fstream.on('error', error => {
