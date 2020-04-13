@@ -190,7 +190,7 @@ exports.getAudio = async (req, res) => {
     ComprehensionEx.findOne({ where: { id: req.query.id } })
         .then(exercise => {
 
-            var fstream = fs.createWriteStream("/public/recordings/" + exercise.file);
+            var fstream = fs.createWriteStream(exercise.file);
             var s3fstream = s3.getObject({Bucket: S3_BUCKET, Key: exercise.file}).createReadStream();
 
             s3fstream.on('error', error => {
