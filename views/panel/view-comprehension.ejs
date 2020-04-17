@@ -8,8 +8,9 @@
 
     <div class="course-content" id="exercise-presentation">
         <% for(let i=0; i<exercises.length; i++) { %>
+            <% if(!(exercises[i].disabled)) { %>
                 <div class="exercise-bw">
-                    <% if(exercises[i].isCompleted) { %>
+                    <% if(completed.includes(exercises[i].id)) { %>
                     <figure class="function-button">
                         <img src="/media/icons/thick-tick.png" class="figure-img img-fluid rounded" alt="Learn">
                         <figcaption class="figure-caption"><%= exercises[i].name %></figcaption>
@@ -25,6 +26,7 @@
                     </a>
                     <% }; %>
                 </div>
+            <% }; %>
         <% }; %>
     </div>
 

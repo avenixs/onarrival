@@ -4,7 +4,10 @@ const Course = require("../models/course");
 const StudentUser = require("../models/student-user");
 const Score = require("../models/score");
 const ComprehensionExercise = require("../models/comprehension-exercise");
+const Verification = require("../models/verification");
+
 const bcrypt = require("bcryptjs");
+const cryptoRandomString = require('crypto-random-string');
 
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -50,7 +53,7 @@ exports.registerCompanyUser = (req, res, next) => {
     EnterpriseUser.findOne({ where: { email: req.body.adminEmail } })
         .then(async user => {
             if(user != null) {
-                return res.redirect("/register?unique-email=false");
+                return res.redirect("/register?success=false");
             }
 
             const newCompany = await Company.create({
@@ -67,12 +70,26 @@ exports.registerCompanyUser = (req, res, next) => {
                 name: req.body.adminName,
                 surname: req.body.adminSurname,
                 department: req.body.adminDep,
-                isAdmin: 1
+                isAdmin: 1,
+                disabled: 1
             })
-                .then(entUser => {
+                .then(async entUser => {
                     entUser.setCompany(newCompany);
 
-                    return res.redirect("/register?success=true");
+                    res.redirect("/register?success=true");
+
+                    let verifString = cryptoRandomString({ length: 14 });
+                    await Verification.create({ EnterpriseUserId: entUser.id, VerificationCode: verifString });
+
+                    const msg = {
+                        to: entUser.email,
+                        from: "contact@onarrival.uk",
+                        subject: "OnArrivalUK - Verify your email address",
+                        text: "Dear " + entUser.name + ", Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <a href='https://onarrival.uk/verify/" + verifString + "' target='_blank'>https://onarrival.uk/verify/" + verifString + "</a> Have a lovely day, OnArrivalUK",
+                        html: "Dear " + entUser.name + ", <br /><br />Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <br /><br /><a href='https://onarrival.uk/verify/" + verifString + "' target='_blank'>https://onarrival.uk/verify/" + verifString + "</a><br /><br />Have a lovely day, OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
+                    }
+        
+                    return sgMail.send(msg);
                 })
                 .catch(error => {
                     console.log(error);
@@ -496,4 +513,36 @@ exports.getStudentResults = async (req, res, next) => {
                 .catch(error => { console.log(error); res.status(500); })
         })
         .catch(error => { console.log(error); res.status(500); })
+};
+
+exports.confirmLeaderUnique = async (req, res) => {
+    EnterpriseUser.findAll({ where: { email: req.body.email } })
+        .then(users => {
+            if(users.length == 0) {
+                res.status(200).json({
+                    unique: true
+                });
+            } else {
+                res.status(200).json({
+                    success: false
+                });
+            }
+        })
+        .catch(error => { console.log(error); })
+};
+
+exports.confirmStudentUnique = async (req, res) => {
+    StudentUser.findAll({ where: { email: req.body.email } })
+        .then(users => {
+            if(users.length == 0) {
+                res.status(200).json({
+                    unique: true
+                });
+            } else {
+                res.status(200).json({
+                    success: false
+                });
+            }
+        })
+        .catch(error => { console.log(error); })
 };

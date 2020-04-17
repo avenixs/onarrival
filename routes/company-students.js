@@ -25,4 +25,7 @@ router.get("/results", enterprise.getStudentResultsPage);
 // /get-student-results => POST
 router.post("/get-student-results", enterprise.getStudentResults);
 
+// /confirm-unique-email => POST
+router.post("/confirm-unique-email", enterprise.confirmStudentUnique);
+
 module.exports = router;

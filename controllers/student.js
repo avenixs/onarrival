@@ -156,7 +156,14 @@ exports.downloadMaterial = async (req, res) => {
 exports.getComprehensionPage = async (req, res) => {
     const company = await Company.findOne({ where: { id: req.session.company.id } });
     const user = await StudentUser.findOne({ where: { id: req.session.userId } });
-    
+
+    const score = await Score.findAll({ where: { StudentUserId: user.id } });
+    let compExCompleted = [];
+
+    score.forEach((result, i) => {
+        compExCompleted.push(result.ComprehensionExerciseId);
+    });
+
     res.render("panel/view-comprehension", {
         pageTitle: "View Comprehension Exercises",
         path: "/student/chapters/" + req.chapterID + "/comprehension",
@@ -164,7 +171,8 @@ exports.getComprehensionPage = async (req, res) => {
         user: user,
         course: req.session.course,
         chapters: req.session.chapters,
-        exercises: req.exercises
+        exercises: req.exercises,
+        completed: compExCompleted
     });
 };
 
@@ -173,8 +181,15 @@ exports.viewComprehension = async (req, res) => {
     const user = await StudentUser.findOne({ where: { id: req.session.userId } });
 
     const exercise = await ComprehensionEx.findOne({ where: { id: req.params.compExId } });
+
+    const score = await Score.findAll({ where: { StudentUserId: user.id } });
+    let compExCompleted = [];
+
+    score.forEach((result, i) => {
+        compExCompleted.push(result.ComprehensionExerciseId);
+    });
     
-    if(exercise.isCompleted) {
+    if(compExCompleted.includes(exercise.id)) {
         res.redirect("/student/panel");
     } else {
         res.render("panel/complete-comprehension", {

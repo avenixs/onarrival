@@ -1,0 +1,82 @@
+<%- include("includes/head.ejs") %>
+</head>
+
+<body onload="showModal()">
+    <nav class="navbar sticky-top navbar-expand-md navbar-light bg-light" id="main-navbar">
+        <a class="navbar-brand" href="/">
+            <div class="page-header">
+                <h1>Language on Arrival</h1>
+                <img src="/media/onarrival-gray.png" alt="Language on Arrival Logo">
+            </div>
+        </a>
+        <button class="navbar-toggler ml-auto" data-toggle="collapse" data-target="#navigation" id="nav-toggler">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="nav-container">
+            <div class="collapse navbar-collapse" id="navigation">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:support@onarrival.uk">Support</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="verifModal" tabindex="-1" role="dialog" aria-labelledby="verifModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="verifModalLabel">Success</h5>
+                </div>
+                <div class="modal-body">
+                    <img src="/media/icons/tick.png" alt="Tick Icon" >
+                    <p>You have successfully verified your email address. You can now log in.</p>
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-success" href="/login/company" style="color: white !important">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="company-login-form">
+        <div class="transparent-form" id="login-form-container">
+            <h2 class="title-decor">Login as an Enterprise</h2>
+            <form method="POST" action="/login/company">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" class="form-control" id="loginEmail" name="loginEmail" aria-describedby="emailHelp" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input type="password" class="form-control" id="loginPass" name="loginPass" disabled>
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-dark" id="login-button" disabled>Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+     
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("includes/end.ejs") %>
+
+    <script>
+        function showModal() {
+            $("#verifModal").modal("show");
+        };
+    </script>
+
+</body>
+</html>

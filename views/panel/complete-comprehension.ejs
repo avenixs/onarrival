@@ -8,7 +8,7 @@
         <%- include("../includes/student-bar.ejs") %>
 
         <div class="course-content" id="comprehension-window">
-            <% if(!(exercise.isCompleted)) { %>
+            <% if(!(exercise.disabled)) { %>
             <div class="reading-text">
                 <input type="hidden" id="exerciseId" value="<%= exercise.id %>">
                 <h2><%- exercise.name %></h2>
@@ -20,7 +20,7 @@
                 <button class="btn btn-dark" id="answer-questions">Answer questions</button>
             </div>
             <% } else { %>
-                <h2>This exercise has already been completed!</h2>
+                <h2>This exercise has been disabled and cannot be completed at this time!</h2>
             <% }; %>
         </div>
     </div>

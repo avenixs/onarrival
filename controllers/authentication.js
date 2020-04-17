@@ -4,6 +4,7 @@ const StudentUser = require("../models/student-user");
 const Company = require("../models/company");
 const Course = require("../models/course");
 const Chapter = require("../models/chapter");
+const Verification = require("../models/verification");
 
 exports.authenticateEnterpriseLogin = (req, res, next) => {
     const emailToLogin = req.body.loginEmail;
@@ -97,4 +98,39 @@ exports.userLogout = (req, res, next) => {
     req.session.destroy(err => {
         res.redirect("/");
     });
+};
+
+exports.verifyEmail = (req, res, next) => {
+    Verification.findOne({ where: { VerificationCode: req.params.verifCode } })
+        .then(ver => {
+            if(ver) {
+                EnterpriseUser.findOne({ where: { id: ver.EnterpriseUserId } })
+                    .then(user => {
+                        if(user) {
+                            user.disabled = 0;
+                            user.save();
+
+                            ver.destroy();
+                            
+                            return res.render("verification-page", {
+                                pageTitle: "Successful Email Verification",
+                                publicPath: "/",
+                                success: true
+                            });
+                        } else {
+                            return res.redirect("/register");
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        return res.redirect("/register");
+                    })
+            } else {
+                return res.redirect("/register");
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            return res.redirect("/register");
+        })
 };

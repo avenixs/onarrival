@@ -48,7 +48,7 @@
                             <input type="text" class="form-control" id="dep" name="dep" required>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="form-row" id="email-row">
                         <div class="form-group col-md-4">
                             <label for="email">Course Leader's Email</label>
                             <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="form-row">
-                        <button type="submit" class="btn btn-dark" style="margin: 0 auto;">Add</button>
+                        <button type="submit" class="btn btn-dark" style="margin: 0 auto;" id="add-btn" disabled>Add</button>
                     </div>
                 </form>
             </div>
@@ -77,7 +77,7 @@
 
     <%- include("../includes/end.ejs") %>
 
-    <script src="/scripts/common.js"></script>
+    <script src="/scripts/add-leader.js"></script>
 
 </body>
 </html>

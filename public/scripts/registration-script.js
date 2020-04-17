@@ -1,6 +1,7 @@
 // When page loads, both conditions are false
 let passwordOverChar = false;
 let passwordMatch = false;
+let uniqueEmail = false;
 
 // Function that verifies password length and checks 
 // if the Register button can be enabled
@@ -33,7 +34,7 @@ const confirmPassMatch = () => {
 };
 
 const enableButton = () => {
-    if(passwordOverChar && passwordMatch) {
+    if(passwordOverChar && passwordMatch && uniqueEmail) {
         $("#register-button").prop("disabled", false);
         $("#register-button").css("cursor", "pointer");
     } else {
@@ -52,6 +53,28 @@ $("#repeatPassword").keyup(() => {
     confirmPassLength();
     confirmPassMatch();
     enableButton();
+});
+
+$("#adminEmail").change(() => {
+    $("#register-button").append('<div class="btn-spin spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>');
+
+    $.ajax({
+        url: "/register/confirm-unique-email",
+        method: "POST",
+        data: { email: $("#adminEmail").val() },
+        success: received => {
+            console.log(received);
+            $(".spinner-border").remove();
+            if(received.unique) {
+                uniqueEmail = true;
+                enableButton();
+            } else {
+                uniqueEmail = false;
+                alert("This email address is already in use!")
+                enableButton();
+            }
+        }
+    })
 });
 
 function showModal() {

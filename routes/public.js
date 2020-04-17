@@ -12,6 +12,12 @@ const isLoggedIn = require("../middleware/logged-in");
 
 const router = express.Router();
 
+// /verify/:verifCode => GET
+router.get("/verify/:verifCode", authorise.verifyEmail);
+
+// /verify => GET
+router.get("/verify", (res) => { res.redirect("/login/company"); });
+
 // /enterprise
 router.use("/enterprise", notLoggedIn, enterpriseRoutes);
 
@@ -32,6 +38,9 @@ router.get("/login/student", isLoggedIn, public.getLoginStudentPage);
 
 // /login/company => POST
 router.post("/login/student", authorise.authenticateStudentLogin);
+
+// /register => POST
+router.post("/register/confirm-unique-email", enterprise.confirmLeaderUnique);
 
 // /register => GET
 router.get("/register", isLoggedIn, public.getRegistrationPage);
