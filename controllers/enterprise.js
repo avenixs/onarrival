@@ -85,8 +85,8 @@ exports.registerCompanyUser = (req, res, next) => {
                         to: entUser.email,
                         from: "contact@onarrival.uk",
                         subject: "OnArrivalUK - Verify your email address",
-                        text: "Dear " + entUser.name + ", Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <a href='https://onarrival.uk/verify/" + verifString + "' target='_blank'>https://onarrival.uk/verify/" + verifString + "</a> Have a lovely day, OnArrivalUK",
-                        html: "Dear " + entUser.name + ", <br /><br />Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <br /><br /><a href='https://onarrival.uk/verify/" + verifString + "' target='_blank'>https://onarrival.uk/verify/" + verifString + "</a><br /><br />Have a lovely day, OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
+                        text: "Dear " + entUser.name + ", Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a> Have a lovely day, OnArrivalUK",
+                        html: "Dear " + entUser.name + ", <br /><br />Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <br /><br /><a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a><br /><br />Have a lovely day, OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
                     }
         
                     return sgMail.send(msg);
