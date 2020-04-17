@@ -1,0 +1,71 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="title-decor" id="vex-title">Manage Comprehension Exercises</h2>
+
+            <% for(let i=0; i<chapters.length; i++) { %>
+                <% let countExercises = 0; %>
+                <% for(let e=0; e<exercises.length; e++) { %>
+                    <% if(exercises[e].ChapterId == chapters[i].id) { %>
+                        <% countExercises++; %>
+                    <% }; %>
+                <% }; %>
+            <% if(countExercises > 0) { %>
+            <h3 class="vex-chapter-title"><%= chapters[i].title %></h3>
+            <table class="table table-striped voc-ex-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" style="width: 5%">#</th>
+                        <th scope="col" style="width: 30%">Title</th>
+                        <th scope="col" style="width: 30%">Description</th>
+                        <th scope="col" style="width: 8%">View</th>
+                        <th scope="col" style="width: 8%">Edit</th>
+                        <th scope="col" style="width: 8%">Questions</th>
+                        <th scope="col" style="width: 8%">Disable</th>
+                    </tr>
+                </thead>
+                <tbody class="table-with-ex">
+                    <% let count=0; %>
+                    <% for(let e=0; e<exercises.length; e++) { %>
+                        <% if(exercises[e].ChapterId == chapters[i].id) { %>
+                            <% count++; %>
+                    <tr class="<%- exercises[e].disabled ? 'disabled-row' : '' %>">
+                        <td><%= count %></td>
+                        <td><%= exercises[e].name %></td>
+                        <td><%= exercises[e].description %></td>
+                        <td><a role="button" class="btn btn-light" id="<%= 'view-ex' + e %>" target="_blank" href="./view/<%= exercises[e].id %>">View</a></td>
+                        <td><a role="button" class="btn btn-info" id="<%= 'edit-ex' + e %>" target="_blank" href="./edit/<%= exercises[e].id %>">Edit</a></td>
+                        <td><a role="button" class="btn btn-secondary" id="<%= 'edit-ex' + e %>" target="_blank" href="./edit-questions/<%= exercises[e].id %>">Edit</a></td>
+                        <% if(exercises[e].disabled) { %>
+                        <td><button class="btn btn-success enable-ex" value="<%= exercises[e].id %>">Enable</button></td>
+                        <% } else { %>
+                        <td><button class="btn btn-warning disable-ex" value="<%= exercises[e].id %>">Disable</button></td>
+                        <% } %>
+                    </tr>
+                        <% }; %>
+                    <% }; %>
+                </tbody>
+            </table>
+            <% }; %>
+            <% }; %>
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/manage-compreh-list.js"></script>
+
+</body>
+</html>

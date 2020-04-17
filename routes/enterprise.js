@@ -63,6 +63,12 @@ router.get("/disable-course", enterprise.disableCourse);
 // /enable-course => GET
 router.get("/enable-course", enterprise.enableCourse);
 
+// /disable-comprehension-ex => GET
+router.get("/disable-comprehension-ex", enterprise.disableCompEx);
+
+// /enable-comprehension-ex => GET
+router.get("/enable-comprehension-ex", enterprise.enableCompEx);
+
 // /account/edit => GET
 router.get("/account/edit", enterprise.getEditAccountPage);
 

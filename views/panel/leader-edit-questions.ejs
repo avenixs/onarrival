@@ -1,0 +1,72 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="modal fade" id="editQueModal" tabindex="-1" role="dialog" aria-labelledby="editQueModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editQueModalLabel">Success</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <img src="/media/icons/tick.png" alt="Tick Icon" >
+                        <p>You have successfully edited the comprehension exercise's questions. You can close this tab or introduce more changes.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Dismiss</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="course-content">
+            <div class="transparent-form" id="comprehension-container">
+                <h2 class="title-decor">Edit Questions of a Comprehension Exercise</h2>
+                <input type="hidden" id="exId" value="<%= exercise.id %>">
+                <div id="questionsForEx">
+                <% for(let i=0; i<questions.length; i++) { %>
+                    <div class="questionAdded leaderEditQue" style="margin: 2rem auto">
+                        <div class="queDelLine">
+                            <h3>Edit question:</h3>
+                        </div>
+                        <div class="queRow">
+                            <input type="text" class="form-control" id="queEng' + questionCount + '" placeholder="Question in English..." value="<%= questions[i][0].questionEnglish.replace(/\'/g, "&apos;") %>">
+                            <input type="text" class="form-control" id="queFor' + questionCount + '" placeholder="Translated question..." value="<%= questions[i][0].questionForeign.replace(/\'/g, "&apos;") %>">
+                            <input type="hidden" value="<%= questions[i][0].id %>">
+                        </div>
+                        <% for(let a=0; a<questions[i][1].length; a++) { %>
+                        <div class="answerLine">
+                            <input type="text" class="form-control answerInput" placeholder="Answer" value="<%= questions[i][1][a].answerEnglish.replace(/\'/g, "&apos;") %>">
+                            <input type="checkbox" <%- questions[i][1][a].isCorrect == 1 ? 'checked' : '' %>>Correct?
+                            <input type="hidden" value="<%= questions[i][1][a].id %>">
+                        </div>
+                        <% }; %>
+                    </div>
+                <% }; %>
+            </div>
+
+            <div class="center-row">
+                <button class="btn btn-success" id="queSaveChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="window-cover"></div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/leader-edit-questions.js"></script>
+
+</body>
+</html>

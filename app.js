@@ -79,9 +79,7 @@ Score.belongsTo(ComprehensionExercise);
 
 try {
     fs.mkdirSync(path.join(__dirname, 'public', "recordings"))
-} catch(error) {
-    console.log(error);
-}
+} catch(error) {  }
 
 // This is a dynamic port allocation for Heroku deployment
 const PORT = process.env.PORT || 3025;

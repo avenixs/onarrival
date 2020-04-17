@@ -27,7 +27,8 @@ exports.getLoginStudentPage = (req, res, next) => {
 exports.getRegistrationPage = (req, res, next) => {
     res.render("registration-page", {
         pageTitle: "Registration",
-        isLoggedIn: req.session.isLoggedIn
+        isLoggedIn: req.session.isLoggedIn,
+        success: req.query.success
     });
 };
 

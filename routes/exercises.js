@@ -47,12 +47,27 @@ router.get("/vocab/remove-word", leader.removeWords);
 router.get("/comprehension/add", leader.getAddReadingExercisePage);
 
 // /comprehension/manage => GET
-router.get("/comprehension/manage", leader.manageReadingExercises);
+router.get("/comprehension/manage", leader.manageComprehensionExercises);
 
 // /comprehension/add-comprehension => GET
 router.get("/comprehension/add-comprehension", leader.addNewComprehension);
 
 // /comprehension/upload-recording => POST
 router.post("/comprehension/upload-recording", upload.any(), leader.uploadRecording);
+
+// /comprehension/view/:id => GET
+router.get("/comprehension/view/:id", leader.viewComprehensionExercise);
+
+// /comprehension/edit/:id => GET
+router.get("/comprehension/edit/:id", leader.editComprehensionExercise);
+
+// /comprehension/edit/:id => POST
+router.post("/comprehension/edit/:id", leader.saveEditComprehExercise);
+
+// /comprehension/edit-questions/:id => GET
+router.get("/comprehension/edit-questions/:id", leader.editComExQuestionsPage);
+
+// /comprehension/save-edited-questions => POST
+router.get("/comprehension/save-edited-questions", leader.saveEditedComQuestions);
 
 module.exports = router;

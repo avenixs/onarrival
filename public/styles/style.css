@@ -8,6 +8,18 @@ body {
     font-family: "Amiri", "Times New Roman", serif;
 }
 
+a.btn-info {
+    color: white !important;
+}
+
+a.btn-secondary {
+    color: white !important;
+}
+
+.btn-spin {
+    margin-left: 0.75rem;
+}
+
 #page-title {
     margin: 1.5rem 0;
     font-size: 1.5rem;
@@ -436,10 +448,6 @@ h1 {
     font-family: "Playfair Display SC", serif;
 }
 
-.course-content {
-    overflow: auto;
-}
-
 #panel-form {
     margin-top: 0.75rem;
 }
@@ -451,6 +459,10 @@ h1 {
     z-index: 10;
     max-height: 20%;
     overflow: scroll;
+}
+
+.course-content {
+    overflow-y: auto;
 }
 
 .bar-link {
@@ -1109,7 +1121,45 @@ audio {
     justify-content: center;
 }
 
+#results-table {
+    width: 90%;
+    margin: 2rem auto 1rem auto;
+}
+
+.res-spin {
+    margin: 2rem auto;
+}
+
+#results-info {
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.leaderEditQue {
+    width: 100%;
+}
+
+.leaderEditQue input {
+    margin: 0.5rem;
+}
+
+.center-row {
+    margin: 1.5rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
 @media (min-width: 768px) {
+    .leaderEditQue {
+        width: 70%;
+    }
+
+    #results-table {
+        width: 75%;
+    }
+
     .results-table {
         width: 60% !important;
         margin: 1rem auto !important;

@@ -31,6 +31,11 @@ const ComprehensionExercise = sequelize.define('ComprehensionExercise', {
     file: {
         type: Sequelize.STRING,
         allowNull: true
+    },
+    disabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
     }
 });
 

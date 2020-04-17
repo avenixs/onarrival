@@ -139,7 +139,7 @@ $("#submitButton").click(async event => {
                         if(!(qs[i].children[a].children[0].value == "")) {
                             let answer = {
                                 text: qs[i].children[a].children[0].value,
-                                corrent: qs[i].children[a].children[1].checked ? true : false
+                                correct: qs[i].children[a].children[1].checked ? true : false
                             };
                             answers.push(answer);
                         } else { }
@@ -174,11 +174,11 @@ $("#submitButton").click(async event => {
             });
         }
     };
-    var fd = new FormData();
+    let formData = new FormData();
     try {
-        fd.append("audio_data", currentBlob, "recording");
+        formData.append("audio_data", currentBlob, "recording");
         xhr.open("POST", "/enterprise/exercises/comprehension/upload-recording", true);
-        xhr.send(fd);
+        xhr.send(formData);
     } catch(error) { 
         alert("There is no recording added!");
     }

@@ -19,4 +19,10 @@ router.post("/enrol", enterprise.enrolStudent);
 // /view => GET
 router.get("/view", enterprise.getViewStudentsPage);
 
+// /results => GET
+router.get("/results", enterprise.getStudentResultsPage);
+
+// /get-student-results => POST
+router.post("/get-student-results", enterprise.getStudentResults);
+
 module.exports = router;

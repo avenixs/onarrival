@@ -53,3 +53,7 @@ $("#repeatPassword").keyup(() => {
     confirmPassMatch();
     enableButton();
 });
+
+function showModal() {
+    $("#registeredModal").modal("show");
+};

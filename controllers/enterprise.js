@@ -2,6 +2,8 @@ const EnterpriseUser = require("../models/enterprise-user");
 const Company = require("../models/company");
 const Course = require("../models/course");
 const StudentUser = require("../models/student-user");
+const Score = require("../models/score");
+const ComprehensionExercise = require("../models/comprehension-exercise");
 const bcrypt = require("bcryptjs");
 
 const sgMail = require("@sendgrid/mail");
@@ -46,7 +48,7 @@ exports.getPanelPage = async (req, res, next) => {
 
 exports.registerCompanyUser = (req, res, next) => {
     EnterpriseUser.findOne({ where: { email: req.body.adminEmail } })
-        .then(async function(user) {
+        .then(async user => {
             if(user != null) {
                 return res.redirect("/register?unique-email=false");
             }
@@ -165,6 +167,20 @@ exports.getEnrolStudentPage = async (req, res, next) => {
         success: req.query.success,
         students: students,
         courses: courses,
+        accountData: accountData
+    });
+};
+
+exports.getStudentResultsPage = async (req, res, next) => {
+    const students = await StudentUser.findAll({ where: { CompanyId: req.session.companyId } });
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    res.render("panel/student-results", {
+        pageTitle: "View Students' Results",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        students: students,
         accountData: accountData
     });
 };
@@ -430,6 +446,24 @@ exports.enableCourse = async (req, res) => {
     });
 };
 
+exports.disableCompEx = async (req, res) => {
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.query.id } });
+    exercise.disabled = 1;
+    await exercise.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableCompEx = async (req, res) => {
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.query.id } });
+    exercise.disabled = 0;
+    await exercise.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
 exports.getViewCoursesPage = async (req, res, next) => {
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
     const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
@@ -448,4 +482,18 @@ exports.getViewCoursesPage = async (req, res, next) => {
             });
         })
         .catch(error => { console.log(error); })
+};
+
+exports.getStudentResults = async (req, res, next) => {
+    StudentUser.findOne({ where: { id: req.body.id } })
+        .then(student => {
+            Score.findAll({ where: { StudentUserId: student.id }, include: [ComprehensionExercise] })
+                .then(results => {
+                    res.status(200).json({
+                        results: results
+                    });
+                })
+                .catch(error => { console.log(error); res.status(500); })
+        })
+        .catch(error => { console.log(error); res.status(500); })
 };

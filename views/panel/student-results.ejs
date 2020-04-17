@@ -1,0 +1,51 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <h2 class="title-decor" id="vex-title">View Your Students' Results</h2>
+
+            <div class="form-row panel-row">
+                <div class="form-group col-md-4">
+                    <label for="resultsOfStudent">Check the grades obtained by...</label>
+                    <select class="form-control" id="resultsOfStudent" name="resultsOfStudent">
+                            <option selected disabled> </option>
+                        <% for(let i=0; i<students.length; i++) { %>
+                            <option value="<%= students[i].id %>"><%= students[i].name + " " + students[i].surname %></option>
+                        <% }; %>
+                    </select>
+                </div>
+            </div>
+
+            <table class="table table-striped" id="results-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Exercise</th>
+                        <th scope="col">Score</th>
+                        <th scope="col">Percent</th>
+                    </tr>
+                </thead>
+                <tbody id="results-rows">
+                </tbody>
+            </table>
+
+            <div id="results-info"></div>
+
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/view-results.js"></script>
+
+</body>
+</html>

@@ -1,8 +1,31 @@
 <%- include("includes/head.ejs") %>
 </head>
 
-<body>
+<body onload="showModal()">
     <%- include("includes/navigation.ejs") %>
+
+    <% if(!(success==null)) { %>
+        <div class="modal fade" id="registeredModal" tabindex="-1" role="dialog" aria-labelledby="registeredModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registeredModalLabel"><%= (success=='true') ? "Success" : "Error occurred!" %></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <img src="/media/icons/<%= (success=='true') ? 'tick.png' : 'error.png' %>" alt="Tick Icon" >
+                    <p><%= (success=='true') ? "You have been registered successfully. You can now log in!" : "There has been an error while adding a course! Please try registering again or contact support!" %></p>
+                </div>
+                <div class="modal-footer">
+                    <a role="button" class="btn btn-success" href="/login/company" style="color: white!important;">Log in</a>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+    <% } %>
     
     <div id="registration-page">
         <div class="transparent-form">

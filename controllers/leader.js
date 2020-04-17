@@ -268,7 +268,7 @@ exports.getAddReadingExercisePage = async (req, res, next) => {
     }); 
 };
 
-exports.manageReadingExercises = async (req, res, next) => {
+exports.manageComprehensionExercises = async (req, res, next) => {
     const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
     const course = await Course.findOne({ where: { id: user.CourseId } });
 
@@ -276,8 +276,8 @@ exports.manageReadingExercises = async (req, res, next) => {
     const allComprehEx = await ComprehensionExercise.findAll({ where: { EnterpriseUserId: user.id } })
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
-    res.render("panel/manage-vocab-ex", {
-        pageTitle: "Manage Vocabulary Exercises",
+    res.render("panel/manage-compreh-ex", {
+        pageTitle: "Manage Comprehension Exercises",
         isAdmin: req.session.isAdmin,
         isLeader: req.session.isLeader,
         success: req.query.success,
@@ -350,4 +350,135 @@ exports.addNewComprehension = async (req, res) => {
             console.log(error);
             res.status(400).send("Bad Request");
         })
-}
+};
+
+exports.viewComprehensionExercise = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.params.id } });
+
+    res.render("panel/leader-view-comprehension", {
+        pageTitle: "View The Comprehension Exercise",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        accountData: accountData,
+        exercise: exercise
+    }); 
+};
+
+exports.editComprehensionExercise = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.params.id } });
+
+    res.render("panel/leader-edit-comprehension", {
+        pageTitle: "Edit a Comprehension Exercise",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        course: course,
+        chapters: allChapters,
+        accountData: accountData,
+        exercise: exercise
+    }); 
+};
+
+exports.saveEditComprehExercise = async (req, res, next) => {
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.params.id } });
+    const fileToDelete = exercise.file;
+
+    exercise.ChapterId = req.body.chapterSelected;
+    exercise.name = req.body.title;
+    exercise.description = req.body.description;
+    exercise.textEng = req.body.textEng;
+    exercise.textFor = req.body.textFor;
+
+    if(!(req.body.audioFileName == "")) {
+        exercise.file = req.body.audioFileName;
+    };
+
+    exercise.save();
+
+    res.redirect("/enterprise/exercises/comprehension/edit/" + req.params.id + "?success=true");
+
+    if(!(req.body.audioFileName == "")) {
+        const s3 = new aws.S3();
+        const params = {
+            Bucket: S3_BUCKET,
+            Key: fileToDelete
+        };
+
+        return s3.deleteObject(params, function(err, data) {
+            if (err) console.log(err, err.stack);
+            else     console.log(data);
+        });
+    };
+};
+
+exports.editComExQuestionsPage = async (req, res, next) => {
+    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    const course = await Course.findOne({ where: { id: user.CourseId } });
+
+    const allChapters = await Chapter.findAll({ where: { CourseId: course.id } })
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    const exercise = await ComprehensionExercise.findOne({ where: { id: req.params.id } });
+
+    Question.findAll({ where: { ComprehensionExerciseId: exercise.id } })
+        .then(async questions => {
+            let questionsWithAnswers = [];
+            for(let i=0; i<questions.length; i++) {
+                let answers = await Answer.findAll({ where: { QuestionId: questions[i].id } });
+                let queWithAns = [questions[i], answers];
+                questionsWithAnswers.push(queWithAns);
+            }
+
+            res.render("panel/leader-edit-questions", {
+                pageTitle: "Edit Questions of a Comprehension Exercise",
+                isAdmin: req.session.isAdmin,
+                isLeader: req.session.isLeader,
+                success: req.query.success,
+                course: course,
+                chapters: allChapters,
+                accountData: accountData,
+                exercise: exercise,
+                questions: questionsWithAnswers
+            }); 
+        })
+        .catch(error => {
+            console.log(error);
+        })
+};
+
+exports.saveEditedComQuestions = async (req, res, next) => {
+
+    let questions = req.query.questions;
+    for(let i=0; i<questions.length; i++) {
+        let que = await Question.findOne({ where: { id: questions[i].id } });
+        que.questionEnglish = questions[i].questionEng;
+        que.questionForeign = questions[i].questionFor;
+        que.save();
+
+        let answers = JSON.parse(questions[i].answers);
+
+        for(let a=0; a<answers.length; a++) {
+            let ans = await Answer.findOne({ where: { id: answers[a].id } });
+            ans.answerEnglish = answers[a].text;
+            ans.isCorrect = answers[a].correct == true ? 1 : 0;
+            ans.save();
+        }
+    };
+
+    res.status("200").json({ success: true });
+};
