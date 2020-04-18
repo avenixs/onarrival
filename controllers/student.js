@@ -6,6 +6,7 @@ const Word = require("../models/word");
 const Question = require("../models/question");
 const Answer = require("../models/answer");
 const Score = require("../models/score");
+const Recognition = require("../models/recognition");
 
 const path = require('path');
 
@@ -107,17 +108,31 @@ exports.learningVocabEx = async (req, res, next) => {
 };
 
 exports.findExerciseWords = async (req, res, next) => {
-    const words = await Word.findAll({ where: { VocabExerciseId: req.query.id, isRemembered: 0 } });
+    let remainingWords = [];
+    const wordsRemembered = await Recognition.findAll({ where: { StudentUserId: req.session.userId } });
+    const words = await Word.findAll({ where: { VocabExerciseId: req.query.id } });
+    let IDsRemembered = [];
+
+    for(let i=0; i<wordsRemembered.length; i++) {
+        IDsRemembered.push(wordsRemembered[i].WordId);
+    }
+    
+    for(let i=0; i<words.length; i++) {
+        if(!(IDsRemembered.includes(words[i].id))) {
+            remainingWords.push(words[i]);
+        }
+    }
 
     res.status(201).json({
-        words: words
+        words: remainingWords
     });
 };
 
 exports.setWordRemembered = async (req, res, next) => {
-    const word = await Word.findOne({ where: { id: req.query.id } });
-    word.isRemembered = 1;
-    word.save();
+    await Recognition.create({ 
+        WordId: req.query.id,
+        StudentUserId: req.session.userId
+    });
 
     res.status(201).json({
         remembered: true
@@ -180,7 +195,7 @@ exports.viewComprehension = async (req, res) => {
     const company = await Company.findOne({ where: { id: req.session.company.id } });
     const user = await StudentUser.findOne({ where: { id: req.session.userId } });
 
-    const exercise = await ComprehensionEx.findOne({ where: { id: req.params.compExId } });
+    const exercise = await ComprehensionEx.findOne({ where: { id: req.params.compExId } });   
 
     const score = await Score.findAll({ where: { StudentUserId: user.id } });
     let compExCompleted = [];
@@ -303,4 +318,12 @@ exports.getResultsInChapter = async (req, res) => {
             });
         })
         .catch(error => { console.log(error); })
-}
+};
+
+exports.getFullName = async (req, res, next) => {
+    const student = await StudentUser.findOne({ where: { id: req.session.userId } });
+
+    res.status(201).json({
+        fullName: student.name + " " + student.surname
+    });
+};

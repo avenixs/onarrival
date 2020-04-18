@@ -43,7 +43,7 @@
                 <form action="/enterprise/exercises/comprehension/add" method="POST" id="comprehension-form">
                     <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="chapterSelecter">Select the chapter...</label>
+                            <label for="chapterSelecter">Select the chapter... <span style='color: #8F0C0C'>&#8727;</span></label>
                             <select class="form-control" id="chapterSelected" name="chapterSelected">
                                 <% for(let i=0; i<chapters.length; i++) { %>
                                 <option value="<%= chapters[i].id %>"><%= chapters[i].title %></option>
@@ -53,11 +53,11 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-4">
-                            <label for="title">Exercise Title</label>
+                            <label for="title">Exercise Title <span style='color: #8F0C0C'>&#8727;</span></label>
                             <input type="text" class="form-control" name="title" id="title" required>
                         </div>
                         <div class="form-group col-md-8">
-                            <label for="description">Short description</label>
+                            <label for="description">Short description <span style='color: #8F0C0C'>&#8727;</span></label>
                             <input type="text" class="form-control" name="description" id="description" required>
                         </div>
                     </div>

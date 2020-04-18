@@ -7,6 +7,7 @@
     <%- include("../includes/student-bar.ejs") %>
 
     <div class="course-content" id="main-student-panel">
+        <p style="width: 100%; float: left; margin: 0 1rem;">Hello, <b id="name-surname"></b>!</p>
         <img src="/media/icons/welcome.png" alt="Welcome">
         <p>You can select <b>chapters</b> from the menu bar on the left.</p>
         <p>In each chapter, you will find <b>learning resources</b> and a number of <b>exercises</b>.</p>
@@ -18,6 +19,17 @@
     <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
 
     <%- include("../includes/end.ejs") %>
+
+    <script>
+        $.ajax({
+            url: "/student/get-full-name",
+            method: "GET",
+            data: {},
+            success: data => {
+                $("#name-surname").text(data.fullName);
+            }
+        })
+    </script>
 
 </body>
 </html>

@@ -86,7 +86,7 @@ $("#start-btn").click(() => {
                                     wordIDs.splice(count, 1);
                                     if((count == wordsEng.length) && (wordsEng != 0)) { count = 0 };
                                     if(wordsEng == 0) {
-                                        $("#learning-words-window").append("<div class='word-presentation'><img src='/media/icons/confetti.png' id='confetti'><p class='main-word'>Congratulations!</p><p class='sentence-presentation'>You have completed this exercise.</p><a href='../' class='btn btn-success'>Back</a></div>");
+                                        $("#learning-words-window").append("<div class='word-presentation'><img src='/media/icons/confetti.png' id='confetti'><p class='main-word'>Congratulations!</p><p class='sentence-presentation'>You have completed this exercise.</p><a href='../../vocab' class='btn btn-success'>Back</a></div>");
                                     } else {
                                         $("#learning-words-window").append("<div class='word-presentation' id='word-in-eng'><p class='main-word'>" + wordsEng[count] + "</p><p class='sentence-presentation'>" + sentencesEng[count] + "</p></div>");
                                     }

@@ -42,7 +42,7 @@ $(".add-btn").click(event => {
     let exId = event.originalEvent.toElement.value;
 
     $("body").append("<div id='popup-window'><div id='top-stripe'><p id='close-popup'>&#10005;</p></div>" + 
-    "<div id='window-words'><p id='word-counter'>" + wordCount + " new words added</p><h2>ADD A NEW WORD</h2><form id='add-word-form'><div class='form-row'><div class='form-group col-md-6'><label for='wordEng'>Word in English</label><input type='text' class='form-control' name='wordEng' id='wordEng' required></div><div class='form-group col-md-6'><label for='wordForeign'>Translation</label><input type='text' class='form-control' name='wordForeign' id='wordForeign' required></div></div><div class='form-row'><div class='form-group col-md-12'><label for='exSentEng'>Example Sentence in English</label><textarea class='form-control' row='1' name='exSentEng' id='exSentEng' required></textarea></div></div><div class='form-row'><div class='form-group col-md-12'><label for='exSentForeign'>Translated Example Sentence</label><textarea class='form-control' row='1' name='exSentForeign' id='exSentForeign' required></textarea></div></div><button type='button' id='submit-word-button' class='btn btn-success'>Save</button></form></div>");
+    "<div id='window-words'><p id='word-counter'>" + wordCount + " new words added</p><h2>ADD A NEW WORD</h2><form id='add-word-form'><div class='form-row'><div class='form-group col-md-6'><label for='wordEng'>Word in English <span style='color: #8F0C0C'>&#8727;</span></label><input type='text' class='form-control' name='wordEng' id='wordEng' required></div><div class='form-group col-md-6'><label for='wordForeign'>Translation <span style='color: #8F0C0C'>&#8727;</span></label><input type='text' class='form-control' name='wordForeign' id='wordForeign' required></div></div><div class='form-row'><div class='form-group col-md-12'><label for='exSentEng'>Example Sentence in English <span style='color: #8F0C0C'>&#8727;</span></label><textarea class='form-control' row='1' name='exSentEng' id='exSentEng' required></textarea></div></div><div class='form-row'><div class='form-group col-md-12'><label for='exSentForeign'>Translated Example Sentence <span style='color: #8F0C0C'>&#8727;</span></label><textarea class='form-control' row='1' name='exSentForeign' id='exSentForeign' required></textarea></div></div><button type='button' id='submit-word-button' class='btn btn-success'>Save</button></form></div>");
     
     $("#window-words").css("justify-content", "flex-start");
     $("#window-cover").css("display", "unset");
@@ -63,28 +63,31 @@ $(".add-btn").click(event => {
             vocabExId: exId
         };
 
-        console.log(newAddedWord);
-
-        $.ajax({
-            url: "/enterprise/exercises/vocab/add-word",
-            method: "GET",
-            data: newAddedWord,
-            success: data => {
-                let success = data.success;
-                
-                if(success) {
-                    document.getElementById("add-word-form").reset();
-                    $("#adding-spinner").remove();
-
-                    wordCount++;
-                    if(wordCount==1) {
-                        $("#word-counter").text(wordCount + " new word added");
-                    } else {
-                        $("#word-counter").text(wordCount + " new words added");
+        if(newAddedWord.wordEng == "" || newAddedWord.wordFor == "" || newAddedWord.exSentEng == "" || newAddedWord.exSentForeign == "") {
+            $("#adding-spinner").remove();
+            alert("Please fill in all the fields to add a new word!");
+        } else {
+            $.ajax({
+                url: "/enterprise/exercises/vocab/add-word",
+                method: "GET",
+                data: newAddedWord,
+                success: data => {
+                    let success = data.success;
+                    
+                    if(success) {
+                        document.getElementById("add-word-form").reset();
+                        $("#adding-spinner").remove();
+    
+                        wordCount++;
+                        if(wordCount==1) {
+                            $("#word-counter").text(wordCount + " new word added");
+                        } else {
+                            $("#word-counter").text(wordCount + " new words added");
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
     }); 
 });
 
@@ -148,7 +151,6 @@ $(".edit-btn").click(event => {
 
                 $("#" + ourButton).parent().append("<div id='update-word-spinner' class='spinner-border text-dark' role='status'><span class='sr-only'>Loading...</span></div>");
 
-                console.log(formColumns);
                 const wordUpdate = {
                     wordId: formColumns[4].childNodes[0].value,
                     wordEng: formColumns[0].childNodes[0].value,
@@ -157,16 +159,19 @@ $(".edit-btn").click(event => {
                     sentFor: formColumns[3].childNodes[0].value
                 };
 
-                console.log(wordUpdate);
-
-                $.ajax({
-                    url: "/enterprise/exercises/vocab/update-word",
-                    method: "GET",
-                    data: wordUpdate,
-                    success: function(data){
-                        $(".spinner-border").remove();
-                    }
-                });
+                if(wordUpdate.wordEng == "" || wordUpdate.wordForeign == "" || wordUpdate.sentEng == "" || wordUpdate.sentFor == "") {
+                    $(".spinner-border").remove();
+                    alert("Please fill in all the fields of the word.");
+                } else {
+                    $.ajax({
+                        url: "/enterprise/exercises/vocab/update-word",
+                        method: "GET",
+                        data: wordUpdate,
+                        success: function(data){
+                            $(".spinner-border").remove();
+                        }
+                    });
+                }
             })
         }
     });

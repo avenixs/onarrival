@@ -23,5 +23,27 @@
 
     <%- include("includes/end.ejs") %>
 
+    <script>
+        $(document).ready(() => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            try {
+                const active = urlParams.get('active');
+                if(active == "false") {
+                    setTimeout(() => {
+                        alert("Your have not yet been enroled to any course. Please contact your employer.");
+                    }, 100);
+                }
+
+                const disabled = urlParams.get('disabled');
+                if(disabled == "true") {
+                    setTimeout(() => {
+                        alert("Your account has been disabled. Please contact your employer for more information.");
+                    }, 100);
+                }
+            } catch(error) { }
+            });
+    </script>
+
 </body>
 </html>

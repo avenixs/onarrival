@@ -36,7 +36,7 @@
                 <form action="/enterprise/exercises/vocab/add" method="POST">
                     <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="chapterSelecter">Select the chapter...</label>
+                            <label for="chapterSelecter">Select the chapter... <span style='color: #8F0C0C'>&#8727;</span></label>
                             <select class="form-control" id="chapterSelected" name="chapterSelected">
                                 <% for(let i=0; i<chapters.length; i++) { %>
                                 <option value="<%= chapters[i].id %>"><%= chapters[i].title %></option>
@@ -46,11 +46,11 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="name">Exercise Title</label>
+                            <label for="name">Exercise Title <span style='color: #8F0C0C'>&#8727;</span></label>
                             <input type="text" class="form-control" name="name" id="name" required>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="level">Level</label>
+                            <label for="level">Level <span style='color: #8F0C0C'>&#8727;</span></label>
                             <select class="form-control" name="level" id="level">
                                 <option value="Beginner" selected>Beginner</option>
                                 <option value="Intermediate">Intermediate</option>
@@ -58,7 +58,7 @@
                             </select>
                         </div>
                         <div class="form-group col-md-3">
-                            <label for="type">Type</label>
+                            <label for="type">Type <span style='color: #8F0C0C'>&#8727;</span></label>
                             <select class="form-control" name="type" id="type">
                                 <option value="Learning" selected>Learning</option>
                             </select>
@@ -66,7 +66,7 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-12">
-                            <label for="description">Description</label>
+                            <label for="description">Description <span style='color: #8F0C0C'>&#8727;</span></label>
                             <textarea class="form-control" name="description" id="description" row="2" placeholder="Describe in a few words what vocabulary will be added..." required></textarea>
                         </div>
                     </div>
