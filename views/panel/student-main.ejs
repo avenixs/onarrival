@@ -28,7 +28,20 @@
             success: data => {
                 $("#name-surname").text(data.fullName);
             }
-        })
+        });
+
+        $(document).ready(() => {
+            const queryString = window.location.search;
+            const urlParams = new URLSearchParams(queryString);
+            try {
+                const disabled = urlParams.get('disabled');
+                if(disabled == "true") {
+                    setTimeout(() => {
+                        alert("The exercise you tried to access has been disabled. Please contact your employer for more information.");
+                    }, 100);
+                }
+            } catch(error) { }
+            });
     </script>
 
 </body>

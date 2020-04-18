@@ -97,6 +97,10 @@ exports.learningVocabEx = async (req, res, next) => {
     const user = await StudentUser.findOne({ where: { id: req.session.userId } });
     const exercise = await VocabExercise.findOne({ where: { id: req.exId } });
 
+    if(exercise.disabled) {
+        return res.redirect("/student/panel?disabled=true");
+    };
+
     res.render("panel/learning-ex-words", {
         pageTitle: "Quiz Exercises",
         company: company,

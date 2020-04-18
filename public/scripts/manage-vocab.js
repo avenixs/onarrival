@@ -15,7 +15,6 @@ $(".view-btn").click(event => {
         data: exerciseId,
         success: function(data){
             let wordList = data.words;
-            console.log(wordList);
 
             let table = '<h2>WORD LIST</h2><table class="table table-striped"><thead><tr><th scope="col">#</th><th scope="col">Word</th><th scope="col">Translation</th><th scope="col">Example Sentence</th></tr></thead><tbody>';
 
@@ -199,3 +198,44 @@ const getCompanyName = () => {
 };
 
 getCompanyName();
+
+const disableEx = event => {
+    $.ajax({
+        url: "/enterprise/disable-vocab-ex",
+        method: "GET",
+        data: { id: event.target.value },
+        success: () => {
+            event.target.parentNode.parentNode.classList.toggle("disabled-row");
+            let newButton = document.createElement("button");
+            newButton.classList = "btn btn-success enable-ex";
+            newButton.value = event.target.value;
+            newButton.innerHTML = "Enable";
+            event.target.parentNode.appendChild(newButton);
+            event.target.remove();
+
+            $(".enable-ex").click(enableEx);
+        }
+    });
+};
+
+const enableEx = event => {
+    $.ajax({
+        url: "/enterprise/enable-vocab-ex",
+        method: "GET",
+        data: { id: event.target.value },
+        success: () => {
+            event.target.parentNode.parentNode.classList.remove("disabled-row");
+            let newButton = document.createElement("button");
+            newButton.classList = "btn btn-warning disable-ex";
+            newButton.value = event.target.value;
+            newButton.innerHTML = "Disable";
+            event.target.parentNode.appendChild(newButton);
+            event.target.remove();
+
+            $(".disable-ex").click(disableEx);
+        }
+    });
+};
+
+$(".disable-ex").click(disableEx);
+$(".enable-ex").click(enableEx);

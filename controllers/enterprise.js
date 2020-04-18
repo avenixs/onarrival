@@ -4,6 +4,7 @@ const Course = require("../models/course");
 const StudentUser = require("../models/student-user");
 const Score = require("../models/score");
 const ComprehensionExercise = require("../models/comprehension-exercise");
+const VocabularyExercise = require("../models/vocab-exercise");
 const Verification = require("../models/verification");
 
 const bcrypt = require("bcryptjs");
@@ -474,6 +475,24 @@ exports.disableCompEx = async (req, res) => {
 
 exports.enableCompEx = async (req, res) => {
     const exercise = await ComprehensionExercise.findOne({ where: { id: req.query.id } });
+    exercise.disabled = 0;
+    await exercise.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.disableVocabEx = async (req, res) => {
+    const exercise = await VocabularyExercise.findOne({ where: { id: req.query.id } });
+    exercise.disabled = 1;
+    await exercise.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableVocabEx = async (req, res) => {
+    const exercise = await VocabularyExercise.findOne({ where: { id: req.query.id } });
     exercise.disabled = 0;
     await exercise.save();
     res.status(200).json({

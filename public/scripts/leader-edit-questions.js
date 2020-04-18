@@ -17,7 +17,6 @@ $("#queSaveChanges").click(event => {
     $("#queSaveChanges").append('<div class="btn-spin spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>');
 
     let qs = $("#questionsForEx").children();
-    console.log(qs);
     let questions = [];
     for(let i=0; i<qs.length; i++){
         let answers = [];

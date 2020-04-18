@@ -28,6 +28,11 @@ const VocabExercise = sequelize.define('VocabExercise', {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: 0
+    },
+    disabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
     }
 });
 

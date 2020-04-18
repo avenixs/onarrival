@@ -38,7 +38,7 @@
                     <% for(let e=0; e<exercises.length; e++) { %>
                         <% let ctn = 1; %>
                         <% if(exercises[e].ChapterId == chapters[i].id) { %>
-                    <tr>
+                    <tr class="<%- exercises[e].disabled ? 'disabled-row' : '' %>" >
                         <td><%= ctn %></td>
                         <td><%= exercises[e].name %></td>
                         <td><%= exercises[e].level %></td>
@@ -47,7 +47,11 @@
                         <td><button type="button" class="view-btn btn btn-dark" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">View</button></td>
                         <td><button type="button" class="add-btn btn btn-success" id="<%= 'add-words' + e %>" value="<%= exercises[e].id %>">Add</button></td>
                         <td><button type="button" class="edit-btn btn btn-light" id="<%= 'view-words' + e %>" value="<%= exercises[e].id %>">Edit</button></td>
-                        <td><button type="button" class="btn btn-warning" id="<%= 'disable-ex' + e %>" value="<%= exercises[e].id %>">Disable</button></td>
+                        <% if(exercises[e].disabled) { %>
+                        <td><button class="btn btn-success enable-ex" value="<%= exercises[e].id %>">Enable</button></td>
+                        <% } else { %>
+                        <td><button class="btn btn-warning disable-ex" value="<%= exercises[e].id %>">Disable</button></td>
+                        <% } %>
                     </tr>
                         <% ctn++; %>
                         <% }; %>

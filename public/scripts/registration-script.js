@@ -63,7 +63,6 @@ $("#adminEmail").change(() => {
         method: "POST",
         data: { email: $("#adminEmail").val() },
         success: received => {
-            console.log(received);
             $(".spinner-border").remove();
             if(received.unique) {
                 uniqueEmail = true;

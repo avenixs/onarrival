@@ -69,7 +69,6 @@ const answerQuestions = () => {
                     for(let a=0; a<ansToQ.length; a++) {
                         if(ansToQ[a].getAttribute("class") == "answer-line") {
                             let answToCheck = ansToQ[a].children[0];
-                            console.log([answToCheck.checked, answToCheck.value]);
                             if((answToCheck.checked == true && answToCheck.value == "false") || (answToCheck.checked == false && answToCheck.value == "true")) {
                                 score = 0;
                             }

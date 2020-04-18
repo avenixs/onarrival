@@ -69,6 +69,12 @@ router.get("/disable-comprehension-ex", enterprise.disableCompEx);
 // /enable-comprehension-ex => GET
 router.get("/enable-comprehension-ex", enterprise.enableCompEx);
 
+// /disable-vocab-ex => GET
+router.get("/disable-vocab-ex", enterprise.disableVocabEx);
+
+// /enable-vocab-ex => GET
+router.get("/enable-vocab-ex", enterprise.enableVocabEx);
+
 // /account/edit => GET
 router.get("/account/edit", enterprise.getEditAccountPage);
 

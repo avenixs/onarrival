@@ -97,7 +97,7 @@ $("#start-btn").click(() => {
                                 url: "/student/chapters/set-word-remembered",
                                 method: "GET",
                                 data: shownWordId,
-                                success: data => { console.log("Remembered"); }
+                                success: data => { }
                             });
                         });
 
