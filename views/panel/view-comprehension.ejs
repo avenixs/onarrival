@@ -7,6 +7,12 @@
     <%- include("../includes/student-bar.ejs") %>
 
     <div class="course-content" id="exercise-presentation">
+        <% if(exercises.length == 0) { %>
+            <div class="no-exercises">
+                <img src="/media/icons/cancel.png" alt="Stop">
+                <p>No exercises available for this chapter</p>
+            </div>
+        <% }; %>
         <% for(let i=0; i<exercises.length; i++) { %>
             <% if(!(exercises[i].disabled)) { %>
                 <div class="exercise-bw">

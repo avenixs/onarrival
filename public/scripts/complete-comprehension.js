@@ -91,6 +91,24 @@ const answerQuestions = () => {
                         $("#popup-window").remove();
                         $("#window-cover").css("display", "none");
                     });
+
+                    $("#save-results").click(() => {
+                        $("#correct-questions").remove();
+                        $("#save-results").append('<div class="btn-spin spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>');
+                        $("#window-words").append("<p id='saving-res'>Saving your results...</p>");
+
+                        $.ajax({
+                            url: "/student/chapters/save-test-result",
+                            method: "GET",
+                            data: { id: $("#exerciseId").val(), maxScore: maxScore, totalScore: totalScore },
+                            success: received => {
+                                $("#saving-res").remove();
+                                $("#window-words").append("<p id='saving-res'>Results saved!</p>");
+                                
+                                setTimeout(() => {window.location.replace("/student/panel")}, 900);
+                            }
+                        });
+                    });
                 } else {
                     $("#window-words").append("<p id='saving-res'>Saving your results...</p>");
 

@@ -737,7 +737,9 @@ h1 {
 }
 
 #exercise-presentation {
-    display: inline;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .exercise-bw {
@@ -752,6 +754,7 @@ h1 {
 }
 
 #learning-words-window {
+    padding-top: 2rem;
     min-height: 30rem;
     display: flex;
     flex-direction: column;
@@ -860,7 +863,7 @@ h1 {
 }
 
 .word-presentation {
-    padding: 5%;
+    padding: 4.5%;
     text-align: center;
 }
 
@@ -876,6 +879,7 @@ h1 {
 }
 
 .correct-btns {
+    align-items: center;
     margin-top: 3rem;
     margin-bottom: 2rem;
     display: flex;
@@ -886,6 +890,17 @@ h1 {
 .correct-btns img {
     width: 4rem;
     cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.correct-btns img:hover {
+    transform: scale(1.1);
+}
+
+.word-left-count {
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 1rem;
 }
 
 #confetti {
@@ -1152,7 +1167,28 @@ audio {
     justify-content: center;
 }
 
+.no-exercises {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.no-exercises img {
+    margin: 0.75rem;
+    width: 3rem;
+}
+
+.no-exercises p {
+    margin: 0;
+}
+
 @media (min-width: 768px) {
+    #exercise-presentation {
+        display: inline;
+    }
+
     .leaderEditQue {
         width: 70%;
     }
@@ -1242,7 +1278,9 @@ audio {
     }
 
     #learning-words-window {
-        overflow: hidden;
+        overflow-x: auto;
+        cursor: pointer;
+        padding-top: 0;
     }
 
     #ex-info {

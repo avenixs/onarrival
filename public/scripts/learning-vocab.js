@@ -40,7 +40,8 @@ $("#start-btn").click(() => {
 
                 $("#learning-words-window").click(() => {
                     if((!($("#learning-words-window").children().length > 1)) && (wordsEng.length > 0)) {
-                        $("#learning-words-window").append("<div class='word-presentation' id='word-in-for'><input type='hidden' id='shown-word-id' value='" + wordIDs[count] + "'><p class='main-word'>" + wordsFor[count] + "</p><p class='sentence-presentation'>" + sentencesFor[count] + "</p></div><div class='correct-btns'><img src='/media/icons/dislike.png' alt='Incorrect' id='incorrect-word'><img src='/media/icons/like.png' alt='Correct' id='correct-word'></div>");
+                        let countMsg = eval(wordsEng.length - 1) == 1 ? "more <br />word" : "more <br />words";
+                        $("#learning-words-window").append("<div class='word-presentation' id='word-in-for'><input type='hidden' id='shown-word-id' value='" + wordIDs[count] + "'><p class='main-word'>" + wordsFor[count] + "</p><p class='sentence-presentation'>" + sentencesFor[count] + "</p></div><div class='correct-btns'><img src='/media/icons/dislike.png' alt='Incorrect' id='incorrect-word'><p class='word-left-count'>" + eval(wordsEng.length-1) + " " + countMsg + "</p><img src='/media/icons/like.png' alt='Correct' id='correct-word'></div>");
 
                         $("#incorrect-word").click(() => {
                             document.getElementById("incorrect-word").animate([{ transform: "scale(1)" }, { transform: "scale(1.5)" }], 150);
@@ -50,7 +51,7 @@ $("#start-btn").click(() => {
 
                             setTimeout(() => { 
                                 $("#incorrect-word").remove();
-                                document.getElementById("learning-words-window").animate([{ transform: "scale(1) rotate(0deg)" }, { transform: "scale(0) rotate(140deg)" }], 600);
+                                document.getElementById("learning-words-window").animate([{ transform: "scale(1) rotate(0deg)" }, { transform: "scale(0) rotate(-140deg)" }], 600);
                             }, 350);
                             
                             setTimeout(() => { 

@@ -7,8 +7,10 @@
     <%- include("../includes/student-bar.ejs") %>
 
     <div class="course-content" id="exercise-presentation">
+        <% let count = 0; %>
         <% for(let i=0; i<vocabEx.length; i++) { %>
             <% if(!(vocabEx[i].disabled)) { %>
+                <% count++; %>
                 <div class="exercise-bw">
                     <a href="learn/<%= vocabEx[i].id %>">
                         <figure class="function-button">
@@ -19,6 +21,12 @@
                     </a>
                 </div>
             <% }; %>
+        <% }; %>
+        <% if(count == 0) { %>
+            <div class="no-exercises">
+                <img src="/media/icons/cancel.png" alt="Stop">
+                <p>No exercises available for this chapter</p>
+            </div>
         <% }; %>
     </div>
 
