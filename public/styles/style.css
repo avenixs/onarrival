@@ -1278,7 +1278,7 @@ audio {
     }
 
     #learning-words-window {
-        overflow-x: auto;
+        overflow-y: auto;
         cursor: pointer;
         padding-top: 0;
     }
