@@ -9,6 +9,7 @@ const getCompanyName = () => {
     });
 };
 
+// This function disables a comprehension exercise
 const disableCompEx = event => {
     $.ajax({
         url: "/enterprise/disable-comprehension-ex",

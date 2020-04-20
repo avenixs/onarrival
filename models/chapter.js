@@ -23,6 +23,11 @@ const Chapter = sequelize.define('Chapter', {
     theme: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    disabled: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: 0
     }
 });
 

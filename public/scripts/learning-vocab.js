@@ -108,4 +108,8 @@ $("#start-btn").click(() => {
             });
         }
     });
-})
+});
+
+const submitPDF = () => {
+    $("#formPDF").submit();
+}

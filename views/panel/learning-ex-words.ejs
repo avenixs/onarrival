@@ -7,15 +7,22 @@
     <div id="learning-words-page">
         <%- include("../includes/student-bar.ejs") %>
 
-        <div class="course-content" id="learning-words-window">
+        <div class="course-content" id="learning-words-window" style="cursor: unset !important;">
             <div id="content-to-blur">
+                <div class="pdf-word-list">
+                    <p>Words List</p>
+                    <form action="/student/download-list-words" method="POST" id="formPDF">
+                        <input type="hidden" name="exerciseId" value="<%= exercise.id %>">
+                        <a onclick="submitPDF()"><img src="/media/icons/pdf.png" alt="PDF" class="pdfIcon"></a>
+                    </form>
+                </div>
                 <input type="hidden" id="id-of-ex" value="<%= exercise.id %>">
                 <img src="/media/icons/big-exercise.png" alt="Exercise" id="big-abcd">
                 <p id="ex-title"><%= exercise.name %></p>
                 <p><%= exercise.description %></p>
                 <div class="how-to-play">
                     <img src="/media/icons/info.png" alt="Info" id="ex-info">
-                    <p><b>How to learn?</b> <br />You will be shown a word in English with an example sentence. Press anywhere within the white screen to reveal the translation into <%= course.mainLanguage %>. If you remembered the translation correctly, press the green like button to make the word as Remembered. If you need to repeat is again, press the red button and we will show you the word again. Once all the words are remembered, the exercise will be completed.</p>
+                    <p><b>How to learn?</b> <br />You will be shown a word in English with an example sentence. Press anywhere within the white screen to reveal the translation into <%= course.mainLanguage %>. If you remembered the translation correctly, press the green button. If you need to repeat it, press the red button and we will show you the word again. Once all the words are remembered, the exercise will be completed.</p>
                 </div>
                 <div id="start-ex">
                     <button class="btn btn-success" id="start-btn">Start</button>

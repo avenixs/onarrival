@@ -326,21 +326,23 @@ exports.addNewComprehension = async (req, res) => {
 
             let questions = req.query.questions;
 
-            for(let i=0; i<questions.length; i++) {
-                let newQuestion = await Question.create({
-                    questionEnglish: questions[i].questionEng,
-                    questionForeign: questions[i].questionFor,
-                    isCompleted: 0
-                });
-                newQuestion.setComprehensionExercise(exercise);
-
-                let answers = JSON.parse(questions[i].answers);
-                for(let a=0; a<answers.length; a++) {
-                    let newAnswer = await Answer.create({
-                        answerEnglish: answers[a].text,
-                        isCorrect: answers[a].correct==true ? 1 : 0
+            if(!(questions == null)) {
+                for(let i=0; i<questions.length; i++) {
+                    let newQuestion = await Question.create({
+                        questionEnglish: questions[i].questionEng,
+                        questionForeign: questions[i].questionFor,
+                        isCompleted: 0
                     });
-                    newAnswer.setQuestion(newQuestion);
+                    newQuestion.setComprehensionExercise(exercise);
+    
+                    let answers = JSON.parse(questions[i].answers);
+                    for(let a=0; a<answers.length; a++) {
+                        let newAnswer = await Answer.create({
+                            answerEnglish: answers[a].text,
+                            isCorrect: answers[a].correct==true ? 1 : 0
+                        });
+                        newAnswer.setQuestion(newQuestion);
+                    }
                 }
             }
 

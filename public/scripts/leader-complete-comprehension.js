@@ -42,16 +42,22 @@ const answerQuestions = () => {
         success: received => {
             $("#listening-text").append('<div class="compreh-box" id="text-questions" style="display: none"></div>');
             let que = JSON.parse(received.questions);
-            for(let i=0; i<que.length; i++) {
-                let answers = "";
-                for(let a=0; a<que[i][1].length; a++) {
-                    answers = answers + '<div class="answer-line"><input type="checkbox" value="' + que[i][1][a].isCorrect + '"><label>' + que[i][1][a].answerEnglish + '</label></div>';
+            if(que.length == 0) {
+                alert("There are no questions in this exercise.");
+                $(".spin-btn").remove();
+                $("#answer-questions").prop("disabled", true);
+            } else {
+                for(let i=0; i<que.length; i++) {
+                    let answers = "";
+                    for(let a=0; a<que[i][1].length; a++) {
+                        answers = answers + '<div class="answer-line"><input type="checkbox" value="' + que[i][1][a].isCorrect + '"><label>' + que[i][1][a].answerEnglish + '</label></div>';
+                    };
+                    $("#text-questions").append('<div class="new-que"><h3 style="text-align: left !important">' + eval(i+1) + ". " + que[i][0].questionEnglish + '</h3>' + answers + '</div>');
                 };
-                $("#text-questions").append('<div class="new-que"><h3 style="text-align: left !important">' + eval(i+1) + ". " + que[i][0].questionEnglish + '</h3>' + answers + '</div>');
-            };
-            $("#text-questions").append('<button class="btn btn-sm btn-success" id="submit-questions" disabled>Submit</button>');
-            $("#answer-questions").remove();
-            $("#text-questions").css("display", "unset");
+                $("#text-questions").append('<button class="btn btn-sm btn-success" id="submit-questions" disabled>Submit</button>');
+                $("#answer-questions").remove();
+                $("#text-questions").css("display", "unset");
+            }
         }
     });
 }

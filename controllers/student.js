@@ -8,6 +8,8 @@ const Answer = require("../models/answer");
 const Score = require("../models/score");
 const Recognition = require("../models/recognition");
 
+const WordList = require("./pdf-functions/wordlist");
+
 const path = require('path');
 
 const aws = require('aws-sdk');
@@ -330,4 +332,17 @@ exports.getFullName = async (req, res, next) => {
     res.status(201).json({
         fullName: student.name + " " + student.surname
     });
+};
+
+exports.downloadListWords = async (req, res, next) => {
+    const exercise = await VocabExercise.findOne({ where: { id: req.body.exerciseId } });
+    const list = await Word.findAll({ where: { VocabExerciseId: exercise.id } });
+
+    let pdf = WordList.generatePDF(exercise, list);
+    let pathPDF = path.join(__dirname, "..", "public", Date.now() + "_PDF_" + exercise.name + ".PDF");
+
+    pdf.pipe(fs.createWriteStream(pathPDF))
+        .on("finish", () => {
+            res.download(pathPDF);
+        })
 };

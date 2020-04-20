@@ -75,6 +75,12 @@ router.get("/disable-vocab-ex", enterprise.disableVocabEx);
 // /enable-vocab-ex => GET
 router.get("/enable-vocab-ex", enterprise.enableVocabEx);
 
+// /disable-chapter => GET
+router.get("/disable-chapter", enterprise.disableChapter);
+
+// /enable-chapter => GET
+router.get("/enable-chapter", enterprise.enableChapter);
+
 // /account/edit => GET
 router.get("/account/edit", enterprise.getEditAccountPage);
 

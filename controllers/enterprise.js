@@ -1,6 +1,7 @@
 const EnterpriseUser = require("../models/enterprise-user");
 const Company = require("../models/company");
 const Course = require("../models/course");
+const Chapter = require("../models/chapter");
 const StudentUser = require("../models/student-user");
 const Score = require("../models/score");
 const ComprehensionExercise = require("../models/comprehension-exercise");
@@ -89,7 +90,7 @@ exports.registerCompanyUser = (req, res, next) => {
                         text: "Dear " + entUser.name + ", Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a> Have a lovely day, OnArrivalUK",
                         html: "Dear " + entUser.name + ", <br /><br />Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <br /><br /><a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a><br /><br />Have a lovely day, OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
                     }
-        
+
                     return sgMail.send(msg);
                 })
                 .catch(error => {
@@ -173,8 +174,24 @@ exports.getAssignCoursePage = async (req, res, next) => {
     });
 };
 
+exports.getChangeAssignCoursePage = async (req, res, next) => {
+    const employees = await EnterpriseUser.findAll({ where: { CompanyId: req.session.companyId } });
+    const courses = await Course.findAll({ where: { CompanyId: req.session.companyId } });
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    res.render("panel/change-assign", {
+        pageTitle: "Change a Course Assignment",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        leaders: employees,
+        courses: courses,
+        accountData: accountData
+    });
+};
+
 exports.getEnrolStudentPage = async (req, res, next) => {
-    const students = await StudentUser.findAll({ where: { CompanyId: req.session.companyId, CourseId: null } });
+    const students = await StudentUser.findAll({ where: { CompanyId: req.session.companyId } });
     const courses = await Course.findAll({ where: { CompanyId: req.session.companyId } });
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
@@ -255,12 +272,64 @@ exports.assignCourse = async (req, res, next) => {
 
     if(leader.id == req.session.userId) {
         req.session.isLeader = 1;
-    };
+        req.session.leadingCourse = course;
+        req.session.courseTitle = course.title;
 
-    res.redirect("/enterprise/courses/assign?success=true");
+        res.redirect("/enterprise/courses/assign?success=true&self=true");
+    } else {
+        res.redirect("/enterprise/courses/assign?success=true");
+    }
 
     const msg = {
-        to: entUser.email,
+        to: leader.email,
+        from: "contact@onarrival.uk",
+        subject: "OnArrivalUK - You are now a Course Leader!",
+        text: "Dear " + leader.name + ", This is to inform you that you have been appointed a Course Leader of " + course.title + ". Login to your OnArrivalUK account to begin creating exciting content for your employees. Have a lovely day, OnArrivalUK",
+        html: "Dear " + leader.name + ", <br /><br />This is to inform you that you have been appointed a Course Leader of " + course.title + ". Login to your OnArrivalUK account to begin creating exciting content for your employees. <br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
+    }
+
+    return sgMail.send(msg);
+};
+
+exports.changeAssignCourse = async (req, res, next) => {
+    const course = await Course.findOne({ where: { id: req.body.coursesToAssign } });
+    const leader = await EnterpriseUser.findOne({ where: { id: req.body.leadersToAssign } });
+    let leaderToUnassign = null;
+
+    try{
+        leaderToUnassign = await EnterpriseUser.findOne({ where: { CourseId: course.id } });
+        leaderToUnassign.CourseId = null;
+        await leaderToUnassign.save();
+    } catch(error) { console.log(error); }
+
+    leader.setCourse(course);
+    await leader.save();
+
+    course.hasLeader = 1;
+    await course.save();
+
+    if(!(leaderToUnassign == null)) {
+        if(leaderToUnassign.id == req.session.userId) {
+            req.session.isLeader = false;
+            req.session.leadingCourse = null;
+            req.session.courseTitle = null;
+
+            return res.redirect("/enterprise/courses/change-assign?success=true&self=true");
+        }
+    }
+
+    if(leader.id == req.session.userId) {
+        req.session.isLeader = true;
+        req.session.leadingCourse = course;
+        req.session.courseTitle = course.title; 
+
+        res.redirect("/enterprise/courses/change-assign?success=true&self=true");
+    } else {
+        res.redirect("/enterprise/courses/change-assign?success=true");
+    }
+
+    const msg = {
+        to: leader.email,
         from: "contact@onarrival.uk",
         subject: "OnArrivalUK - You are now a Course Leader!",
         text: "Dear " + leader.name + ", This is to inform you that you have been appointed a Course Leader of " + course.title + ". Login to your OnArrivalUK account to begin creating exciting content for your employees. Have a lovely day, OnArrivalUK",
@@ -495,6 +564,24 @@ exports.enableVocabEx = async (req, res) => {
     const exercise = await VocabularyExercise.findOne({ where: { id: req.query.id } });
     exercise.disabled = 0;
     await exercise.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.disableChapter = async (req, res) => {
+    const chapter = await Chapter.findOne({ where: { id: req.query.id } });
+    chapter.disabled = 1;
+    await chapter.save();
+    res.status(200).json({
+        success: true
+    });
+};
+
+exports.enableChapter = async (req, res) => {
+    const chapter = await Chapter.findOne({ where: { id: req.query.id } });
+    chapter.disabled = 0;
+    await chapter.save();
     res.status(200).json({
         success: true
     });

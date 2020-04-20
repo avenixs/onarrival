@@ -7,7 +7,7 @@ let uniqueEmail = false;
 // if the Register button can be enabled
 const confirmPassLength = () => {
     if($("#adminPassword").val().length >= 8){
-        $("#passEightChar").html("Over 8 characters.");
+        $("#passEightChar").html("All good.");
         $("#passEightChar").css("color", "#006d02");
         passwordOverChar = true;
         enableButton();

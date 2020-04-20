@@ -1184,6 +1184,30 @@ audio {
     margin: 0;
 }
 
+.pdf-word-list {
+    position: fixed;
+    right: 1.5rem;
+    top: 6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.pdf-word-list p {
+    font-family: "Playfair Display SC", serif;
+    font-size: 0.9rem;
+    font-weight: bolder;
+}
+
+.pdfIcon {
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
+
+.pdfIcon:hover {
+    transform: scale(1.1);
+}
+
 @media (min-width: 768px) {
     #exercise-presentation {
         display: inline;

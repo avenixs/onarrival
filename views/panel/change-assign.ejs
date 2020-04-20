@@ -32,11 +32,11 @@
 
         <div class="course-content">
             <div class="transparent-form" id="panel-form">
-                <h2 class="title-decor">Assign a Course to a Course Leader</h2>
-                <form action="/enterprise/courses/assign" method="POST">
+                <h2 class="title-decor">Change a Course Assignment</h2>
+                <form action="/enterprise/courses/change-assign" method="POST">
                     <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="coursesToAssign">Your unassigned courses</label>
+                            <label for="coursesToAssign">Your courses</label>
                             <select class="form-control" id="coursesToAssign" name="coursesToAssign">
                                 <% for(let i=0; i<courses.length; i++) { %>
                                 <option value="<%= courses[i].id %>"><%= courses[i].title %></option>
@@ -46,7 +46,7 @@
                     </div>
                     <div class="form-row panel-row">
                         <div class="form-group col-md-4">
-                            <label for="leadersToAssign">Leaders with no assignment</label>
+                            <label for="leadersToAssign">Your Course Leaders</label>
                             <select class="form-control" id="leadersToAssign" name="leadersToAssign">
                                 <% for(let i=0; i<leaders.length; i++) { %>
                                     <option value="<%= leaders[i].id %>"><%= leaders[i].name + " " + leaders[i].surname %></option>
@@ -70,7 +70,6 @@
 
     <script>
         $(document).ready(() => {
-            console.log($("#coursesToAssign").children().length);
             if($("#coursesToAssign").children().length == 0 || $("#leadersToAssign").children().length == 0) {
                 $("#assign-btn").prop("disabled", true);
                 $("#assign-btn").css("cursor", "not-allowed");

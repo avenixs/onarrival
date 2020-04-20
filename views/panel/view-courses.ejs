@@ -25,7 +25,7 @@
                     <tr class="<%- courses[i].disabled ? 'disabled-row' : '' %>">
                         <td><%= eval(i+1) %></td>
                         <td><%= courses[i].title %></td>
-                        <td><%= courses[i].language %></td>
+                        <td><%= courses[i].mainLanguage %></td>
                         <td><%= courses[i].difficulty %></td>
                         <% if(courses[i].disabled) { %>
                         <td><button class="btn btn-success enable-user" value="<%= courses[i].id %>">Enable</button></td>

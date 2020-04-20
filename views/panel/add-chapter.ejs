@@ -83,20 +83,24 @@
                 <tbody>
                     <% if(!(chapters.length==0)) { %>
                         <% for(let i=0; i<chapters.length; i++) { %>
-                    <tr>
+                    <tr class="<%- chapters[i].disabled ? 'disabled-row' : '' %>">
                         <th scope="row"><%= chapters[i].number %></th>
                         <td><%= chapters[i].title %></td>
                         <td><%= chapters[i].theme %></td>
                         <td><%= chapters[i].description %></td>
-                        <td><input type="hidden" value="<%= chapters[i].id %>"><button class="btn btn-danger">Delete</button></td>
-                    </tr>
+                        <% if(chapters[i].disabled) { %>
+                        <td><button class="btn btn-success enable-ex" value="<%= chapters[i].id %>">Enable</button></td>
+                        <% } else { %>
+                        <td><button class="btn btn-warning disable-ex" value="<%= chapters[i].id %>">Disable</button></td>
+                        <% } %>
+                    </tr> 
                         <% }; %>
                     <% } else { %>
                         <th scope="row">0</th>
                         <td>N/A</td>
                         <td>N/A</td>
                         <td>N/A</td>
-                        <td><button class="btn btn-danger" disabled>Delete</button></td>
+                        <td><button class="btn btn-warning" disabled>Disable</button></td>
                     <% }; %>
                 </tbody>
             </table>
@@ -108,6 +112,49 @@
     <%- include("../includes/end.ejs") %>
 
     <script src="/scripts/common.js"></script>
+
+    <script>
+        const disableCompEx = event => {
+            $.ajax({
+                url: "/enterprise/disable-chapter",
+                method: "GET",
+                data: { id: event.target.value },
+                success: () => {
+                    event.target.parentNode.parentNode.classList.toggle("disabled-row");
+                    let newButton = document.createElement("button");
+                    newButton.classList = "btn btn-success enable-ex";
+                    newButton.value = event.target.value;
+                    newButton.innerHTML = "Enable";
+                    event.target.parentNode.appendChild(newButton);
+                    event.target.remove();
+
+                    $(".enable-ex").click(enableCompEx);
+                }
+            });
+        };
+
+        const enableCompEx = event => {
+            $.ajax({
+                url: "/enterprise/enable-chapter",
+                method: "GET",
+                data: { id: event.target.value },
+                success: () => {
+                    event.target.parentNode.parentNode.classList.remove("disabled-row");
+                    let newButton = document.createElement("button");
+                    newButton.classList = "btn btn-warning disable-ex";
+                    newButton.value = event.target.value;
+                    newButton.innerHTML = "Disable";
+                    event.target.parentNode.appendChild(newButton);
+                    event.target.remove();
+
+                    $(".disable-ex").click(disableCompEx);
+                }
+            });
+        };
+
+        $(".disable-ex").click(disableCompEx);
+        $(".enable-ex").click(enableCompEx);
+    </script>
 
 </body>
 </html>

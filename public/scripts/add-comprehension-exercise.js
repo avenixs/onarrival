@@ -35,7 +35,7 @@ const startRecording = event => {
             setTimeout(() => {
                 $(".spinner-border").remove();
                 $("#recordingLength").text("Recording length: " + seconds + " sec.")
-                button.textContent = 'Stop';
+                button.value = 'Stop';
                 button.classList.toggle('btn-danger');
                 button.removeEventListener('click', startRecording);
                 button.addEventListener('click', stopRecording);
@@ -50,6 +50,8 @@ const startRecording = event => {
         });
 }
 
+// When the recording stops, the file is temporarily saved as an mp3 file
+// and a player is appended for the user to be able to listen to the recording.
 const stopRecording = event => {
     event.preventDefault();
     seconds = 0;
@@ -72,7 +74,7 @@ const stopRecording = event => {
 
             currentBlob = blob;
 
-            button.textContent = 'Start';
+            button.value = 'Start';
             button.classList.replace("btn-danger", "btn-success");
             button.disabled = true;
 
@@ -130,48 +132,67 @@ $("#submitButton").click(async event => {
                 file: fileName
             };
 
-            let qs = $("#questionsForEx").children();
-            let questions = [];
-            for(let i=0; i<questionCount; i++){
-                let answers = [];
-                for(let a=0; a<qs[i].children.length; a++) {
-                    if(qs[i].children[a].className == "answerLine") {
-                        if(!(qs[i].children[a].children[0].value == "")) {
-                            let answer = {
-                                text: qs[i].children[a].children[0].value,
-                                correct: qs[i].children[a].children[1].checked ? true : false
-                            };
-                            answers.push(answer);
-                        } else { }
+            if($("#questionsForEx").children().length == 0) {
+                $.ajax({
+                    url: "/enterprise/exercises/comprehension/add-comprehension",
+                    method: "GET",
+                    data: {
+                        form: formDetails, 
+                        questions: null 
+                    },
+                    success: (data) => {
+                        $(".spinner-border").remove();
+                        $("#window-cover").append('<img src="/media/icons/ajax-tick.png" alt="Success">');
+                        setTimeout(() => {
+                            window.scrollTo(0, 0);
+                            location.reload();
+                        }, 400);
                     }
-                }
-                let question = {
-                    questionEng: qs[i].children[1].children[0].value,
-                    questionFor: qs[i].children[1].children[1].value,
-                    answers: JSON.stringify(answers)
+                }); 
+            } else {
+                let qs = $("#questionsForEx").children();
+                let questions = [];
+                for(let i=0; i<questionCount; i++){
+                    let answers = [];
+                    for(let a=0; a<qs[i].children.length; a++) {
+                        if(qs[i].children[a].className == "answerLine") {
+                            if(!(qs[i].children[a].children[0].value == "")) {
+                                let answer = {
+                                    text: qs[i].children[a].children[0].value,
+                                    correct: qs[i].children[a].children[1].checked ? true : false
+                                };
+                                answers.push(answer);
+                            } else { }
+                        }
+                    }
+                    let question = {
+                        questionEng: qs[i].children[1].children[0].value,
+                        questionFor: qs[i].children[1].children[1].value,
+                        answers: JSON.stringify(answers)
+                    };
+
+                    questions.push(question);
                 };
 
-                questions.push(question);
-            };
+                let dataToSend = {
+                    form: formDetails,
+                    questions: questions
+                };
 
-            let dataToSend = {
-                form: formDetails,
-                questions: questions
-            };
-
-            $.ajax({
-                url: "/enterprise/exercises/comprehension/add-comprehension",
-                method: "GET",
-                data: dataToSend,
-                success: (data) => {
-                    $(".spinner-border").remove();
-                    $("#window-cover").append('<img src="/media/icons/ajax-tick.png" alt="Success">');
-                    setTimeout(() => {
-                        window.scrollTo(0, 0);
-                        location.reload();
-                    }, 400);
-                }
-            });
+                $.ajax({
+                    url: "/enterprise/exercises/comprehension/add-comprehension",
+                    method: "GET",
+                    data: dataToSend,
+                    success: (data) => {
+                        $(".spinner-border").remove();
+                        $("#window-cover").append('<img src="/media/icons/ajax-tick.png" alt="Success">');
+                        setTimeout(() => {
+                            window.scrollTo(0, 0);
+                            location.reload();
+                        }, 400);
+                    }
+                });
+            }
         }
     };
     let formData = new FormData();
@@ -181,6 +202,7 @@ $("#submitButton").click(async event => {
         xhr.send(formData);
     } catch(error) { 
         alert("There is no recording added!");
+        $("#window-cover").css({ "display": "none" });
     }
 });
 

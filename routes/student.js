@@ -6,6 +6,9 @@ const chaptersRoutes = require("../routes/chapters");
 
 const router = express.Router();
 
+// /download-list-words => POST
+router.post("/download-list-words", student.downloadListWords);
+
 // /chapters => GET
 router.use("/chapters", chaptersRoutes);
 
