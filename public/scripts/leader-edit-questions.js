@@ -29,7 +29,10 @@ $("#queSaveChanges").click(event => {
                         id: qs[i].children[a].children[2].value
                     };
                     answers.push(answer);
-                } else { }
+                } else { 
+                    $(".btn-spin").remove();
+                    return alert("Please fill in all the answers.");
+                }
             }
         }
         let question = {
@@ -38,6 +41,11 @@ $("#queSaveChanges").click(event => {
             id: qs[i].children[1].children[2].value,
             answers: JSON.stringify(answers)
         };
+
+        if(question.questionEng == "" || question.questionFor == "") {
+            $(".btn-spin").remove();
+            return alert("Please fill in all the questions.");
+        }
 
         questions.push(question);
     };

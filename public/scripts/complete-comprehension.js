@@ -54,7 +54,7 @@ const answerQuestions = () => {
                     };
                     $("#text-questions").append('<div class="new-que"><h3 style="text-align: left !important">' + eval(i+1) + ". " + que[i][0].questionEnglish + '</h3>' + answers + '</div>');
                 };
-                $("#text-questions").append('<button class="btn btn-sm btn-success" id="submit-questions" disabled>Submit</button>');
+                $("#text-questions").append('<button class="btn btn-sm btn-success" id="submit-questions">Submit</button>');
                 $("#answer-questions").remove();
                 $("#text-questions").css("display", "unset");
             }
@@ -124,7 +124,7 @@ const answerQuestions = () => {
                         data: { id: $("#exerciseId").val(), maxScore: maxScore, totalScore: totalScore },
                         success: received => {
                             $("#saving-res").remove();
-                            $("#window-words").append('<button class="btn btn-success" id="close-exercise">Close</button>');
+                            $("#window-words").append('<button class="btn btn-success" id="close-exercise" style="margin-top: 1rem">Close</button>');
 
                             $("#window-words").click(() => {
                                 window.location.replace("/student/panel");
