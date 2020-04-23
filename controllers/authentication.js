@@ -109,14 +109,14 @@ exports.verifyEmail = (req, res, next) => {
                         if(user) {
                             user.disabled = 0;
                             user.save();
-
-                            ver.destroy();
                             
-                            return res.render("verification-page", {
+                            res.render("verification-page", {
                                 pageTitle: "Successful Email Verification",
                                 publicPath: "/",
                                 success: true
                             });
+
+                            ver.destroy();
                         } else {
                             return res.redirect("/register");
                         }
