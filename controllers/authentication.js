@@ -116,7 +116,7 @@ exports.verifyEmail = (req, res, next) => {
                                 success: true
                             });
 
-                            ver.destroy();
+                            return ver.destroy();
                         } else {
                             return res.redirect("/register");
                         }
