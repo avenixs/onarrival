@@ -1,0 +1,62 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <div class="transparent-form" id="panel-form">
+                <h2 class="title-decor">Edit a Course Leader</h2>
+                <form action="/enterprise/leaders/edit/<%= leader.id %>" method="POST">
+                    <div class="form-row">
+                        <% console.log(leader) %>
+                        <div class="form-group col-md-4">
+                            <label for="name">Course Leader's Name <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="name" name="name" value="<%= leader.name %>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="surname">Course Leader's Surname <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="surname" name="surname" value="<%= leader.surname %>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="dep">Department <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="dep" name="dep" value="<%= leader.department %>" required>
+                        </div>
+                    </div>
+                    <div class="form-row" id="email-row">
+                        <div class="form-group col-md-4">
+                            <label for="email">Course Leader's Email <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="email" class="form-control" id="email" name="email" value="<%= leader.email %>" aria-describedby="emailHelp" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="pass">New Password</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Leave blank if unchanged...">
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="adminRights">Admin Privilages <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <select class="form-control" id="adminRights" name="adminRights" required>
+                                <option value="0" <%- !(leader.isAdmin) ? 'selected' : '' %> >No</option>
+                                <option value="1" <%- leader.isAdmin ? 'selected' : '' %> >Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-success" style="margin: 0 auto;" id="add-btn">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/common.js"></script>
+
+</body>
+</html>

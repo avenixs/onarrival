@@ -18,6 +18,12 @@ router.get("/assign", isAdmin, enterprise.getAssignCoursePage);
 // /assign => POST
 router.post("/assign", isAdmin, enterprise.assignCourse);
 
+// /edit/:id => GET
+router.get("/edit/:id", isAdmin, enterprise.getEditCoursePage);
+
+// /edit/:id => POST
+router.post("/edit/:id", isAdmin, enterprise.updateCourse);
+
 // /change-assign => GET
 router.get("/change-assign", isAdmin, enterprise.getChangeAssignCoursePage);
 

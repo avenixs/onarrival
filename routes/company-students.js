@@ -10,6 +10,12 @@ router.get("/add", enterprise.getAddStudentPage);
 // /add => POST
 router.post("/add", enterprise.addNewStudent);
 
+// /edit/:id => GET
+router.get("/edit/:id", enterprise.getEditStudentPage);
+
+// /edit/:id => POST
+router.post("/edit/:id", enterprise.updateStudent);
+
 // /enrol => GET
 router.get("/enrol", enterprise.getEnrolStudentPage);
 

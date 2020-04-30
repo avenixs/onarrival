@@ -1,0 +1,60 @@
+<%- include("../includes/head.ejs") %>
+</head>
+
+<body>
+    <%- include("../includes/navigation-panel.ejs") %>
+    
+    <div class="main-panel">
+
+        <%- include("../includes/left-bar.ejs") %>
+
+        <div class="course-content">
+            <div class="transparent-form" id="panel-form">
+                <h2 class="title-decor">Edit a Student</h2>
+                <form action="/enterprise/students/edit/<%= student.id %>" method="POST">
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="name">Student's Name <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="name" name="name" value="<%= student.name %>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="surname">Student's Surname <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="surname" name="surname" value="<%= student.surname %>" required>
+                        </div>
+                    </div>
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="email">Student's Email <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp"  value="<%= student.email %>"required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="pass">New Password</label>
+                            <input type="password" class="form-control" id="pass" name="pass" placeholder="Leave blank if unchanged...">
+                        </div>
+                    </div>
+                    <div class="form-row panel-row">
+                        <div class="form-group col-md-4">
+                            <label for="nationality">Nationality/-ies <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="text" class="form-control" id="nationality" name="nationality" value="<%= student.nationality %>" required>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="dateOfBirth">Date of Birth <span style='color: #8F0C0C'>&#8727;</span></label>
+                            <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" value="<%= student.dateOfBirth %>" required>
+                        </div>
+                    </div>
+                    <div class="form-row panel-row">
+                        <button type="submit" class="btn btn-success" style="margin: 0 auto;" id="add-btn">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="stick-bottom" id="page-footer">(c) Damian Wojtunik, Language on Arrival 2020</footer>
+
+    <%- include("../includes/end.ejs") %>
+
+    <script src="/scripts/common.js"></script>
+
+</body>
+</html>

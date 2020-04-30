@@ -158,6 +158,40 @@ exports.addNewRepresentative = async (req, res, next) => {
         })
 };
 
+exports.getEditLeaderPage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const leader = await EnterpriseUser.findOne({ where: { id: req.params.id } });
+
+    res.render("panel/edit-leader", {
+        pageTitle: "Edit a Course Leader",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        accountData: accountData,
+        leader: leader
+    });
+};
+
+exports.updateLeader = async (req, res, next) => {
+    const leader = await EnterpriseUser.findOne({ where: { id: req.params.id } });
+
+    leader.email = req.body.email;
+    leader.name = req.body.name;
+    leader.surname = req.body.surname;
+    leader.department = req.body.dep;
+    leader.isAdmin = req.body.adminRights;
+
+    if(!(req.body.pass == null)) {
+        const passwordHashed = await bcrypt.hash(req.body.pass, 12);
+        leader.password = passwordHashed;
+        await leader.save();
+    } else {
+        await leader.save();
+    }
+
+    return res.redirect("/enterprise/leaders/view");
+};
+
 exports.getAssignCoursePage = async (req, res, next) => {
     const employees = await EnterpriseUser.findAll({ where: { CompanyId: req.session.companyId, CourseId: null } });
     const courses = await Course.findAll({ where: { CompanyId: req.session.companyId, hasLeader: 0 } });
@@ -258,6 +292,32 @@ exports.addNewCourse = async (req, res, next) => {
             console.log(error);
             return res.redirect("/enterprise/courses/add?success=false");
         })
+};
+
+exports.getEditCoursePage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const course = await Course.findOne({ where: { id: req.params.id } });
+
+    res.render("panel/edit-course", {
+        pageTitle: "Edit a Course",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        accountData: accountData,
+        course: course
+    });
+};
+
+exports.updateCourse = async (req, res, next) => {
+    const course = await Course.findOne({ where: { id: req.params.id } });
+
+    course.title = req.body.title;
+    course.description = req.body.description;
+    course.mainLanguage = req.body.language;
+    course.difficulty =  req.body.diff;
+    await course.save();
+
+    return res.redirect("/enterprise/courses/view");
 };
 
 exports.assignCourse = async (req, res, next) => {
@@ -382,6 +442,40 @@ exports.addNewStudent = async (req, res, next) => {
             console.log(error);
             return res.redirect("/enterprise/students/add?success=false");
         })
+};
+
+exports.getEditStudentPage = async (req, res, next) => {
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+    const student = await StudentUser.findOne({ where: { id: req.params.id } });
+
+    res.render("panel/edit-student", {
+        pageTitle: "Edit a Student",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        success: req.query.success,
+        accountData: accountData,
+        student: student
+    });
+};
+
+exports.updateStudent = async (req, res, next) => {
+    const student = await StudentUser.findOne({ where: { id: req.params.id } });
+
+    student.email = req.body.email;
+    student.name = req.body.name;
+    student.surname = req.body.surname;
+    student.nationality = req.body.nationality;
+    student.dateOfBirth = req.body.dateOfBirth;
+    
+    if(!(req.body.pass == null)) {
+        const passwordHashed = await bcrypt.hash(req.body.pass, 12);
+        student.password = passwordHashed;
+        await student.save();
+    } else {
+        await student.save();
+    }
+
+    res.redirect("/enterprise/students/view");
 };
 
 

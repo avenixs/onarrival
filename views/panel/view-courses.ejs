@@ -15,9 +15,11 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Title</th>
+                        <th scope="col" style="width: 40%;">Description</th>
                         <th scope="col">Language</th>
                         <th scope="col">Difficulty</th>
-                        <th scope="col">Disable</th>
+                        <th scope="col" style="width: 6%;">Edit</th>
+                        <th scope="col" style="width: 6%;">Disable</th>
                     </tr>
                 </thead>
                 <tbody class="table-with-ex">
@@ -25,8 +27,10 @@
                     <tr class="<%- courses[i].disabled ? 'disabled-row' : '' %>">
                         <td><%= eval(i+1) %></td>
                         <td><%= courses[i].title %></td>
+                        <td style="word-wrap: break-word;"><%= courses[i].description %></td>
                         <td><%= courses[i].mainLanguage %></td>
                         <td><%= courses[i].difficulty %></td>
+                        <td><a role="button" class="btn btn-info" href="/enterprise/courses/edit/<%= courses[i].id %>">Edit</a></td>
                         <% if(courses[i].disabled) { %>
                         <td><button class="btn btn-success enable-user" value="<%= courses[i].id %>">Enable</button></td>
                         <% } else { %>
