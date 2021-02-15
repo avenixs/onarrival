@@ -2,7 +2,7 @@ const express = require("express");
 
 const enterprise = require("../controllers/enterprise");
 const leader = require("../controllers/leader");
-const isAdmin = require("../middleware/adminAccess");
+const { isAdmin } = require("../middleware/authorisation");
 
 const router = express.Router();
 

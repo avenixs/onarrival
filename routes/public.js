@@ -1,66 +1,63 @@
 const express = require("express");
-
-const public = require("../controllers/public");
-const authorise = require("../controllers/authentication");
-const enterprise = require("../controllers/enterprise");
+const router = express.Router();
 
 const studentRoutes = require("../routes/student");
 const enterpriseRoutes = require("../routes/enterprise");
 
-const notLoggedIn = require("../middleware/not-logged-in");
-const isLoggedIn = require("../middleware/logged-in");
+const { 
+    getHomePage,
+    getLoginPage, 
+    getLoginCompanyPage, 
+    getLoginStudentPage, 
+    getRegistrationPage, 
+    getContactRequestPage, 
+    sendContactRequest, 
+    disabledCourse 
+} = require("../controllers/public");
 
-const router = express.Router();
+const {
+    verifyEmail,
+    authenticateEnterpriseLogin,
+    authenticateStudentLogin,
+    userLogout
+} = require("../controllers/authentication");
 
-// /verify/:verifCode => GET
-router.get("/verify/:verifCode", authorise.verifyEmail);
+const { confirmLeaderUnique, registerCompanyUser } = require("../controllers/enterprise");
 
-// /verify => GET
-router.get("/verify", (res) => { res.redirect("/login/company"); });
+const { isLoggedIn, redirectLoggedIn } = require("../middleware/authorisation");
 
-// /enterprise
-router.use("/enterprise", notLoggedIn, enterpriseRoutes);
+router.get("/verify/:verificationCode", verifyEmail);
 
-// /student
-router.use("/student", notLoggedIn, studentRoutes);
+router.get("/verify", (req, res) => res.redirect("/login/company"));
 
-// /login => GET
-router.get("/login", isLoggedIn, public.getLoginPage);
+router.use("/enterprise", isLoggedIn, enterpriseRoutes);
 
-// /login/company => GET
-router.get("/login/company", isLoggedIn, public.getLoginCompanyPage);
+router.use("/student", isLoggedIn, studentRoutes);
 
-// /login/company => POST
-router.post("/login/company", isLoggedIn, authorise.authenticateEnterpriseLogin);
+router.get("/login", redirectLoggedIn, getLoginPage);
 
-// /login/student => GET
-router.get("/login/student", isLoggedIn, public.getLoginStudentPage);
+router.get("/login/company", redirectLoggedIn, getLoginCompanyPage);
 
-// /login/company => POST
-router.post("/login/student", authorise.authenticateStudentLogin);
+router.post("/login/company", redirectLoggedIn, authenticateEnterpriseLogin);
 
-// /register => POST
-router.post("/register/confirm-unique-email", enterprise.confirmLeaderUnique);
+router.get("/login/student", redirectLoggedIn, getLoginStudentPage);
 
-// /register => GET
-router.get("/register", isLoggedIn, public.getRegistrationPage);
+router.post("/login/student", authenticateStudentLogin);
 
-// /register => POST
-router.post("/register", isLoggedIn, enterprise.registerCompanyUser);
+router.post("/register/confirm-unique-email", confirmLeaderUnique);
 
-// /logout => ALL
-router.use("/logout", authorise.userLogout);
+router.get("/register", redirectLoggedIn, getRegistrationPage);
 
-// /contact/request => GET
-router.get("/contact/request", public.getContactRequestPage);
+router.post("/register", redirectLoggedIn, registerCompanyUser);
 
-// /contact/request => POST
-router.post("/contact/request", public.sendContactRequest);
+router.use("/logout", userLogout);
 
-// /disabled-course => GET
-router.get("/disabled-course", public.disabledCourse);
+router.get("/contact/request", getContactRequestPage);
 
-// / => ALL
-router.use(public.getHomePage);
+router.post("/contact/request", sendContactRequest);
+
+router.get("/disabled-course", disabledCourse);
+
+router.use(getHomePage);
 
 module.exports = router;

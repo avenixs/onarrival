@@ -9,7 +9,7 @@ const coursesRoutes = require("./courses");
 const studentsRoutes = require("./company-students");
 const exercisesRoutes = require("./exercises");
 
-const isAdmin = require("../middleware/adminAccess");
+const { isAdmin } = require("../middleware/authorisation");
 
 let multer  = require('multer');
 let storage = multer.diskStorage({
