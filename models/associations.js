@@ -1,0 +1,41 @@
+const EnterpriseUser = require("../models/enterprise-user");
+const StudentUser = require("../models/student-user");
+const Answer = require("../models/answer");
+const Score = require("../models/score");
+const Chapter = require("../models/chapter");
+const Company = require("../models/company");
+const Course = require("../models/course");
+const Question = require("../models/question");
+const Recording = require("../models/recording");
+const Word = require("../models/word");
+const ComprehensionExercise = require("../models/comprehension-exercise");
+const VocabExercise = require("../models/vocab-exercise");
+const StudyMaterial = require("../models/study-material");
+const Verification = require("../models/verification");
+
+exports.createAssociations = () => {
+    EnterpriseUser.belongsTo(Company);
+    Company.hasMany(EnterpriseUser);
+    EnterpriseUser.belongsTo(Course);
+    Course.hasOne(EnterpriseUser);
+    Course.belongsTo(Company);
+    ComprehensionExercise.belongsTo(EnterpriseUser);
+    VocabExercise.belongsTo(EnterpriseUser);
+    ComprehensionExercise.belongsTo(Chapter);
+    VocabExercise.belongsTo(Chapter);
+    Chapter.belongsTo(Course);
+    Course.hasMany(Chapter);
+    Question.belongsTo(ComprehensionExercise);
+    Question.hasMany(Answer);
+    Answer.belongsTo(Question);
+    Word.belongsTo(VocabExercise);
+    Word.hasOne(Recording);
+    StudentUser.belongsTo(Course);
+    Course.hasMany(StudentUser);
+    StudentUser.belongsTo(Company);
+    StudyMaterial.belongsTo(Chapter);
+    Score.belongsTo(StudentUser);
+    Score.belongsTo(ComprehensionExercise);
+    Verification.belongsTo(EnterpriseUser);
+    EnterpriseUser.hasOne(Verification);
+}

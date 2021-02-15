@@ -8,10 +8,6 @@ const Verification = sequelize.define('Verification', {
         allowNull: false,
         primaryKey: true
     },
-    EnterpriseUserId: {
-        type: Sequelize.INTEGER,
-        allowNull: false
-    },
     VerificationCode: {
         type: Sequelize.TEXT,
         allowNull: false
