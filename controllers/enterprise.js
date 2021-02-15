@@ -14,42 +14,48 @@ const cryptoRandomString = require('crypto-random-string');
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-exports.getPanelPage = async (req, res, next) => {
-    const company = await Company.findOne({ where: { id: req.session.companyId } });
-    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
-    const courses = await Course.findAll({ where: { CompanyId: company.id } });
+exports.getPanelPage = async (req, res) => {
+    let user;
 
-    let oneCourse = [];
-
-    for(let i=0; i<courses.length; i++) {
-        if(courses[i].id == user.CourseId) {
-            oneCourse.push(courses[i]);
-        }
-    }
-
-    req.session.courseTitle = "";
-
-    req.session.fullName = user.name + " " + user.surname;
-    req.session.companyName = company.name;
     try {
-        req.session.courseTitle = oneCourse[0].title;
+        user = await EnterpriseUser.findOne({
+            where: { id: req.session.userId },
+            include: [
+                {
+                    model: Company,
+                    attributes: ["id", "name"],
+                    required: true
+                }, 
+                {
+                    model: Course,
+                    attributes: ["id", "title"]
+                }
+            ]
+        })
     } catch(error) {
         console.log(error);
+        return res.redirect("/error");
     }
-    
 
+    if(!user) return res.redirect("/error");
+
+    !!user.Course.title ? req.session.courseTitle = user.Course.title : req.session.courseTitle = "";
+
+    req.session.fullName = user.name + " " + user.surname;
+    req.session.companyName = user.Company.name;
+    
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
     
     res.render("panel/company-main", {
         pageTitle: "Main Panel",
         isAdmin: req.session.isAdmin,
         isLeader: req.session.isLeader,
-        company: company,
+        company: user.Company,
         user: user,
-        course: oneCourse,
+        course: user.Course,
         accountData: accountData
-    });
-};
+    })
+}
 
 exports.registerCompanyUser = (req, res, next) => {
     EnterpriseUser.findOne({ where: { email: req.body.adminEmail } })
