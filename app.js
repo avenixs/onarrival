@@ -12,6 +12,10 @@ const sequelize = require("./utils/db");
 const { createAssociations } = require("./models/associations");
 createAssociations();
 
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+exports.sgMail = sgMail;
+
 const publicRoutes = require("./routes/public");
 
 const app = express();
