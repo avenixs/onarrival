@@ -13,7 +13,6 @@
                 <h2 class="title-decor">Edit a Course Leader</h2>
                 <form action="/enterprise/leaders/edit/<%= leader.id %>" method="POST">
                     <div class="form-row">
-                        <% console.log(leader) %>
                         <div class="form-group col-md-4">
                             <label for="name">Course Leader's Name <span style='color: #8F0C0C'>&#8727;</span></label>
                             <input type="text" class="form-control" id="name" name="name" value="<%= leader.name %>" required>
@@ -39,8 +38,8 @@
                         <div class="form-group col-md-4">
                             <label for="adminRights">Admin Privilages <span style='color: #8F0C0C'>&#8727;</span></label>
                             <select class="form-control" id="adminRights" name="adminRights" required>
-                                <option value="0" <%- !(leader.isAdmin) ? 'selected' : '' %> >No</option>
-                                <option value="1" <%- leader.isAdmin ? 'selected' : '' %> >Yes</option>
+                                <option value="false" <%- !(leader.isAdmin) ? 'selected' : '' %> >No</option>
+                                <option value="true" <%- leader.isAdmin ? 'selected' : '' %> >Yes</option>
                             </select>
                         </div>
                     </div>

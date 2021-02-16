@@ -1,3 +1,6 @@
+const bcrypt = require("bcryptjs");
+const cryptoRandomString = require('crypto-random-string');
+
 const EnterpriseUser = require("../models/enterprise-user");
 const Company = require("../models/company");
 const Course = require("../models/course");
@@ -8,11 +11,100 @@ const ComprehensionExercise = require("../models/comprehension-exercise");
 const VocabularyExercise = require("../models/vocab-exercise");
 const Verification = require("../models/verification");
 
-const bcrypt = require("bcryptjs");
-const cryptoRandomString = require('crypto-random-string');
+const { 
+    REGISTER_COMPANY, 
+    NEW_REPRESENTATIVE, 
+    UPDATE_LEADER 
+} = require("../utils/form-schemas/enterprise-forms");
 
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const {
+    sendEmailVerification
+} = require("../utils/emails/email-senders");
+
+exports.registerCompanyUser = async (req, res) => {
+    let validForm, user, company, verification;
+
+    try {
+        validForm = await REGISTER_COMPANY.validateAsync(req.body);
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/register?correct=false");
+    }
+
+    try {
+        user = await EnterpriseUser.findOne({ where: { email: validForm.adminEmail } });
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/register?success=false");
+    }
+
+    if(user) return res.redirect("/register?success=false");
+
+    try {
+        company = await Company.create({
+            name: validForm.companyName,
+            email: validForm.companyEmail,
+            telNum: validForm.companyTel
+        })
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/register?success=false");
+    }
+
+    if(!company) return res.redirect("/register?success=false");
+
+    const hashedPass = await bcrypt.hash(validForm.adminPassword, 12);
+
+    try {
+        user = await EnterpriseUser.create({
+            email: validForm.adminEmail,
+            password: hashedPass,
+            name: validForm.adminName,
+            surname: validForm.adminSurname,
+            department: validForm.adminDep,
+            isAdmin: true,
+            disabled: true,
+            CompanyId: company.id
+        })
+    } catch(error) {
+        console.log(error);
+        cleanUp(company, null);
+        return res.redirect("/register?success=false");
+    }
+
+    if(!user) {
+        cleanUp(company, null);
+        return res.redirect("/register?success=false");
+    }
+
+    const verificationCode = cryptoRandomString({ length: 14 });
+    
+    try {
+        verification = await Verification.create({ EnterpriseUserId: user.id, VerificationCode: verificationCode });
+    } catch(error) {
+        console.log(error);
+        cleanUp(company, user);
+        return res.redirect("/register?success=false");
+    }
+
+    if(!verification) {
+        cleanUp(company, user);
+        return res.redirect("/register?success=false");
+    }
+
+    sendEmailVerification(user, verificationCode);
+
+    res.redirect("/register?success=true");
+    
+    const cleanUp = async (company, user) => {
+        try {
+            if(company) await company.destroy();
+            if(user) await user.destroy();
+        } catch(error) {
+            console.log(error);
+        }
+    }
+}
 
 exports.getPanelPage = async (req, res) => {
     let user;
@@ -57,57 +149,7 @@ exports.getPanelPage = async (req, res) => {
     })
 }
 
-exports.registerCompanyUser = (req, res, next) => {
-    EnterpriseUser.findOne({ where: { email: req.body.adminEmail } })
-        .then(async user => {
-            if(user != null) {
-                return res.redirect("/register?success=false");
-            }
-
-            const newCompany = await Company.create({
-                name: req.body.companyName,
-                email: req.body.companyEmail,
-                telNum: req.body.companyTel
-            });
-
-            const passwordHashed = await bcrypt.hash(req.body.adminPassword, 12);
-
-            EnterpriseUser.create({
-                email: req.body.adminEmail,
-                password: passwordHashed,
-                name: req.body.adminName,
-                surname: req.body.adminSurname,
-                department: req.body.adminDep,
-                isAdmin: 1,
-                disabled: 1
-            })
-                .then(async entUser => {
-                    entUser.setCompany(newCompany);
-
-                    res.redirect("/register?success=true");
-
-                    let verifString = cryptoRandomString({ length: 14 });
-                    await Verification.create({ EnterpriseUserId: entUser.id, VerificationCode: verifString });
-
-                    const msg = {
-                        to: entUser.email,
-                        from: "contact@onarrival.uk",
-                        subject: "OnArrivalUK - Verify your email address",
-                        text: "Dear " + entUser.name + ", Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a> Have a lovely day, OnArrivalUK",
-                        html: "Dear " + entUser.name + ", <br /><br />Your account has been created successfully! Please press on the link below or copy it to your browser to confirm your email address and start using the app. <br /><br /><a href='https://www.onarrival.uk/verify/" + verifString + "' target='_blank'>https://www.onarrival.uk/verify/" + verifString + "</a><br /><br />Have a lovely day, OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
-                    }
-
-                    return sgMail.send(msg);
-                })
-                .catch(error => {
-                    console.log(error);
-                    return res.redirect("/register?success=false");
-                })
-        })
-        .catch(error => { console.log(error); })
-}
-
-exports.getAddRepresentativePage = (req, res, next) => {
+exports.getAddRepresentativePage = (req, res) => {
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/add-leader", {
@@ -116,10 +158,10 @@ exports.getAddRepresentativePage = (req, res, next) => {
         isLeader: req.session.isLeader,
         success: req.query.success,
         accountData: accountData
-    });
-};
+    })
+}
 
-exports.getAddCoursePage = (req, res, next) => {
+exports.getAddCoursePage = (req, res) => {
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
 
     res.render("panel/add-course", {
@@ -128,45 +170,56 @@ exports.getAddCoursePage = (req, res, next) => {
         isLeader: req.session.isLeader,
         success: req.query.success,
         accountData: accountData
-    });
-};
-
-exports.addNewRepresentative = async (req, res, next) => {
-    const passwordHashed = await bcrypt.hash(req.body.pass, 12);
-    const company = await Company.findOne({ where: { id: req.session.companyId } });
-
-    EnterpriseUser.create({
-        email: req.body.email,
-        password: passwordHashed,
-        name: req.body.name,
-        surname: req.body.surname,
-        department: req.body.dep,
-        isAdmin: req.body.adminRights
     })
-        .then(entUser => {
-            entUser.setCompany(company);
+}
 
-            res.redirect("/enterprise/leaders/add?success=true");
+exports.addNewRepresentative = async (req, res) => {
+    let validForm, user;
 
-            const msg = {
-                to: entUser.email,
-                from: "contact@onarrival.uk",
-                subject: "OnArrivalUK - Your account is ready",
-                text: "Dear " + entUser.name + ", This is to inform you that your employer has set up an OnArrivalUK account for you. You may soon become a Course Leader and contribute to investing in your staff members. Use the following credentials to log in and stay tuned for news from your employer. Email: " + entUser.email + " Password: " + req.body.pass + " Have a lovely day, OnArrivalUK",
-                html: "Dear " + entUser.name + ", <br /><br />This is to inform you that your employer has set up an OnArrivalUK account for you. You may soon become a Course Leader and contribute to investing in your staff members. Use the following credentials to log in and stay tuned for news from your employer. <br /><br /><b>Email</b>: " + entUser.email + " <br /><b>Password</b>: " + req.body.pass + " <br /><br />Have a lovely day, <br />OnArrivalUK<br /><img src='https://i.imgur.com/gI3MKyK.jpg' alt='LonAUK Logo'>"
-            }
+    try {
+        validForm = await NEW_REPRESENTATIVE.validateAsync(req.body);
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/add?success=false");
+    }
 
-            return sgMail.send(msg);
+    const hashedPass = await bcrypt.hash(validForm.pass, 12);
+
+    try {
+        user = await EnterpriseUser.create({
+            email: validForm.email,
+            password: hashedPass,
+            name: validForm.name,
+            surname: validForm.surname,
+            department: validForm.dep,
+            isAdmin: !!validForm.adminRights,
+            CompanyId: req.session.companyId
         })
-        .catch(error => {
-            console.log(error);
-            return res.redirect("/enterprise/leaders/add?success=false");
-        })
-};
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/add?success=false");
+    }
 
-exports.getEditLeaderPage = async (req, res, next) => {
+    if(!user) return res.redirect("/enterprise/leaders/add?success=false");
+
+    sendNewRepresentativeEmail();
+
+    return res.redirect("/enterprise/leaders/add?success=true");
+}
+
+exports.getEditLeaderPage = async (req, res) => {
+    let leader;
+
+    try {
+        leader = await EnterpriseUser.findByPk(req.params.id);
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/view?error=true");
+    }
+
+    if(!leader) return res.redirect("/enterprise/leaders/view?error=true");
+
     const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
-    const leader = await EnterpriseUser.findOne({ where: { id: req.params.id } });
 
     res.render("panel/edit-leader", {
         pageTitle: "Edit a Course Leader",
@@ -175,28 +228,48 @@ exports.getEditLeaderPage = async (req, res, next) => {
         success: req.query.success,
         accountData: accountData,
         leader: leader
-    });
-};
+    })
+}
 
-exports.updateLeader = async (req, res, next) => {
-    const leader = await EnterpriseUser.findOne({ where: { id: req.params.id } });
+exports.updateLeader = async (req, res) => {
+    let validForm, leader;
 
-    leader.email = req.body.email;
-    leader.name = req.body.name;
-    leader.surname = req.body.surname;
-    leader.department = req.body.dep;
-    leader.isAdmin = req.body.adminRights;
+    try {
+        validForm = await UPDATE_LEADER.validateAsync(req.body);
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/view?error=true");
+    }
 
-    if(!(req.body.pass == null)) {
-        const passwordHashed = await bcrypt.hash(req.body.pass, 12);
-        leader.password = passwordHashed;
+    try {
+        leader = await EnterpriseUser.findByPk(req.params.id);
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/view?error=true");
+    }
+
+    if(!leader) return res.redirect("/enterprise/leaders/view?error=true");
+
+    if(!!validForm.email) leader.email = validForm.email;
+    if(!!validForm.name) leader.name = validForm.name;
+    if(!!validForm.surname) leader.surname = validForm.surname;
+    if(!!validForm.dep) leader.department = validForm.dep;
+    if(validForm.adminRights) leader.isAdmin = validForm.adminRights;
+
+    if(!!validForm.pass) {
+        const hashedPass = await bcrypt.hash(validForm.pass, 12);
+        leader.password = hashedPass;
+    }
+
+    try {
         await leader.save();
-    } else {
-        await leader.save();
+    } catch(error) {
+        console.log(error);
+        return res.redirect("/enterprise/leaders/view?error=true");
     }
 
     return res.redirect("/enterprise/leaders/view");
-};
+}
 
 exports.getAssignCoursePage = async (req, res, next) => {
     const employees = await EnterpriseUser.findAll({ where: { CompanyId: req.session.companyId, CourseId: null } });
