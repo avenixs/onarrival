@@ -1,3 +1,5 @@
+// TODO: Change accountData to middleware
+
 const bcrypt = require("bcryptjs");
 const cryptoRandomString = require('crypto-random-string');
 
@@ -20,6 +22,8 @@ const {
 const {
     sendEmailVerification
 } = require("../utils/emails/email-senders");
+
+const { StatusCodes } = require("http-status-codes");
 
 exports.registerCompanyUser = async (req, res) => {
     let validForm, user, company, verification;
@@ -743,85 +747,142 @@ exports.enableVocabEx = async (req, res) => {
 };
 
 exports.disableChapter = async (req, res) => {
-    const chapter = await Chapter.findOne({ where: { id: req.query.id } });
-    chapter.disabled = 1;
-    await chapter.save();
-    res.status(200).json({
-        success: true
-    });
+    let chapter;
+
+    try {
+        chapter = await Chapter.findOne({ where: { id: req.query.id } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    chapter.disabled = true;
+
+    try {
+        await chapter.save();
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    
+    return res.status(StatusCodes.OK);
 };
 
 exports.enableChapter = async (req, res) => {
-    const chapter = await Chapter.findOne({ where: { id: req.query.id } });
-    chapter.disabled = 0;
-    await chapter.save();
-    res.status(200).json({
-        success: true
+    let chapter;
+
+    try {
+        chapter = await Chapter.findOne({ where: { id: req.query.id } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    chapter.disabled = false;
+
+    try {
+        await chapter.save();
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+    
+    return res.status(StatusCodes.OK);
+};
+
+exports.getViewCoursesPage = async (req, res) => {
+    let user, company, courses;
+
+    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
+
+    try {
+        user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    if(!user) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    try {
+        company = await Company.findOne({ where: { id: req.session.companyId } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    if(!company) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    try {
+        courses = await Course.findAll({ where: { CompanyId: req.session.companyId } })
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    if(!courses) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    return res.render("panel/view-courses", {
+        pageTitle: "View Your Courses",
+        isAdmin: req.session.isAdmin,
+        isLeader: req.session.isLeader,
+        accountData: accountData,
+        company: company,
+        user: user,
+        courses: courses
     });
 };
 
-exports.getViewCoursesPage = async (req, res, next) => {
-    const accountData = [req.session.fullName, req.session.companyName, req.session.courseTitle];
-    const user = await EnterpriseUser.findOne({ where: { id: req.session.userId } });
-    const company = await Company.findOne({ where: { id: req.session.companyId } });
+exports.getStudentResults = async (req, res) => {
+    let scores;
 
-    Course.findAll({ where: { CompanyId: req.session.companyId } })
-        .then(courses => {
-            res.render("panel/view-courses", {
-                pageTitle: "View Your Courses",
-                isAdmin: req.session.isAdmin,
-                isLeader: req.session.isLeader,
-                accountData: accountData,
-                company: company,
-                user: user,
-                courses: courses
-            });
+    try {
+        scores = await Score.findAll({ 
+            where: { StudentUserId: req.query.id }, 
+            include: {
+                model: ComprehensionExercise
+            }
         })
-        .catch(error => { console.log(error); })
-};
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
 
-exports.getStudentResults = async (req, res, next) => {
-    StudentUser.findOne({ where: { id: req.body.id } })
-        .then(student => {
-            Score.findAll({ where: { StudentUserId: student.id }, include: [ComprehensionExercise] })
-                .then(results => {
-                    res.status(200).json({
-                        results: results
-                    });
-                })
-                .catch(error => { console.log(error); res.status(500); })
-        })
-        .catch(error => { console.log(error); res.status(500); })
+    if(!scores) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    return res.status(StatusCodes.OK).json({ results: scores });
 };
 
 exports.confirmLeaderUnique = async (req, res) => {
-    EnterpriseUser.findAll({ where: { email: req.body.email } })
-        .then(users => {
-            if(users.length == 0) {
-                res.status(200).json({
-                    unique: true
-                });
-            } else {
-                res.status(200).json({
-                    success: false
-                });
-            }
-        })
-        .catch(error => { console.log(error); })
+    let users;
+
+    try {
+        users = await EnterpriseUser.findAll({ where: { email: req.body.email } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    if(!users) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    if(users.length === 0) return res.status(StatusCodes.OK).json({ unique: true });
+
+    return res.status(StatusCodes.OK).json({ unique: false });
 };
 
 exports.confirmStudentUnique = async (req, res) => {
-    StudentUser.findAll({ where: { email: req.body.email } })
-        .then(users => {
-            if(users.length == 0) {
-                res.status(200).json({
-                    unique: true
-                });
-            } else {
-                res.status(200).json({
-                    success: false
-                });
-            }
-        })
-        .catch(error => { console.log(error); })
+    let users;
+
+    try {
+        users = await StudentUser.findAll({ where: { email: req.body.email } });
+    } catch(error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+    }
+
+    if(!users) return res.status(StatusCodes.INTERNAL_SERVER_ERROR);
+
+    if(users.length === 0) return res.status(StatusCodes.OK).json({ unique: true });
+
+    return res.status(StatusCodes.OK).json({ unique: false });
 };

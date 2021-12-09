@@ -28,8 +28,8 @@ router.get("/view", enterprise.getViewStudentsPage);
 // /results => GET
 router.get("/results", enterprise.getStudentResultsPage);
 
-// /get-student-results => POST
-router.post("/get-student-results", enterprise.getStudentResults);
+// /get-student-results => GET
+router.get("/get-student-results", enterprise.getStudentResults);
 
 // /confirm-unique-email => POST
 router.post("/confirm-unique-email", enterprise.confirmStudentUnique);

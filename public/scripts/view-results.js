@@ -17,7 +17,7 @@ const getResults = () => {
 
     $.ajax({
         url: "/enterprise/students/get-student-results",
-        method: "POST",
+        method: "GET",
         data: { id: $("#resultsOfStudent").val() },
         success: data => {
             $(".res-spin").remove();
@@ -28,6 +28,12 @@ const getResults = () => {
                 }
             } else {
                 $("#results-info").append('<p>This student has not completed any exercise yet.</p>');
+            }
+        },
+        statusCode: {
+            500: () => {
+                $(".res-spin").remove();
+                return alert("There has been a problem on the server. Please try again.");
             }
         }
     })

@@ -21,7 +21,7 @@ exports.authenticateEnterpriseLogin = async (req, res) => {
 
     if(!user) return res.redirect("/register");
 
-    if(!!user.disabled) return res.redirect("/login?disabled=true");
+    if(user.disabled) return res.redirect("/login?disabled=true");
 
     const passMatch = await bcrypt.compare(req.body.loginPass, user.password);
 
@@ -35,7 +35,7 @@ exports.authenticateEnterpriseLogin = async (req, res) => {
     req.session.companyId = user.Company.id;
     req.session.isLeader = !!user.CourseId;
 
-    if(!!user.CourseId) {
+    if(user.CourseId) {
         try {
             leadingCourse = await Course.findOne({ where: { id: user.CourseId } });
         } catch(error) {
@@ -80,7 +80,7 @@ exports.authenticateStudentLogin = async (req, res) => {
 
     if(!user) return res.redirect("/login/student?error=true");
 
-    if(!!user.disabled) return res.redirect("/login/student?disabled=true");
+    if(user.disabled) return res.redirect("/login/student?disabled=true");
 
     if(!user.CourseId) return res.redirect("/login/student?active=false");
 
@@ -88,7 +88,7 @@ exports.authenticateStudentLogin = async (req, res) => {
 
     if(!passMatch) return res.redirect("/login/student?error=true");
 
-    if(!!user.Course.disabled) return res.redirect("/disabled-course");
+    if(user.Course.disabled) return res.redirect("/disabled-course");
 
     req.session.userId = user.id;
     req.session.isLoggedIn = true;

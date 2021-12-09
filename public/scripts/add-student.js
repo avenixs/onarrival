@@ -26,9 +26,14 @@ $("#email").change(() => {
                 $("#add-btn").prop("disabled", false);
                 $("#add-btn").css("cursor", "pointer");
             } else {
-                alert("This email address is already in use!")
+                alert("This email address is already in use!");
                 $("#add-btn").prop("disabled", true);
                 $("#add-btn").css("cursor", "not-allowed");
+            }
+        },
+        statusCode: {
+            500: () => {
+                alert("There has been a problem on the server. Please try again!");
             }
         }
     })
