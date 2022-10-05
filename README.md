@@ -1,2 +1,2 @@
 # onarrival
-Language on Arrival Project
+Language on Arrival Web-based Application as part of my Bachelor of Science thesis
